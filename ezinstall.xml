@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ezinstall>
+  <main>
+    <language>English (default)</language>
+    <loglevel>1</loglevel>
+  </main>
+  <user>
+    <username>admin</username>
+    <password>admin</password>
+  </user>
+  <mysql>
+    <username>username</username>
+    <password>secret</password>
+    <host>localhost</host>
+    <database>database</database>
+  </mysql>
+</ezinstall>

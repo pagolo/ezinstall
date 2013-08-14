@@ -687,7 +687,7 @@ configure:6104: $? = 0
 configure:6104: result: yes
 configure:6104: checking for stricmp
 configure:6104: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lxml2 -lmysqlclient  >&5
-/tmp/cc0VLFgB.o: In function `main':
+/tmp/ccem8iJ4.o: In function `main':
 /home/paolo/ezinstall-remote/conftest.c:80: undefined reference to `stricmp'
 collect2: error: ld returned 1 exit status
 configure:6104: $? = 1
@@ -797,7 +797,7 @@ configure:6104: $? = 0
 configure:6104: result: yes
 configure:6104: checking for strnicmp
 configure:6104: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lxml2 -lmysqlclient  >&5
-/tmp/ccvlYNSY.o: In function `main':
+/tmp/ccaz3Uft.o: In function `main':
 /home/paolo/ezinstall-remote/conftest.c:84: undefined reference to `strnicmp'
 collect2: error: ld returned 1 exit status
 configure:6104: $? = 1

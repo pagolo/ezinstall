@@ -105,9 +105,9 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(ezinstallcssdir)" \
-	"$(DESTDIR)$(ezinstalldocdir)"
-DATA = $(ezinstallcss_DATA) $(ezinstalldoc_DATA)
+am__installdirs = "$(DESTDIR)$(ezinstallcfgdir)" \
+	"$(DESTDIR)$(ezinstallcssdir)" "$(DESTDIR)$(ezinstalldocdir)"
+DATA = $(ezinstallcfg_DATA) $(ezinstallcss_DATA) $(ezinstalldoc_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
@@ -259,7 +259,9 @@ ezinstalldoc_DATA = \
 
 ezinstallcssdir = ${prefix}/public_html
 ezinstallcss_DATA = ezinstall.css
-EXTRA_DIST = $(ezinstalldoc_DATA) $(ezinstallcss_DATA)
+ezinstallcfgdir = ${prefix}/public_html/cgi-bin
+ezinstallcfg_DATA = ezinstall.xml
+EXTRA_DIST = $(ezinstalldoc_DATA) $(ezinstallcss_DATA) $(ezinstallcfg_DATA)
 AM_CFLAGS = -static 
 AM_LDFLAGS = -static 
 all: config.h
@@ -315,6 +317,27 @@ $(srcdir)/config.h.in: # $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
+install-ezinstallcfgDATA: $(ezinstallcfg_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(ezinstallcfg_DATA)'; test -n "$(ezinstallcfgdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(ezinstallcfgdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(ezinstallcfgdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(ezinstallcfgdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(ezinstallcfgdir)" || exit $$?; \
+	done
+
+uninstall-ezinstallcfgDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(ezinstallcfg_DATA)'; test -n "$(ezinstallcfgdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(ezinstallcfgdir)'; $(am__uninstall_files_from_dir)
 install-ezinstallcssDATA: $(ezinstallcss_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(ezinstallcss_DATA)'; test -n "$(ezinstallcssdir)" || list=; \
@@ -707,7 +730,7 @@ check: check-recursive
 all-am: Makefile $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(ezinstallcssdir)" "$(DESTDIR)$(ezinstalldocdir)"; do \
+	for dir in "$(DESTDIR)$(ezinstallcfgdir)" "$(DESTDIR)$(ezinstallcssdir)" "$(DESTDIR)$(ezinstalldocdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -761,7 +784,8 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-ezinstallcssDATA install-ezinstalldocDATA
+install-data-am: install-ezinstallcfgDATA install-ezinstallcssDATA \
+	install-ezinstalldocDATA
 
 install-dvi: install-dvi-recursive
 
@@ -807,7 +831,8 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-ezinstallcssDATA uninstall-ezinstalldocDATA
+uninstall-am: uninstall-ezinstallcfgDATA uninstall-ezinstallcssDATA \
+	uninstall-ezinstalldocDATA
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all \
 	cscopelist-recursive ctags-recursive install-am install-strip \
@@ -822,13 +847,14 @@ uninstall-am: uninstall-ezinstallcssDATA uninstall-ezinstalldocDATA
 	distdir distuninstallcheck dvi dvi-am html html-am info \
 	info-am install install-am install-data install-data-am \
 	install-dvi install-dvi-am install-exec install-exec-am \
-	install-ezinstallcssDATA install-ezinstalldocDATA install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am tags \
-	tags-recursive uninstall uninstall-am \
+	install-ezinstallcfgDATA install-ezinstallcssDATA \
+	install-ezinstalldocDATA install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic pdf pdf-am ps ps-am tags tags-recursive \
+	uninstall uninstall-am uninstall-ezinstallcfgDATA \
 	uninstall-ezinstallcssDATA uninstall-ezinstalldocDATA
 
 

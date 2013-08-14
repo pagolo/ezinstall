@@ -15,7 +15,10 @@ ezinstalldoc_DATA = \
 ezinstallcssdir = ${prefix}/public_html
 ezinstallcss_DATA = ezinstall.css
 
-EXTRA_DIST = $(ezinstalldoc_DATA) $(ezinstallcss_DATA)
+ezinstallcfgdir = ${prefix}/public_html/cgi-bin
+ezinstallcfg_DATA = ezinstall.xml
+
+EXTRA_DIST = $(ezinstalldoc_DATA) $(ezinstallcss_DATA) $(ezinstallcfg_DATA)
 
 
 
