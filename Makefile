@@ -52,7 +52,7 @@ subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	config.guess config.sub depcomp install-sh ltmain.sh missing \
+	config.guess config.sub depcomp install-sh missing \
 	mkinstalldirs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -159,11 +159,11 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/paolo/ezinstall-remote/missing --run aclocal-1.10
-AMTAR = ${SHELL} /home/paolo/ezinstall-remote/missing --run tar
+ACLOCAL = ${SHELL} /home/paolo/ezinstall-remote/missing --run aclocal-1.12
+AMTAR = $${TAR-tar}
 AUTOCONF = ${SHELL} /home/paolo/ezinstall-remote/missing --run autoconf
 AUTOHEADER = ${SHELL} /home/paolo/ezinstall-remote/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/paolo/ezinstall-remote/missing --run automake-1.10
+AUTOMAKE = ${SHELL} /home/paolo/ezinstall-remote/missing --run automake-1.12
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -212,8 +212,8 @@ ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
 am__quote = 
-am__tar = ${AMTAR} chof - "$$tardir"
-am__untar = ${AMTAR} xf -
+am__tar = $${TAR-tar} chof - "$$tardir"
+am__untar = $${TAR-tar} xf -
 bindir = /home/paolo/public_html/cgi-bin
 build_alias = 
 builddir = .
@@ -226,7 +226,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = $(SHELL) /home/paolo/ezinstall-remote/install-sh
+install_sh = ${SHELL} /home/paolo/ezinstall-remote/install-sh
 libdir = ${exec_prefix}/lib64
 libexecdir = ${exec_prefix}/lib
 localedir = ${datarootdir}/locale
