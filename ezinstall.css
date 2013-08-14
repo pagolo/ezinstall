@@ -1,0 +1,17 @@
+/* 
+    Document   : ezinstall
+    Created on : 14-ago-2013, 16.49.58
+    Author     : paolo
+    Description:
+        Purpose of the stylesheet follows.
+    Stylesheet for ezinstall cgi script.
+*/
+
+body { 
+  font-family: Verdana, Arial, Helvetica, sans-serif; 
+}
+hr {
+  text-align: left;
+  width: 66%;
+}
+

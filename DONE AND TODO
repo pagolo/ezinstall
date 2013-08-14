@@ -1,4 +1,4 @@
-DONE AND TODO initial version (0.0.13)
+DONE AND TODO initial version (0.0.13 08/04/2013)
 =============
 
 - general structure
@@ -9,6 +9,12 @@ DONE AND TODO initial version (0.0.13)
 - localization, to be completely changed
   TODO
     - implement gettext()
+- make install
+  TODO
+    - installation of configuration file
+- output html code
+  TODO
+  - general revision
 - step one, upload/download and uncompress (DONE) 
 - step two, handle permissions (DONE)
 - step three, handle configuration (partially done)

@@ -2,7 +2,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body><font face=Verdana>\n<h2>Easy Installer Tool</h2>\n<hr align=left width=66%%>\n"
+#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n<h2>Easy Installer Tool</h2>\n<hr>\n"
 #define HTM_FOOTER "</body></html>\n"
 //#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head><title>Easy Installer Tool</title></head>\n<body><font face=Verdana><h2>Easy Installer Tool</h2><hr align=left width=66%%>"
 //#define HTM_FOOTER "<table width=66%% height=50%%><tr><td align=center valign=bottom><small><small>powered by Easinstall "VERSION"</td></tr></table></body></html>\n"
