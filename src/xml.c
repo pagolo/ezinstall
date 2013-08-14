@@ -1,0 +1,506 @@
+#include "main.h"
+
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+#include <libxml/xmlwriter.h>
+
+#define TRUE 1
+#define FALSE 0
+
+void
+parseSection(xmlDocPtr doc, xmlNodePtr cur, STRING *string, const xmlChar *sectionName) {
+  STRING *s;
+  xmlChar *key;
+  cur = cur->xmlChildrenNode;
+
+  while (cur != NULL) {
+    for (s = string; s; s = s->next) {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *) s->string))) {
+        key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+        setMainConfig((char *) sectionName, (char *) s->string, (char *) key);
+        xmlFree(key);
+      }
+    }
+    cur = cur->next;
+  }
+  return;
+}
+
+void
+parseMainConfig(char *docname) {
+
+  xmlDocPtr doc;
+  xmlNodePtr cur, nodeptr;
+  STRING *stringlist = NULL;
+
+  doc = xmlParseFile(docname);
+
+  if (doc == NULL) {
+    Error("Configuration xml document not parsed successfully. \n");
+  }
+
+  cur = nodeptr = xmlDocGetRootElement(doc);
+
+  if (cur == NULL) {
+    xmlFreeDoc(doc);
+    Error("Configuration: empty document\n");
+  }
+
+  if (xmlStrcmp(cur->name, (const xmlChar *) "ezinstall") != 0) {
+    xmlFreeDoc(doc);
+    Error("Configuration: document of the wrong type, root node != ezinstall");
+  }
+
+  cur = cur->xmlChildrenNode;
+  while (cur != NULL) {
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "main"))) {
+      appendstring(&stringlist, "language");
+      appendstring(&stringlist, "loglevel");
+      parseSection(doc, cur, stringlist, cur->name);
+      freestringlist(stringlist);
+      stringlist = NULL;
+    }
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "user"))) {
+      appendstring(&stringlist, "username");
+      appendstring(&stringlist, "password");
+      parseSection(doc, cur, stringlist, cur->name);
+      freestringlist(stringlist);
+      stringlist = NULL;
+    }
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "mysql"))) {
+      appendstring(&stringlist, "username");
+      appendstring(&stringlist, "password");
+      appendstring(&stringlist, "host");
+      appendstring(&stringlist, "database");
+      parseSection(doc, cur, stringlist, cur->name);
+      freestringlist(stringlist);
+      stringlist = NULL;
+    }
+    cur = cur->next;
+  }
+
+  xmlFreeDoc(doc);
+  return;
+}
+
+char *setUnzip(char *filename, char *mode) {
+  char buffer[32];
+  if (strcasecmp(mode, "auto") == 0) {
+    char *ptr = strrchr(filename, '.');
+    if (ptr && strcasecmp(ptr, ".zip") == 0)
+      sprintf(buffer, "%s", "unzip");
+    else if (ptr && (strcasecmp(ptr, ".tgz") == 0 || strcasecmp(ptr, ".gz") == 0))
+      sprintf(buffer, "%s", "tar -xzf");
+    else if (ptr && (strcasecmp(ptr, ".bz2") == 0))
+      sprintf(buffer, "%s", "tar --bzip2 -xf");
+    else if (ptr && (strcasecmp(ptr, ".Z") == 0))
+      sprintf(buffer, "%s", "tar -xZf");
+    else Error(getstr(S_UNKNOWN_FORMAT, "Unknown format of archive file"));
+  } else {
+    // accepted values: auto, zip, gzip, bzip
+    if (strcasecmp(mode, "zip") == 0)
+      sprintf(buffer, "%s", "unzip");
+    else if (strcasecmp(mode, "gzip") == 0)
+      sprintf(buffer, "%s", "tar -xzf");
+    else if (strcasecmp(mode, "bzip") == 0)
+      sprintf(buffer, "%s", "tar --bzip2 -xf");
+    else Error(getstr(S_UNKNOWN_FORMAT, "Unknown format of archive file"));
+  }
+  return strdup(buffer);
+}
+
+void addChmod(char *file, char *mode, INIDATA *inidata, int recourse) {
+  char *z;
+  CHMOD *tmp;
+  CHMOD *chmd = recourse ? inidata->perm_list_rec : inidata->perm_list;
+  CHMOD *ptr = calloc(sizeof (CHMOD), 1);
+  if (!ptr) return; // no memory
+  ptr->file = strdup(file);
+  ptr->permissions = strtol((const char *) mode, &z, 8);
+
+  if (chmd == NULL) {
+    if (recourse) inidata->perm_list_rec = ptr;
+    else inidata->perm_list = ptr;
+  } else {
+    tmp = chmd;
+    while (tmp->next) tmp = tmp->next;
+    tmp->next = ptr;
+  }
+}
+
+int parsePermissionsNode(xmlDocPtr doc, xmlNodePtr cur) {
+  xmlChar *file, *mode;
+  cur = cur->xmlChildrenNode;
+  INIDATA *inidata = globaldata.gd_inidata;
+
+  while (cur != NULL) {
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "chmod")) || (!xmlStrcmp(cur->name, (xmlChar *) "chmod-recurse"))) {
+      file = xmlGetProp(cur, (xmlChar *) "file");
+      mode = xmlGetProp(cur, (xmlChar *) "mode");
+      addChmod((char *) file, (char *) mode, inidata, (!xmlStrcmp(cur->name, (xmlChar *) "chmod")) ? FALSE : TRUE);
+      if (file) xmlFree(file);
+      if (mode) xmlFree(mode);
+    }
+    cur = cur->next;
+  }
+
+  return 1;
+}
+
+int parseConfigNode(xmlDocPtr doc, xmlNodePtr cur) {
+  xmlChar *key;
+  char *mydb;
+  cur = cur->xmlChildrenNode;
+  INIDATA *inidata = globaldata.gd_inidata;
+
+  if (inidata == NULL) return 0;
+  inidata->flags &= ~_SKIP_CONFIGFILE;
+
+  while (cur != NULL) {
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "file"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      inidata->php_conf_name = strdup((char *) key);
+      xmlFree(key);
+    }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "saveas"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      inidata->php_conf_save = strdup((char *) key);
+      xmlFree(key);
+    }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "myuser"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      SetPhpVar((char *) key, globaldata.gd_mysql->username);
+      xmlFree(key);
+    }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "mypass"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      SetPhpVar((char *) key, globaldata.gd_mysql->password);
+      xmlFree(key);
+    }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "myhost"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      SetPhpVar((char *) key, globaldata.gd_mysql->host);
+      xmlFree(key);
+    }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "mydb"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      mydb = getfieldbyname("database");
+      if (!(mydb && *mydb)) mydb = globaldata.gd_mysql->db_name;
+      if (!(mydb)) mydb = "";
+      SetPhpVar((char *) key, mydb);
+      xmlFree(key);
+    }
+    cur = cur->next;
+  }
+
+  return 1;
+}
+
+int parseMysqlNode(xmlDocPtr doc, xmlNodePtr cur) {
+  xmlChar *key;
+  cur = cur->xmlChildrenNode;
+  INIDATA *inidata = globaldata.gd_inidata;
+
+  if (inidata == NULL) return 0;
+  inidata->flags &= ~_SKIP_MYSQL;
+
+  while (cur != NULL) {
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "db_name"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      if (globaldata.gd_mysql->db_name == NULL)
+        globaldata.gd_mysql->db_name = strdup((char *) key);
+      xmlFree(key);
+    }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "db_file"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      globaldata.gd_mysql->db_file = strdup((char *) key);
+      xmlFree(key);
+    }
+    cur = cur->next;
+  }
+
+  return 1;
+}
+
+int parseFinishNode(xmlDocPtr doc, xmlNodePtr cur) {
+  xmlChar *key;
+  cur = cur->xmlChildrenNode;
+  INIDATA *inidata = globaldata.gd_inidata;
+
+  if (inidata == NULL) return 0;
+
+  while (cur != NULL) {
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "script"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      inidata->script2start = strdup((char *) key);
+      xmlFree(key);
+    }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "message"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      inidata->finalmessage = strdup((char *) key);
+      xmlFree(key);
+    }
+    cur = cur->next;
+  }
+
+  return 1;
+}
+
+int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
+  xmlChar *key, *attrib;
+  cur = cur->xmlChildrenNode;
+  INIDATA *inidata;
+
+  globaldata.gd_inidata = inidata = calloc(sizeof (INIDATA), 1);
+  if (inidata == NULL) return 0;
+  inidata->flags |= (_SKIP_MYSQL | _SKIP_CONFIGFILE);
+
+  while (cur != NULL) {
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "directory"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      attrib = xmlGetProp(cur, (xmlChar *) "create");
+      inidata->directory = strdup((char *) key);
+      if (xmlStrcmp(attrib, (xmlChar *) "yes") == 0) {
+        inidata->flags |= _CREATEDIR;
+      }
+      xmlFree(key);
+      if (attrib) xmlFree(attrib);
+    }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "file"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      attrib = xmlGetProp(cur, (xmlChar *) "unzip");
+      if (globaldata.gd_iniaddress != NULL)
+        inidata->web_archive = cloneaddress(globaldata.gd_iniaddress, (char *) key);
+      else if (action == UPLOAD_CONFIG) { // upload, not download
+        char *path = getenv("DOCUMENT_ROOT");
+        if (path && *path) {
+          path = append_cstring(NULL, path);
+          if (path[strlen(path) - 1] != '/') path = append_cstring(path, "/");
+          inidata->web_archive = append_cstring(path, (char *) key);
+        }
+      }
+      inidata->unzip = setUnzip((char *) key, attrib ? (char *) attrib : "auto");
+      xmlFree(key);
+      if (attrib) xmlFree(attrib);
+    }
+    cur = cur->next;
+  }
+  return 1;
+
+}
+
+int read_xml_file(int action) {
+  xmlDocPtr doc;
+  xmlNodePtr cur, nodeptr;
+
+  doc = xmlParseFile(globaldata.gd_inifile);
+
+  if (doc == NULL) {
+    Error("Configuration xml document not parsed successfully. \n");
+  }
+
+  cur = nodeptr = xmlDocGetRootElement(doc);
+
+  if (cur == NULL) {
+    xmlFreeDoc(doc);
+    Error("Configuration: empty document\n");
+  }
+
+  if (xmlStrcmp(cur->name, (const xmlChar *) "ezinstaller") != 0) {
+    xmlFreeDoc(doc);
+    Error("Configuration: document of the wrong type, root node != ezinstaller");
+  }
+
+  cur = cur->xmlChildrenNode;
+  while (cur != NULL) {
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "main"))) {
+      parseMainNode(doc, cur, action);
+    }
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "permissions"))) {
+      parsePermissionsNode(doc, cur);
+    }
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "config"))) {
+      parseConfigNode(doc, cur);
+    }
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "mysql"))) {
+      parseMysqlNode(doc, cur);
+    }
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "finish"))) {
+      parseFinishNode(doc, cur);
+    }
+    cur = cur->next;
+  }
+
+  return 1;
+}
+
+int WriteGlobalConfig(void) {
+  int rc, result = 0;
+  char *username, *password;
+  xmlTextWriterPtr writer;
+#ifdef MEMORY
+  int fd;
+  xmlBufferPtr buf;
+
+  /* Create a new XML buffer, to which the XML document will be
+   * written */
+  buf = xmlBufferCreate();
+  if (buf == NULL) {
+    //printf("testXmlwriterMemory: Error creating the xml buffer\n");
+    return 0;
+  }
+
+  /* Create a new XmlWriter for memory, with no compression.
+   * Remark: there is no compression for this kind of xmlTextWriter */
+  writer = xmlNewTextWriterMemory(buf, 0);
+  if (writer == NULL) {
+    xmlBufferFree(buf);
+    return 0;
+  }
+#else
+  // create the file
+  writer = xmlNewTextWriterFilename(CONFIG_NAME, 0);
+  if (writer == NULL) return 0;
+#endif
+
+  // start the document
+  rc = xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
+  if (rc < 0) goto finish;
+  // root element
+  rc = xmlTextWriterStartElement(writer, BAD_CAST "ezinstall");
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n  ");
+  if (rc < 0) goto finish;
+  /////////////////////////////////////
+  // start the main section
+  rc = xmlTextWriterStartElement(writer, BAD_CAST "main");
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+  if (rc < 0) goto finish;
+  // the language
+  rc = xmlTextWriterWriteElement(writer, BAD_CAST "language", BAD_CAST getfieldbyname("Language"));
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+  if (rc < 0) goto finish;
+  // the loglevel
+  rc = xmlTextWriterWriteElement(writer, BAD_CAST "loglevel", BAD_CAST getfieldbyname("LogLevel"));
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n  ");
+  if (rc < 0) goto finish;
+  /* Close the element named main. */
+  rc = xmlTextWriterEndElement(writer);
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n  ");
+  if (rc < 0) goto finish;
+  /////////////////////////////////////
+  // user section
+  rc = xmlTextWriterStartElement(writer, BAD_CAST "user");
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+  if (rc < 0) goto finish;
+  // the name
+  username = getfieldbyname("admin_name");
+  rc = xmlTextWriterWriteElement(writer, BAD_CAST "username", BAD_CAST username);
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+  if (rc < 0) goto finish;
+  // the password
+  password = getfieldbyname("admin_pass1");
+  rc = xmlTextWriterWriteElement(writer, BAD_CAST "password", BAD_CAST password);
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n  ");
+  if (rc < 0) goto finish;
+  /* Close the element named user. */
+  rc = xmlTextWriterEndElement(writer);
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n  ");
+  if (rc < 0) goto finish;
+  /////////////////////////////////////
+  // mysql section
+  rc = xmlTextWriterStartElement(writer, BAD_CAST "mysql");
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+  if (rc < 0) goto finish;
+  // the name
+  rc = xmlTextWriterWriteElement(writer, BAD_CAST "username", BAD_CAST getfieldbyname("mysql_user"));
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+  if (rc < 0) goto finish;
+  // the password
+  rc = xmlTextWriterWriteElement(writer, BAD_CAST "password", BAD_CAST getfieldbyname("mysql_pass1"));
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+  if (rc < 0) goto finish;
+  // the hostname
+  rc = xmlTextWriterWriteElement(writer, BAD_CAST "host", BAD_CAST getfieldbyname("mysql_host"));
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+  if (rc < 0) goto finish;
+  // the database name
+  rc = xmlTextWriterWriteElement(writer, BAD_CAST "database", BAD_CAST getfieldbyname("mysql_db"));
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n  ");
+  if (rc < 0) goto finish;
+  /* Close the element named mysql. */
+  rc = xmlTextWriterEndElement(writer);
+  if (rc < 0) goto finish;
+  // newline
+  rc = xmlTextWriterWriteString(writer, BAD_CAST "\n");
+  if (rc < 0) goto finish;
+  /////////////////////////////////////
+  /* Close all. */
+  rc = xmlTextWriterEndDocument(writer);
+  if (rc < 0) goto finish;
+
+#ifdef MEMORY
+  xmlFreeTextWriter(writer);
+  writer = NULL;
+
+  remove(CONFIG_NAME);
+  fd = open(CONFIG_NAME, O_CREAT | O_RDWR | O_TRUNC, 0600);
+  if (fd == NO_FILE) goto finish;
+  write(fd, (const void *) buf->content, buf->size);
+  close(fd);
+#endif
+
+  result = 1;
+
+finish:
+  if (writer) xmlFreeTextWriter(writer);
+#ifdef MEMORY
+  xmlBufferFree(buf);
+#endif
+  return result;
+}
+
+/*
+int
+main(int argc, char **argv) {
+
+        char *docname;
+		
+        if (argc <= 1) {
+                printf("Usage: %s docname\n", argv[0]);
+                return(0);
+        }
+
+        docname = argv[1];
+        parseDoc (docname);
+
+        return (1);
+}
+ */

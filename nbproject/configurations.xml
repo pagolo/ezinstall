@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="89">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="ezinstall-remote">
+      <df name="src">
+        <in>conditions.h</in>
+        <in>configure.c</in>
+        <in>configure.h</in>
+        <in>editconfig.c</in>
+        <in>editconfig.h</in>
+        <in>getinput.c</in>
+        <in>getinput.h</in>
+        <in>ini.c</in>
+        <in>ini.h</in>
+        <in>locale.h</in>
+        <in>login.c</in>
+        <in>login.h</in>
+        <in>main.c</in>
+        <in>main.h</in>
+        <in>mysql.c</in>
+        <in>mysql.h</in>
+        <in>socket.c</in>
+        <in>socket.h</in>
+        <in>test.c</in>
+        <in>test.h</in>
+        <in>utils.c</in>
+        <in>utils.h</in>
+        <in>xml.c</in>
+        <in>xml.h</in>
+      </df>
+      <in>config.h</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+      <itemPath>configure</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir></buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile install</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>src</pElem>
+              <pElem>.</pElem>
+              <pElem>/usr/include/libxml2</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>HAVE_CONFIG_H</Elem>
+            </preprocessorList>
+          </cTool>
+        </makeTool>
+      </makefileType>
+      <item path="config.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/conditions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/configure.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/configure.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/editconfig.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/editconfig.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/getinput.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/getinput.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ini.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/ini.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/locale.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/login.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/login.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/main.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mysql.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/mysql.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/socket.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/utils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/utils.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/xml.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/xml.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

@@ -1,0 +1,578 @@
+#include "main.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+
+#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body><font face=Verdana>\n<h2>Easy Installer Tool</h2>\n<hr align=left width=66%%>\n"
+#define HTM_FOOTER "</body></html>\n"
+//#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head><title>Easy Installer Tool</title></head>\n<body><font face=Verdana><h2>Easy Installer Tool</h2><hr align=left width=66%%>"
+//#define HTM_FOOTER "<table width=66%% height=50%%><tr><td align=center valign=bottom><small><small>powered by Easinstall "VERSION"</td></tr></table></body></html>\n"
+
+GLOBAL globaldata;
+
+void Error(char *msg) {
+  if (!(globaldata.header_sent)) printf(HTM_HEADER);
+  printf("<br><font color=red><b>%s</b></font>: ", getstr(S_ERROR, "ERROR"));
+  printf("%s<br>", msg);
+  if (globaldata.gd_loglevel > LOG_NONE) WriteLog(msg);
+  if (globaldata.gd_error) printf(globaldata.gd_error);
+  printf("<br><a href=javascript:history.back()>%s</a><br>", getstr(S_BACK, "BACK"));
+  printf(HTM_FOOTER);
+  xmlCleanupParser();
+  exit(5);
+}
+
+void CreateFileSystemObject(void) {
+  int rc;
+  FSOBJ *object;
+  for (object = globaldata.gd_inidata->filesys_list; object != NULL; object = object->next) {
+    if (object->isfolder) {
+      printf("Creating folder \"%s\"...<br>", object->file);
+      rc = mkdir(object->file, 0755);
+      if (rc == -1) Error("Can't create folder");
+    } else {
+      printf("Creating file \"%s\"...<br>", object->file);
+      rc = creat(object->file, 0644);
+      if (rc == -1) Error("Can't create file");
+      else close(rc);
+    }
+  }
+}
+
+enum {
+  __CREATE, __RENAME
+};
+
+void CreateChangeDir(char *dirname, int dir_rename) {
+  int rc;
+  char *root = getenv("DOCUMENT_ROOT");
+
+  if (root == NULL) rc = -1;
+  else rc = chdir(root);
+  if (rc == -1) Error(getstr(S_NO_CDROOT, "Can't chdir to document_root"));
+
+  if (dir_rename == __RENAME) {
+    if (strcmp(globaldata.gd_inidata->directory, dirname) == 0) {
+      printf("No need to rename folder...<br />");
+    } else {
+      printf(getstr(S_RENAME, "<br>Renaming folder \"%s\" to \"%s\"...<br>"), globaldata.gd_inidata->directory, dirname);
+      rc = rename(globaldata.gd_inidata->directory, dirname);
+      if (rc == -1) Error(getstr(S_NO_RENAME, "Can't rename project folder"));
+    }
+  } else {
+    printf(getstr(S_CREATEFOLDER, "<br>Creating folder \"%s\"...<br>"), dirname);
+    rc = mkdir(dirname, 0755);
+    if (rc == -1) Error(getstr(S_NOCREATEFOLDER, "Can't create project folder"));
+  }
+
+  rc = chdir(dirname);
+  if (rc == -1) Error(getstr(S_NOCHDIR, "Can't chdir to project folder"));
+}
+
+int DownloadExtractArchiveFile(void) {
+  int rc;
+  char *command;
+  char *filename;
+
+  if (is_upload()) {
+    filename = globaldata.gd_inidata->web_archive;
+  } else {
+    printf(getstr(S_DOWNLOAD, "Downloading archive...<br>"));
+    rc = graburl(globaldata.gd_inidata->web_archive, 0644, 0, 0);
+    if (rc == 0) Error(getstr(S_NODOWNLOAD, "Can't download the script archive"));
+    filename = basename(globaldata.gd_inidata->web_archive);
+  }
+
+  command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
+
+  printf(getstr(S_UNZIP, "Uncompressing archive...<br>"));
+
+  if (execute(command)) {
+    if (globaldata.gd_loglevel > LOG_NONE)
+      WriteLog(getstr(S_UNZIP_OK, "archive files extracted"));
+    unlink(filename);
+  }
+  free(command);
+
+  return 1;
+}
+
+char *login_string = "<form name=myform method=\"POST\" action=\"%s?%s\">\n"
+        "<table border=1 width=504 style=\"border-collapse: collapse\" id=\"table1\" bordercolor=\"#000000\">\n"
+        "<tr>\n"
+        "<td width=174 align=right>%s:</td>\n"
+        "<td><input type=text name=_main_username size=29></td>\n"
+        "</tr>\n"
+        "<tr>\n"
+        "<td width=174 align=right>%s:</td>\n"
+        "<td><input type=password name=_main_password size=29></td>\n"
+        "</tr>\n"
+        "<tr>\n"
+        "<td colspan=2 align=center><input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td>\n"
+        "</tr>\n"
+        "</table>\n"
+        "</form>\n"
+        "<script language=javascript>document.myform._main_username.focus();</script>\n";
+
+void ShowLoginPage(int action) {
+  printf(login_string, getenv("SCRIPT_NAME"), action == ACTION_EXIT ? "" : getenv("QUERY_STRING"),
+          getstr(S_USERNAME, "Username"),
+          getstr(S_PASSWORD, "Password"),
+          getstr(S_SUBMIT, "Submit"),
+          getstr(S_CLEAR, "Clear"));
+}
+
+char *createdir_string = "<form method=\"POST\" action=\"%s?%d\">\n"
+        "<input type=hidden name=inifile value=\"%s\">\n"
+        "<input type=hidden name=webarchive value=\"%s\">\n"
+        "<input type=hidden name=overwrite value=\"%s\">\n"
+        "<input type=hidden name=upload value=\"%s\">\n"
+        "<table border=0 width=504>\n"
+        "<tr>\n"
+        "<td>%s:</td>\n"
+        "</tr>\n"
+        "<tr>\n"
+        "<td><input type=text name=folder value=%s size=32></td>\n"
+        "</tr>\n"
+        "<tr>\n"
+        "<td><input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td>\n"
+        "</tr>\n"
+        "</table>\n"
+        "</form>";
+
+void ShowCreateDirPage(void) {
+  printf(createdir_string, getenv("SCRIPT_NAME"),
+          CREATE_FOLDER,
+          globaldata.gd_inifile,
+          globaldata.gd_inidata->web_archive,
+          getfieldbyname("overwrite"),
+          getfieldbyname("upload"),
+          getstr(S_EDIT_FOLDER, "Please edit the destination web folder name"),
+          globaldata.gd_inidata->directory,
+          getstr(S_CONTINUE, "Continue"),
+          getstr(S_CLEAR, "Clear"));
+}
+
+void ShowRenameDirPage(void) {
+  printf(createdir_string, getenv("SCRIPT_NAME"),
+          RENAME_FOLDER,
+          globaldata.gd_inifile,
+          globaldata.gd_inidata->web_archive,
+          getfieldbyname("overwrite"),
+          getfieldbyname("upload"),
+          getstr(S_EDIT_FOLDER, "Please edit the destination web folder name"),
+          globaldata.gd_inidata->directory,
+          getstr(S_CONTINUE, "Continue"),
+          getstr(S_CLEAR, "Clear"));
+}
+
+void ShowArchive(void) {
+  if (globaldata.gd_inidata && globaldata.gd_inidata->web_archive)
+    printf(getstr(S_TITLE, "<b>Installing <i>%s</i></b><br>"), basename(globaldata.gd_inidata->web_archive));
+}
+
+void ChDirRoot(void) {
+  int rc;
+  char *root = getenv("DOCUMENT_ROOT");
+
+  rc = chdir(root);
+  if (rc == -1) Error(getstr(S_NO_CDROOT, "Can't chdir to document_root"));
+}
+
+char *nextstep_string = "<form method=\"POST\" action=\"%s?%d\">\n"
+        "<input type=hidden name=inifile value=\"%s\">\n"
+        "<input type=hidden name=folder value=\"%s\">\n"
+        "<input type=hidden name=database value=\"%s\">\n"
+        "<input type=hidden name=webarchive value=\"%s\">\n"
+        "<input type=submit value=\"%s\" name=B1>\n"
+        "</form>";
+
+void NextStep(int step) {
+  char *database = getfieldbyname("database");
+  if ((globaldata.gd_inidata->flags & _SKIP_MYSQL) && step <= EDIT_CONFIG)
+    step = EDIT_CONFIG;
+  if ((globaldata.gd_inidata->flags & _SKIP_CONFIGFILE) && step <= CALL_SCRIPT && step >= EDIT_CONFIG)
+    step = CALL_SCRIPT;
+  if (step == CALL_SCRIPT && globaldata.gd_inidata->finalmessage)
+    printf("<br>%s<br>\n", globaldata.gd_inidata->finalmessage);
+  printf(nextstep_string, getenv("SCRIPT_NAME"),
+          step,
+          globaldata.gd_inifile,
+          getfieldbyname("folder"),
+          database ? database : "",
+          globaldata.gd_inidata->web_archive,
+          getstr(S_CONTINUE, "Continue")
+          );
+}
+
+void LaunchScript(void) {
+  printf("<script language=javascript>window.location=\"/%s/%s\";</script>\n",
+          getfieldbyname("folder"),
+          globaldata.gd_inidata->script2start);
+}
+
+char *upload_string =
+        "<form method=POST action=\"%s?%d\" enctype=\"multipart/form-data\">\n"
+        "<input type=hidden name=upload value=\"1\">\n"
+        "<table border=0 width=600>\n<tr><td width=203>\n"
+        "<p align=right>%s</td>\n"
+        "<td><input type=file name=ini size=40></td></tr>\n"
+        "<tr><td width=203><p align=right>%s</td>\n"
+        "<td><input type=file name=zip size=40></td></tr>\n"
+        "<tr><td width=203><p align=right>%s</td>\n"
+        "<td><input type=checkbox name=overwrite checked></td></tr>\n"
+        "<tr><td colspan=2><hr><p align=center>\n"
+        "<input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td></tr>\n"
+        "</table></form>\n";
+
+void UploadForm(void) {
+  printf(upload_string, getenv("SCRIPT_NAME"),
+          UPLOAD_CONFIG,
+          getstr(S_CONFIGFILE, "configuration file"),
+          getstr(S_ARCHIVEFILE, "archive file"),
+          getstr(S_OVERWRITE, "overwrite file"),
+          getstr(S_SUBMIT, "Submit"),
+          getstr(S_CLEAR, "Clear"));
+}
+
+char *download_string =
+        "<form method=\"POST\" action=\"%s?%d\">\n"
+        "<input type=hidden name=upload value=\"0\">\n"
+        "<table border=0 width=504>\n"
+        "<tr>\n"
+        "<td>%s:</td>\n"
+        "</tr>\n"
+        "<tr>\n"
+        "<td><input type=text name=url value=\"http://\" size=64></td>\n"
+        "</tr>\n"
+        "<tr><td><input type=checkbox name=overwrite checked>%s</td></tr>\n"
+        "<tr>\n"
+        "<td><br><input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td>\n"
+        "</tr>\n"
+        "</table>\n"
+        "</form>";
+
+void DownloadForm(void) {
+  printf(download_string, getenv("SCRIPT_NAME"),
+          DOWNLOAD_CONFIG,
+          getstr(S_INSERT_URL, "Please insert the url of the configuration file"),
+          getstr(S_OVERWRITE, "overwrite file"),
+          getstr(S_SUBMIT, "Submit"),
+          getstr(S_CLEAR, "Clear"));
+}
+
+char *script_string =
+        "\n<script language=\"JavaScript\" type=\"text/javascript\">\n"
+        "function CheckUp(theform) {\n"
+        "if (theform.admin_name.value==\"\") {\n"
+        "  alert(\"%s\");\n"
+        "  theform.admin_name.focus();\n"
+        "  return false;\n"
+        "  }\n"
+        "if (theform.admin_pass1.value==\"\") {\n"
+        "  alert(\"%s\");\n"
+        "  theform.admin_pass1.focus();\n"
+        "  return false;\n"
+        "  }\n"
+        "if (theform.admin_pass1.value!=theform.admin_pass2.value) {\n"
+        "  alert(\"%s\");\n"
+        "  theform.admin_pass1.focus();\n"
+        "  return false;\n"
+        "  }\n"
+        "if (theform.mysql_user.value==\"\") {\n"
+        "  alert(\"%s\");\n"
+        "  theform.mysql_user.focus();\n"
+        "  return false;\n"
+        "  }\n"
+        "if (theform.mysql_pass1.value==\"\") {\n"
+        "  alert(\"%s\");\n"
+        "  theform.mysql_pass1.focus();\n"
+        "  return false;\n"
+        "  }\n"
+        "if (theform.mysql_pass1.value!=theform.mysql_pass2.value) {\n"
+        "  alert(\"%s\");\n"
+        "  theform.mysql_pass1.focus();\n"
+        "  return false;\n"
+        "  }\n"
+        "return true;\n"
+        "}\n"
+        "</script>\n";
+
+char *config_string =
+        "<form name=\"Config\" method=\"post\" action=\"%s?saveconf\" onSubmit=\"return CheckUp(this)\">\n"
+        "<fieldset>\n"
+        "<legend>%s</legend>\n"
+        "<table border=0>\n"
+        "<tr><td>\n"
+        "<small>%s</small></td>\n"
+        "<td>\n"
+        "<input name=\"admin_name\" type=\"text\" id=\"admin_name\" value=\"%s\" />\n"
+        "</td><td colspan=2>&nbsp;</td>\n</tr>\n<tr><td>\n"
+        "<small>%s</small></td>\n"
+        "<td><input name=\"admin_pass1\" type=\"password\" id=\"admin_pass1\" value=\"%s\" /></td>\n"
+        "<td><small>%s</small></td>\n"
+        "<td><input name=\"admin_pass2\" type=\"password\" id=\"admin_pass2\" value=\"%s\" /></td></tr>\n"
+        "</table>\n"
+        "</fieldset><br />&nbsp;<br />\n"
+        "<fieldset>\n"
+        "<legend>%s</legend>\n"
+        "&nbsp;<br />%s %s<br />&nbsp;\n"
+        "</fieldset><br />&nbsp;<br />\n"
+        "<fieldset>\n"
+        "<legend>%s</legend>\n"
+        "<table border=0>\n"
+        "<tr><td>\n"
+        "<small>%s</small></td>\n"
+        "<td>\n"
+        "<input name=\"mysql_user\" type=\"text\" value=\"%s\" />\n"
+        "</td><td colspan=2>&nbsp;</td>\n</tr>\n<tr><td>\n"
+        "<small>%s</small></td>\n"
+        "<td><input name=\"mysql_pass1\" type=\"password\" value=\"%s\" /></td>\n"
+        "<td><small>%s</small></td>\n"
+        "<td><input name=\"mysql_pass2\" type=\"password\" value=\"%s\" /></td></tr>\n"
+        "<tr><td><small>%s</small></td>\n"
+        "<td><input name=\"mysql_host\" type=\"text\" value=\"%s\" /></td>\n"
+        "<td><small>%s</small></td>\n"
+        "<td><input name=\"mysql_db\" type=\"text\" value=\"%s\" /></td></tr>\n"
+        "</table>\n"
+        "</fieldset>\n"
+        "<p>\n"
+        "<input type=\"submit\" name=\"button\" value=\"%s\" />\n"
+        "</p>\n"
+        "</form>\n";
+
+char *InsertLanguages(void) {
+  char *result, *old;
+  STRING *list = GetSectionNames(LANG_NAME);
+
+  result = mysprintf("<small>%s</small>\n", "Language");
+  result = append_cstring(result, "<select name=\"Language\">\n<option>English (default)</option>\n");
+  for (; list; list = list->next) {
+    old = result;
+    result = mysprintf("%s<option %s>%s</option>\n", old, (strcmp(list->string, globaldata.gd_language) == 0) ? "selected=\"selected\"" : "", list->string);
+    free(old);
+  }
+  result = append_cstring(result, "</select>\n");
+  return result;
+}
+
+char *InsertLogLevels(void) {
+  char *result, *old;
+
+  result = mysprintf("<small>%s</small>\n<select name=\"LogLevel\">\n", "LogLevel");
+  old = result;
+  result = mysprintf("%s<option %s value=\"0\">%s</option>\n", old, (globaldata.gd_loglevel == 0) ? "selected=\"selected\"" : "", "None");
+  free(old);
+  old = result;
+  result = mysprintf("%s<option %s value=\"1\">%s</option>\n", old, (globaldata.gd_loglevel == 1) ? "selected=\"selected\"" : "", "Level 1");
+  free(old);
+
+  result = append_cstring(result, "</select>\n");
+  return result;
+}
+
+void ConfigForm(void) {
+
+  printf(
+          script_string,
+          "Please insert a username for the administrator",
+          "Please insert a password for the administrator",
+          "Administrator password and confirmation don't match. Please try again.",
+          "Please insert a username for the mysql user",
+          "Please insert a password for the mysql user",
+          "Mysql user password and confirmation don't match. Please try again."
+          );
+
+  printf(
+          config_string,
+          getenv("SCRIPT_NAME"),
+          "Administrator",
+          "username",
+          globaldata.gd_userdata->username,
+          "password",
+          globaldata.gd_userdata->password,
+          "password (repeat)",
+          globaldata.gd_userdata->password,
+          "Localization & Log",
+          InsertLanguages(),
+          InsertLogLevels(),
+          "MySQL",
+          "username",
+          globaldata.gd_mysql->username,
+          "password",
+          globaldata.gd_mysql->password,
+          "password (repeat)",
+          globaldata.gd_mysql->password,
+          "hostname",
+          globaldata.gd_mysql->host,
+          "default database",
+          globaldata.gd_mysql->db_name,
+          "Save"
+          );
+}
+
+int ReadAction(int argc, char **argv) {
+  if (argc <= 1) return ACTION_START;
+  if (isdigit(argv[1][0])) return atoi(argv[1]);
+  if (strcasecmp("test", argv[1]) == 0) return ACTION_TEST;
+  if (strcasecmp("upload", argv[1]) == 0) return ACTION_UPLOAD;
+  if (strcasecmp("download", argv[1]) == 0) return ACTION_DOWNLOAD;
+  if (strcasecmp("deltemp", argv[1]) == 0) return ACTION_DELTEMP;
+  if (strcasecmp("editconf", argv[1]) == 0) return ACTION_EDITCONF;
+  if (strcasecmp("saveconf", argv[1]) == 0) return ACTION_SAVECONF;
+  if (strcasecmp("exit", argv[1]) == 0) return ACTION_EXIT;
+  return ACTION_START;
+}
+
+int main(int argc, char **argv) {
+  int action, logged, rc;
+  char error_read[] = "Error reading xml file";
+
+  LIBXML_TEST_VERSION
+
+  action = ReadAction(argc, argv);
+
+  logged = init(action);
+
+  printf(HTM_HEADER);
+  globaldata.header_sent = 1;
+
+  if (!(logged)) {
+    ShowLoginPage(action);
+    printf(HTM_FOOTER);
+    return 0;
+  }
+
+  switch (action) {
+    case ACTION_START:
+    {
+      char *script = getenv("SCRIPT_NAME");
+      printf("| <a href=%s?test>%s</a> | <a href=%s?download>%s</a> | <a href=%s?upload>%s</a> | <a onClick=\"if (confirm('%s')) return true; return false;\" href=%s?exit>%s</a> |",
+              script, getstr(S_CONF_TEST, "Configuration test"),
+              script, getstr(S_DOWNLOAD_INST, "Download & install"),
+              script, getstr(S_UPLOAD_INST, "Upload & install"),
+              getstr(S_EXIT_SURE, "Are you sure you want to exit?"),
+              script, getstr(S_EXIT, "Exit"));
+    }
+      break;
+    case UPLOAD_CONFIG:
+      if (!(globaldata.gd_inifile = get_ini_upload()))
+        Error(getstr(S_NO_INI_UPLOAD, "can't access to configuration file"));
+      rc = read_xml_file(action);
+      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      get_zip_upload();
+    case DOWNLOAD_CONFIG:
+      if (action == DOWNLOAD_CONFIG) {
+        if (!(globaldata.gd_iniaddress = get_ini_name(argc, argv)))
+          Error(getstr(S_NO_INI, "ini file name not specified"));
+        rc = graburl(globaldata.gd_iniaddress, 0644, 0, 1);
+        if (rc == 0) Error(getstr(S_NODOWNLOAD_INI, "Can't download ini file"));
+        rc = read_xml_file(action);
+        if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      }
+      ShowArchive();
+      // se c'è da creare la cartella...
+      if (globaldata.gd_inidata->flags & _CREATEDIR) {
+        ShowCreateDirPage();
+      }        // altrimenti scaricare il file...
+      else {
+        ChDirRoot();
+        DownloadExtractArchiveFile();
+        ShowRenameDirPage();
+      }
+      break;
+    case CREATE_FOLDER:
+    case RENAME_FOLDER:
+      globaldata.gd_inifile = getfieldbyname("inifile");
+      rc = read_xml_file(action);
+      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
+      ShowArchive();
+      if (action == CREATE_FOLDER) {
+        CreateChangeDir(getfieldbyname("folder"), __CREATE);
+        DownloadExtractArchiveFile();
+      } else {
+        CreateChangeDir(getfieldbyname("folder"), __RENAME);
+      }
+      CreateFileSystemObject();
+      ChangePermissionsRecurse();
+      ChangePermissions();
+      NextStep(MYSQL_FORM);
+      break;
+    case MYSQL_FORM:
+      globaldata.gd_inifile = getfieldbyname("inifile");
+      rc = read_xml_file(action);
+      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
+      ShowArchive();
+      MySqlForm();
+      break;
+    case CREATE_DB:
+      globaldata.gd_inifile = getfieldbyname("inifile");
+      rc = read_xml_file(action);
+      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
+      globaldata.gd_mysql->db_name = getfieldbyname("database");
+      ShowArchive();
+      CreateDbTables();
+      if (globaldata.gd_loglevel > LOG_NONE)
+        WriteLog(getstr(S_MYSQL_SETUP, "MySQL setup"));
+      NextStep(EDIT_CONFIG);
+      break;
+    case EDIT_CONFIG:
+    case SAVE_CONFIG:
+      globaldata.gd_inifile = getfieldbyname("inifile");
+      rc = read_xml_file(action);
+      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
+      globaldata.gd_mysql->db_name = getfieldbyname("database");
+      ShowArchive();
+      if (action == EDIT_CONFIG)
+        EditConfigForm();
+      else {
+        SaveConfigFile();
+        if (globaldata.gd_loglevel > LOG_NONE)
+          WriteLog(getstr(S_CONFIG_SAVED, "Config file saved"));
+        NextStep(CALL_SCRIPT);
+      }
+      break;
+    case CALL_SCRIPT:
+      globaldata.gd_inifile = getfieldbyname("inifile");
+      rc = read_xml_file(action);
+      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      unlink(globaldata.gd_inifile);
+      LaunchScript();
+      break;
+    case ACTION_DELTEMP:
+      DeleteTemp();
+    case ACTION_SAVECONF:
+    case ACTION_TEST:
+      printf("<em>%s</em>", getstr(S_CONF_TEST, "Configuration test"));
+      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), getstr(S_HOME, "Home page"));
+      DoTest();
+      break;
+    case ACTION_DOWNLOAD:
+      printf("<em>%s</em>", getstr(S_DOWNLOAD_INST, "Download & install"));
+      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), getstr(S_HOME, "Home page"));
+      DownloadForm();
+      break;
+    case ACTION_UPLOAD:
+      printf("<em>%s</em>", getstr(S_UPLOAD_INST, "Upload & install"));
+      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), getstr(S_HOME, "Home page"));
+      UploadForm();
+      break;
+    case ACTION_EDITCONF:
+      printf("<em>%s</em>", getstr(S_EDIT_CONFIG, "Edit configuration"));
+      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), getstr(S_HOME, "Home page"));
+      ConfigForm();
+      break;
+    default:
+      break;
+  }
+
+  printf(HTM_FOOTER);
+
+  xmlCleanupParser();
+
+  return 0;
+}
+
