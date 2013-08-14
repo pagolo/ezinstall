@@ -1,0 +1,20 @@
+DONE AND TODO initial version (0.0.13)
+=============
+
+- general structure
+- global configuration
+  TODO:
+    - admin password has to be encrypted
+    - multiple mysql users (with encrypted passwords)
+- localization, to be completely changed
+  TODO
+    - implement gettext()
+- step one, upload/download and uncompress (DONE) 
+- step two, handle permissions (DONE)
+- step three, handle configuration (partially done)
+  TODO
+    - handle definition, not only variables assignment
+- step four, mysql section (partially done)
+  TODO
+    - handle multiple *.sql files (list FIFO)
+    - handle multiple users (main user and database users)
