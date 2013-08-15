@@ -10,8 +10,36 @@
 body { 
   font-family: Verdana, Arial, Helvetica, sans-serif; 
 }
-hr {
+h1 {
+  text-align: left;
+}
+.rule {
   text-align: left;
   width: 66%;
 }
-
+.error_title {
+  color: #ff3333;
+  font-weight: bold;
+  float: left;
+}
+#login_table {
+  width: 504px;
+  border-style: solid;
+  border-collapse: collapse;
+  border-color: black;
+  border-width: thin;
+}
+#login_table td {
+  border-style: solid;
+  border-collapse: collapse;
+  border-color: black;
+  border-width: thin;
+}
+.login_table_label {
+  width: 174px;
+  text-align: right;
+}
+.submit_row {
+  text-align: center;
+  height: 40px;
+}

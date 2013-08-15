@@ -2,20 +2,18 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n<h2>Easy Installer Tool</h2>\n<hr>\n"
+#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>\n"
 #define HTM_FOOTER "</body></html>\n"
-//#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head><title>Easy Installer Tool</title></head>\n<body><font face=Verdana><h2>Easy Installer Tool</h2><hr align=left width=66%%>"
-//#define HTM_FOOTER "<table width=66%% height=50%%><tr><td align=center valign=bottom><small><small>powered by Easinstall "VERSION"</td></tr></table></body></html>\n"
 
 GLOBAL globaldata;
 
 void Error(char *msg) {
   if (!(globaldata.header_sent)) printf(HTM_HEADER);
-  printf("<br><font color=red><b>%s</b></font>: ", getstr(S_ERROR, "ERROR"));
-  printf("%s<br>", msg);
+  printf("<br /><div class='error_title'>%s</div>: ", getstr(S_ERROR, "ERROR"));
+  printf("%s<br />", msg);
   if (globaldata.gd_loglevel > LOG_NONE) WriteLog(msg);
   if (globaldata.gd_error) printf(globaldata.gd_error);
-  printf("<br><a href=javascript:history.back()>%s</a><br>", getstr(S_BACK, "BACK"));
+  printf("<br /><a href='javascript:history.back()'>%s</a><br />", getstr(S_BACK, "BACK"));
   printf(HTM_FOOTER);
   xmlCleanupParser();
   exit(5);
@@ -26,11 +24,11 @@ void CreateFileSystemObject(void) {
   FSOBJ *object;
   for (object = globaldata.gd_inidata->filesys_list; object != NULL; object = object->next) {
     if (object->isfolder) {
-      printf("Creating folder \"%s\"...<br>", object->file);
+      printf("Creating folder &quot;%s&quot;...<br />", object->file);
       rc = mkdir(object->file, 0755);
       if (rc == -1) Error("Can't create folder");
     } else {
-      printf("Creating file \"%s\"...<br>", object->file);
+      printf("Creating file &quot;%s&quot;...<br />", object->file);
       rc = creat(object->file, 0644);
       if (rc == -1) Error("Can't create file");
       else close(rc);
@@ -54,12 +52,12 @@ void CreateChangeDir(char *dirname, int dir_rename) {
     if (strcmp(globaldata.gd_inidata->directory, dirname) == 0) {
       printf("No need to rename folder...<br />");
     } else {
-      printf(getstr(S_RENAME, "<br>Renaming folder \"%s\" to \"%s\"...<br>"), globaldata.gd_inidata->directory, dirname);
+      printf(getstr(S_RENAME, "<br />Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
       rc = rename(globaldata.gd_inidata->directory, dirname);
       if (rc == -1) Error(getstr(S_NO_RENAME, "Can't rename project folder"));
     }
   } else {
-    printf(getstr(S_CREATEFOLDER, "<br>Creating folder \"%s\"...<br>"), dirname);
+    printf(getstr(S_CREATEFOLDER, "<br />Creating folder &quot;%s&quot;...<br />"), dirname);
     rc = mkdir(dirname, 0755);
     if (rc == -1) Error(getstr(S_NOCREATEFOLDER, "Can't create project folder"));
   }
@@ -76,7 +74,7 @@ int DownloadExtractArchiveFile(void) {
   if (is_upload()) {
     filename = globaldata.gd_inidata->web_archive;
   } else {
-    printf(getstr(S_DOWNLOAD, "Downloading archive...<br>"));
+    printf(getstr(S_DOWNLOAD, "Downloading archive...<br />"));
     rc = graburl(globaldata.gd_inidata->web_archive, 0644, 0, 0);
     if (rc == 0) Error(getstr(S_NODOWNLOAD, "Can't download the script archive"));
     filename = basename(globaldata.gd_inidata->web_archive);
@@ -84,7 +82,7 @@ int DownloadExtractArchiveFile(void) {
 
   command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
 
-  printf(getstr(S_UNZIP, "Uncompressing archive...<br>"));
+  printf(getstr(S_UNZIP, "Uncompressing archive...<br />"));
 
   if (execute(command)) {
     if (globaldata.gd_loglevel > LOG_NONE)
@@ -96,22 +94,22 @@ int DownloadExtractArchiveFile(void) {
   return 1;
 }
 
-char *login_string = "<form name=myform method=\"POST\" action=\"%s?%s\">\n"
-        "<table border=1 width=504 style=\"border-collapse: collapse\" id=\"table1\" bordercolor=\"#000000\">\n"
+char *login_string = "<form name='myform' method=\"POST\" action=\"%s?%s\">\n"
+        "<table id=\"login_table\">\n"
         "<tr>\n"
-        "<td width=174 align=right>%s:</td>\n"
-        "<td><input type=text name=_main_username size=29></td>\n"
+        "<td class='login_table_label'>%s:</td>\n"
+        "<td><input type='text' name='_main_username' size='29'></td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td width=174 align=right>%s:</td>\n"
-        "<td><input type=password name=_main_password size=29></td>\n"
+        "<td class='login_table_label'>%s:</td>\n"
+        "<td><input type='password' name='_main_password' size='29'></td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td colspan=2 align=center><input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td>\n"
+        "<td colspan='2' class='submit_row'><input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td>\n"
         "</tr>\n"
         "</table>\n"
         "</form>\n"
-        "<script language=javascript>document.myform._main_username.focus();</script>\n";
+        "<script language='javascript'>document.myform._main_username.focus();</script>\n";
 
 void ShowLoginPage(int action) {
   printf(login_string, getenv("SCRIPT_NAME"), action == ACTION_EXIT ? "" : getenv("QUERY_STRING"),
