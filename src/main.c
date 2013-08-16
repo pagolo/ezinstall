@@ -2,7 +2,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>\n"
+#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>&nbsp;<br />\n"
 #define HTM_FOOTER "</body></html>\n"
 
 GLOBAL globaldata;
@@ -124,15 +124,15 @@ char *createdir_string = "<form method=\"POST\" action=\"%s?%d\">\n"
         "<input type=hidden name=webarchive value=\"%s\">\n"
         "<input type=hidden name=overwrite value=\"%s\">\n"
         "<input type=hidden name=upload value=\"%s\">\n"
-        "<table border=0 width=504>\n"
+        "<table id='createdir_table'>\n"
         "<tr>\n"
         "<td>%s:</td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td><input type=text name=folder value=%s size=32></td>\n"
+        "<td><input type='text' name='folder' value='%s' size='32'></td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td><input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td>\n"
+        "<td class='submit_row_onecol'><input type='submit' value='%s' name='B1'><input type='reset' value='%s' name='B2'></td>\n"
         "</tr>\n"
         "</table>\n"
         "</form>";
@@ -165,7 +165,7 @@ void ShowRenameDirPage(void) {
 
 void ShowArchive(void) {
   if (globaldata.gd_inidata && globaldata.gd_inidata->web_archive)
-    printf(getstr(S_TITLE, "<b>Installing <i>%s</i></b><br>"), basename(globaldata.gd_inidata->web_archive));
+    printf(getstr(S_TITLE, "<strong>Installing <em>%s</em></strong><br />&nbsp;<br />"), basename(globaldata.gd_inidata->web_archive));
 }
 
 void ChDirRoot(void) {
@@ -176,12 +176,12 @@ void ChDirRoot(void) {
   if (rc == -1) Error(getstr(S_NO_CDROOT, "Can't chdir to document_root"));
 }
 
-char *nextstep_string = "<form method=\"POST\" action=\"%s?%d\">\n"
-        "<input type=hidden name=inifile value=\"%s\">\n"
-        "<input type=hidden name=folder value=\"%s\">\n"
-        "<input type=hidden name=database value=\"%s\">\n"
-        "<input type=hidden name=webarchive value=\"%s\">\n"
-        "<input type=submit value=\"%s\" name=B1>\n"
+char *nextstep_string = "<form method='POST' action='%s?%d'>\n"
+        "<input type='hidden' name='inifile' value=\"%s\">\n"
+        "<input type='hidden' name='folder' value=\"%s\">\n"
+        "<input type='hidden' name='database' value=\"%s\">\n"
+        "<input type='hidden' name='webarchive' value=\"%s\">\n"
+        "<input type='submit' value=\"%s\" name='B1'>\n"
         "</form>";
 
 void NextStep(int step) {
@@ -203,23 +203,23 @@ void NextStep(int step) {
 }
 
 void LaunchScript(void) {
-  printf("<script language=javascript>window.location=\"/%s/%s\";</script>\n",
+  printf("<script language='javascript'>window.location=\"/%s/%s\";</script>\n",
           getfieldbyname("folder"),
           globaldata.gd_inidata->script2start);
 }
 
 char *upload_string =
-        "<form method=POST action=\"%s?%d\" enctype=\"multipart/form-data\">\n"
-        "<input type=hidden name=upload value=\"1\">\n"
-        "<table border=0 width=600>\n<tr><td width=203>\n"
-        "<p align=right>%s</td>\n"
-        "<td><input type=file name=ini size=40></td></tr>\n"
-        "<tr><td width=203><p align=right>%s</td>\n"
-        "<td><input type=file name=zip size=40></td></tr>\n"
-        "<tr><td width=203><p align=right>%s</td>\n"
-        "<td><input type=checkbox name=overwrite checked></td></tr>\n"
-        "<tr><td colspan=2><hr><p align=center>\n"
-        "<input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td></tr>\n"
+        "<form method='POST' action=\"%s?%d\" enctype=\"multipart/form-data\">\n"
+        "<input type='hidden' name='upload' value=\"1\">\n"
+        "<table id='upload_table'>\n<tr><td class='upload_cell'>\n"
+        "%s</td>\n"
+        "<td><input type='file' name='ini' size='40'></td></tr>\n"
+        "<tr><td class='upload_cell'>%s</td>\n"
+        "<td><input type='file' name='zip' size='40'></td></tr>\n"
+        "<tr><td class='upload_cell'>%s</td>\n"
+        "<td><input type='checkbox' name='overwrite' checked='checked'></td></tr>\n"
+        "<tr><td colspan='2' class='submit_row'><hr />\n"
+        "<input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td></tr>\n"
         "</table></form>\n";
 
 void UploadForm(void) {
@@ -234,17 +234,17 @@ void UploadForm(void) {
 
 char *download_string =
         "<form method=\"POST\" action=\"%s?%d\">\n"
-        "<input type=hidden name=upload value=\"0\">\n"
-        "<table border=0 width=504>\n"
+        "<input type='hidden' name='upload' value=\"0\">\n"
+        "<table id='download_table'>\n"
         "<tr>\n"
         "<td>%s:</td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td><input type=text name=url value=\"http://\" size=64></td>\n"
+        "<td><input type='text' name='url' value=\"http://\" size='64'></td>\n"
         "</tr>\n"
-        "<tr><td><input type=checkbox name=overwrite checked>%s</td></tr>\n"
+        "<tr><td><input type='checkbox' name='overwrite' checked='checked'>%s</td></tr>\n"
         "<tr>\n"
-        "<td><br><input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td>\n"
+        "<td class='submit_row_onecol'><br /><input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td>\n"
         "</tr>\n"
         "</table>\n"
         "</form>";

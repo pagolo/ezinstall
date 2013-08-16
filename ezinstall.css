@@ -39,7 +39,27 @@ h1 {
   width: 174px;
   text-align: right;
 }
+#createdir_table {
+  width: 504px;
+  border-style: none;
+}
+#upload_table {
+  width: 600px;
+  border-style: none;
+}
+.upload_cell {
+  width: 203px;
+  text-align: right;
+}
+#download_table {
+  width: 504px;
+  border-style: none;
+}
 .submit_row {
   text-align: center;
+  height: 40px;
+}
+.submit_row_onecol {
+  text-align: left;
   height: 40px;
 }
