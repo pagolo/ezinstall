@@ -37,6 +37,7 @@
       <itemPath>Makefile</itemPath>
       <itemPath>configure</itemPath>
     </logicalFolder>
+    <itemPath>ezinstall.lng</itemPath>
     <itemPath>ezinstall.xml</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
@@ -73,6 +74,8 @@
         </makeTool>
       </makefileType>
       <item path="config.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ezinstall.lng" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ezinstall.xml" ex="false" tool="3" flavor2="0">
       </item>

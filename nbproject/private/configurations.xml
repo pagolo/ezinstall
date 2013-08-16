@@ -32,6 +32,7 @@
       </df>
       <in>config.h</in>
     </df>
+    <itemPath>ezinstall.lng</itemPath>
     <itemPath>ezinstall.xml</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>

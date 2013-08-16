@@ -52,7 +52,7 @@ void CreateChangeDir(char *dirname, int dir_rename) {
     if (strcmp(globaldata.gd_inidata->directory, dirname) == 0) {
       printf("No need to rename folder...<br />");
     } else {
-      printf(getstr(S_RENAME, "<br />Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
+      printf(getstr(S_RENAME, "Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
       rc = rename(globaldata.gd_inidata->directory, dirname);
       if (rc == -1) Error(getstr(S_NO_RENAME, "Can't rename project folder"));
     }
@@ -120,10 +120,10 @@ void ShowLoginPage(int action) {
 }
 
 char *createdir_string = "<form method=\"POST\" action=\"%s?%d\">\n"
-        "<input type=hidden name=inifile value=\"%s\">\n"
-        "<input type=hidden name=webarchive value=\"%s\">\n"
-        "<input type=hidden name=overwrite value=\"%s\">\n"
-        "<input type=hidden name=upload value=\"%s\">\n"
+        "<input type='hidden' name='inifile' value=\"%s\">\n"
+        "<input type='hidden' name='webarchive' value=\"%s\">\n"
+        "<input type='hidden' name='overwrite' value=\"%s\">\n"
+        "<input type='hidden' name='upload' value=\"%s\">\n"
         "<table id='createdir_table'>\n"
         "<tr>\n"
         "<td>%s:</td>\n"
@@ -176,11 +176,11 @@ void ChDirRoot(void) {
   if (rc == -1) Error(getstr(S_NO_CDROOT, "Can't chdir to document_root"));
 }
 
-char *nextstep_string = "<form method='POST' action='%s?%d'>\n"
+char *nextstep_string = "<br /><form method='POST' action='%s?%d'>\n"
         "<input type='hidden' name='inifile' value=\"%s\">\n"
         "<input type='hidden' name='folder' value=\"%s\">\n"
         "<input type='hidden' name='database' value=\"%s\">\n"
-        "<input type='hidden' name='webarchive' value=\"%s\">\n"
+        "<input type='hidden' name='webarchive' value=\"%s\">\n\n"
         "<input type='submit' value=\"%s\" name='B1'>\n"
         "</form>";
 
@@ -296,15 +296,15 @@ char *script_string =
         "</script>\n";
 
 char *config_string =
-        "<form name=\"Config\" method=\"post\" action=\"%s?saveconf\" onSubmit=\"return CheckUp(this)\">\n"
+        "<form name=\"Config\" method=\"POST\" action=\"%s?saveconf\" onSubmit=\"return CheckUp(this)\">\n"
         "<fieldset>\n"
         "<legend>%s</legend>\n"
-        "<table border=0>\n"
+        "<table>\n"
         "<tr><td>\n"
         "<small>%s</small></td>\n"
         "<td>\n"
         "<input name=\"admin_name\" type=\"text\" id=\"admin_name\" value=\"%s\" />\n"
-        "</td><td colspan=2>&nbsp;</td>\n</tr>\n<tr><td>\n"
+        "</td><td colspan=\"2\">&nbsp;</td>\n</tr>\n<tr><td>\n"
         "<small>%s</small></td>\n"
         "<td><input name=\"admin_pass1\" type=\"password\" id=\"admin_pass1\" value=\"%s\" /></td>\n"
         "<td><small>%s</small></td>\n"
@@ -317,12 +317,12 @@ char *config_string =
         "</fieldset><br />&nbsp;<br />\n"
         "<fieldset>\n"
         "<legend>%s</legend>\n"
-        "<table border=0>\n"
+        "<table>\n"
         "<tr><td>\n"
         "<small>%s</small></td>\n"
         "<td>\n"
         "<input name=\"mysql_user\" type=\"text\" value=\"%s\" />\n"
-        "</td><td colspan=2>&nbsp;</td>\n</tr>\n<tr><td>\n"
+        "</td><td colspan=\"2\">&nbsp;</td>\n</tr>\n<tr><td>\n"
         "<small>%s</small></td>\n"
         "<td><input name=\"mysql_pass1\" type=\"password\" value=\"%s\" /></td>\n"
         "<td><small>%s</small></td>\n"
@@ -573,4 +573,3 @@ int main(int argc, char **argv) {
 
   return 0;
 }
-
