@@ -101,16 +101,23 @@ void ExecuteSqlFile(void) {
    rc=chdir(getfieldbyname("folder"));
    if (rc==-1) Error(getstr(S_NOCHDIR,"Can't chdir to project folder"));
    
-   fh=fopen(globaldata.gd_mysql->db_file,"r");
-   if (!(fh)) Error(getstr(S_NO_SQL,"can't find sql file"));
+   {
+     STRING *script = globaldata.gd_mysql->db_files;
+     for ( ; script != NULL; script = script->next )
+     {
+       fh=fopen(script->string, "r");
+       if (!(fh)) Error(getstr(S_NO_SQL,"can't find sql file"));
    
-   ph=popen(command,"w");
-   if (!(ph)) Error(getstr(S_NO_SQL_CLIENT,"can't execute mysql client..."));
+       ph=popen(command,"w");
+       if (!(ph)) Error(getstr(S_NO_SQL_CLIENT,"can't execute mysql client..."));
 
-   while (fgets(buffer,256,fh)) fputs(buffer,ph);
+       while (fgets(buffer,256,fh)) fputs(buffer,ph);
 
-   fclose(fh);
-   pclose(ph);
+       fclose(fh);
+       pclose(ph);
+     }
+   }
+   
    free(command);
 }
 
@@ -143,8 +150,8 @@ void CreateDbTables(void) {
     }
    mysql_close(conn);
 
-   if (globaldata.gd_mysql->db_file) {
+   if (globaldata.gd_mysql->db_files) {
       ExecuteSqlFile();
-      printf(getstr(S_TABLES_OK,"database tables have been created<br>"));
+      printf(getstr(S_TABLES_OK,"database tables have been created<br />"));
    }
 }

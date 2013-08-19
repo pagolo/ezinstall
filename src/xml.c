@@ -226,7 +226,7 @@ int parseMysqlNode(xmlDocPtr doc, xmlNodePtr cur) {
     }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "db_file"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-      globaldata.gd_mysql->db_file = strdup((char *) key);
+      appendstring(&(globaldata.gd_mysql->db_files), strdup((char *) key));
       xmlFree(key);
     }
     cur = cur->next;

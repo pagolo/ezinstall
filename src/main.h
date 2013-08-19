@@ -64,12 +64,14 @@ typedef struct UserData {
    char *password;
 } USER;
 
+#include "utils.h"
+
 typedef struct MySqlData {
    char *username;
    char *password;
    char *host;
    char *db_name;
-   char *db_file;
+   STRING *db_files;
 } MYSQLDATA;
 
 typedef struct FileSysObject {
@@ -141,7 +143,6 @@ void Error (char *msg);
 void ChDirRoot(void);
 
 #include "socket.h"
-#include "utils.h"
 #include "login.h"
 #include "configure.h"
 #include "ini.h"
