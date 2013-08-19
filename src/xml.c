@@ -109,7 +109,7 @@ char *setUnzip(char *filename, char *mode) {
   return strdup(buffer);
 }
 
-void addChmod(char *file, char *mode, INIDATA *inidata, int recourse) {
+void addChmod(char *file, char *mode, INIDATA *inidata, int recourse, int createfolder) {
   char *z;
   CHMOD *tmp;
   CHMOD *chmd = recourse ? inidata->perm_list_rec : inidata->perm_list;
@@ -117,6 +117,7 @@ void addChmod(char *file, char *mode, INIDATA *inidata, int recourse) {
   if (!ptr) return; // no memory
   ptr->file = strdup(file);
   ptr->permissions = strtol((const char *) mode, &z, 8);
+  ptr->createfolder = createfolder;
 
   if (chmd == NULL) {
     if (recourse) inidata->perm_list_rec = ptr;
@@ -129,15 +130,16 @@ void addChmod(char *file, char *mode, INIDATA *inidata, int recourse) {
 }
 
 int parsePermissionsNode(xmlDocPtr doc, xmlNodePtr cur) {
-  xmlChar *file, *mode;
+  xmlChar *file, *mode, *createfolder;
   cur = cur->xmlChildrenNode;
   INIDATA *inidata = globaldata.gd_inidata;
 
   while (cur != NULL) {
     if ((!xmlStrcmp(cur->name, (xmlChar *) "chmod")) || (!xmlStrcmp(cur->name, (xmlChar *) "chmod-recurse"))) {
-      file = xmlGetProp(cur, (xmlChar *) "file");
+      file = xmlGetProp(cur, (xmlChar *) "fsobject");
       mode = xmlGetProp(cur, (xmlChar *) "mode");
-      addChmod((char *) file, (char *) mode, inidata, (!xmlStrcmp(cur->name, (xmlChar *) "chmod")) ? FALSE : TRUE);
+      createfolder = xmlGetProp(cur, (xmlChar *) "createfolder");
+      addChmod((char *) file, (char *) mode, inidata, (!xmlStrcmp(cur->name, (xmlChar *) "chmod")) ? FALSE : TRUE, (xmlStrcmp(createfolder, (xmlChar *)"yes") == 0) ? 1 : 0);
       if (file) xmlFree(file);
       if (mode) xmlFree(mode);
     }
@@ -150,37 +152,41 @@ int parsePermissionsNode(xmlDocPtr doc, xmlNodePtr cur) {
 int parseConfigNode(xmlDocPtr doc, xmlNodePtr cur) {
   xmlChar *key;
   char *mydb;
-  cur = cur->xmlChildrenNode;
   INIDATA *inidata = globaldata.gd_inidata;
 
   if (inidata == NULL) return 0;
   inidata->flags &= ~_SKIP_CONFIGFILE;
 
-  while (cur != NULL) {
+  for (cur = cur->xmlChildrenNode; cur != NULL; cur = cur->next) {
     if ((!xmlStrcmp(cur->name, (xmlChar *) "file"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       inidata->php_conf_name = strdup((char *) key);
       xmlFree(key);
+      continue;
     }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "saveas"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       inidata->php_conf_save = strdup((char *) key);
       xmlFree(key);
+      continue;
     }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "myuser"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       SetPhpVar((char *) key, globaldata.gd_mysql->username);
       xmlFree(key);
+      continue;
     }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "mypass"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       SetPhpVar((char *) key, globaldata.gd_mysql->password);
       xmlFree(key);
+      continue;
     }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "myhost"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       SetPhpVar((char *) key, globaldata.gd_mysql->host);
       xmlFree(key);
+      continue;
     }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "mydb"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
@@ -189,10 +195,17 @@ int parseConfigNode(xmlDocPtr doc, xmlNodePtr cur) {
       if (!(mydb)) mydb = "";
       SetPhpVar((char *) key, mydb);
       xmlFree(key);
+      continue;
     }
-    cur = cur->next;
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "generic"))) {
+      xmlChar *value = xmlGetProp(cur, (xmlChar *) "value");
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      SetPhpVar((char *) key, (char *)value);
+      xmlFree(key);
+    }
+    //  printf("AAAAAAAAA");
+    //  exit(1000);
   }
-
   return 1;
 }
 

@@ -1,18 +1,11 @@
-2007-12-28  Johannes Schmid,,,  <jhs@idefix>
 
-	reviewed by: <delete if not using a buddy>
-
-	* project.anjuta:
-
-2007-12-23  Johannes Schmid,,,  <jhs@idefix>
-
-	reviewed by: <delete if not using a buddy>
-
-	* src/Makefile.am.tpl:
-
-2007-12-23  Johannes Schmid,,,  <jhs@idefix>
-
-	reviewed by: <delete if not using a buddy>
-
-	* src/Makefile.am.tpl:
-
+2013-08-18 added <generic> tag to local config xml <config> section
+2013-08-12 corrected main.c html
+2013-08-11 corrected login html
+2013-08-10 removed anjuta files
+2013-08-07 added configuration file
+2013-08-06 stylesheet creation and installation
+2013-08-04 DONE & TO DO file
+2013-08-03 removed various bug
+2013-08-02 version 0.0.13
+resumed old script

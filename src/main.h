@@ -81,6 +81,7 @@ typedef struct FileSysObject {
 typedef struct ChMod {
    char *file;
    int  permissions;
+   int  createfolder;
    struct ChMod *next;
 } CHMOD;
 

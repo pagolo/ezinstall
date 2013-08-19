@@ -310,7 +310,9 @@ void ChangePermissionsRecurse(void) {
 void ChangePermissions(void) {
   CHMOD *chm = globaldata.gd_inidata->perm_list;
   while (chm) {
-    printf("chmod 0%o \"%s\"...<br>", chm->permissions, chm->file);
+    printf("chmod 0%o \"%s\"...<br />", chm->permissions, chm->file);
+    if (chm->createfolder)
+      mkdir(chm->file, chm->permissions);
     chmod(chm->file, chm->permissions);
     chm = chm->next;
   }
