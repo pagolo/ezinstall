@@ -1,4 +1,4 @@
-socket.o: socket.c main.h ../config.h conditions.h /usr/include/stdio.h \
+md5.o: md5.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
  /usr/include/gnu/stubs-64.h \

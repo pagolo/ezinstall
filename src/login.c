@@ -77,7 +77,7 @@ char *getcookie(char *name) {
 
 int AreDataOk(char *id, char *pass, char *username, char *password) {
   if (!(strcmp(id, username) == 0)) return 0;
-  if (strcmp(pass, password) == 0) return 1;
+  if (strcmp(do_hash(pass), password) == 0) return 1;
   return 0;
 }
 

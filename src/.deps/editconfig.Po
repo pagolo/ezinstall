@@ -35,7 +35,7 @@ editconfig.o: editconfig.c main.h ../config.h conditions.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
  /usr/include/bits/posix2_lim.h getinput.h locale.h mysql.h editconfig.h \
- test.h xml.h
+ test.h xml.h md5.h
 
 main.h:
 
@@ -208,3 +208,5 @@ editconfig.h:
 test.h:
 
 xml.h:
+
+md5.h:

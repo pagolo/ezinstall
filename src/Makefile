@@ -67,8 +67,9 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_ezinstall_OBJECTS = main.$(OBJEXT) configure.$(OBJEXT) \
 	editconfig.$(OBJEXT) getinput.$(OBJEXT) ini.$(OBJEXT) \
-	login.$(OBJEXT) mysql.$(OBJEXT) session.$(OBJEXT) \
-	socket.$(OBJEXT) test.$(OBJEXT) utils.$(OBJEXT) xml.$(OBJEXT)
+	login.$(OBJEXT) md5.$(OBJEXT) mysql.$(OBJEXT) \
+	session.$(OBJEXT) socket.$(OBJEXT) test.$(OBJEXT) \
+	utils.$(OBJEXT) xml.$(OBJEXT)
 ezinstall_OBJECTS = $(am_ezinstall_OBJECTS)
 ezinstall_DEPENDENCIES =
 ezinstall_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(ezinstall_LDFLAGS) \
@@ -196,6 +197,8 @@ ezinstall_SOURCES = \
 	login.c     \
 	login.h     \
 	main.h     \
+	md5.c     \
+	md5.h     \
 	mysql.c     \
 	mysql.h     \
 	session.c      \
@@ -302,6 +305,7 @@ include ./$(DEPDIR)/getinput.Po
 include ./$(DEPDIR)/ini.Po
 include ./$(DEPDIR)/login.Po
 include ./$(DEPDIR)/main.Po
+include ./$(DEPDIR)/md5.Po
 include ./$(DEPDIR)/mysql.Po
 include ./$(DEPDIR)/session.Po
 include ./$(DEPDIR)/socket.Po

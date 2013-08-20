@@ -155,5 +155,6 @@ void ChDirRoot(void);
 #include "editconfig.h"
 #include "test.h"
 #include "xml.h"
+#include "md5.h"
 
 #endif

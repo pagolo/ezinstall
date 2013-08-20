@@ -24,6 +24,8 @@ ezinstall_SOURCES = \
 	login.c     \
 	login.h     \
 	main.h     \
+	md5.c     \
+	md5.h     \
 	mysql.c     \
 	mysql.h     \
 	session.c      \

@@ -266,7 +266,7 @@ char *script_string =
         "  theform.admin_name.focus();\n"
         "  return false;\n"
         "  }\n"
-        "if (theform.admin_pass1.value==\"\") {\n"
+        "if (theform.admin_pass1.value!=\"\" && theform.admin_pass1.value.length < 6) {\n"
         "  alert(\"%s\");\n"
         "  theform.admin_pass1.focus();\n"
         "  return false;\n"
@@ -373,7 +373,7 @@ void ConfigForm(void) {
   printf(
           script_string,
           "Please insert a username for the administrator",
-          "Please insert a password for the administrator",
+          "The administrator password must be at least six chars long",
           "Administrator password and confirmation don't match. Please try again.",
           "Please insert a username for the mysql user",
           "Please insert a password for the mysql user",
@@ -387,9 +387,9 @@ void ConfigForm(void) {
           "username",
           globaldata.gd_userdata->username,
           "password",
-          globaldata.gd_userdata->password,
+          "",
           "password (repeat)",
-          globaldata.gd_userdata->password,
+          "",
           "Localization & Log",
           InsertLanguages(),
           InsertLogLevels(),

@@ -425,7 +425,11 @@ int WriteGlobalConfig(void) {
   rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
   if (rc < 0) goto finish;
   // the password
-  password = getfieldbyname("admin_pass1");
+  char *input_passwd = getfieldbyname("admin_pass1");
+  if (input_passwd && *input_passwd)
+    password = do_hash(input_passwd);
+  else
+    password = globaldata.gd_userdata->password;
   rc = xmlTextWriterWriteElement(writer, BAD_CAST "password", BAD_CAST password);
   if (rc < 0) goto finish;
   // newline
