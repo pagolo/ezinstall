@@ -426,7 +426,7 @@ int main(int argc, char **argv) {
   char error_read[] = "Error reading xml file";
 
   LIBXML_TEST_VERSION
-
+  
   action = ReadAction(argc, argv);
 
   logged = init(action);
@@ -454,7 +454,7 @@ int main(int argc, char **argv) {
       break;
     case UPLOAD_CONFIG:
       if (!(globaldata.gd_inifile = get_ini_upload()))
-        Error(getstr(S_NO_INI_UPLOAD, "can't access to configuration file"));
+        Error(getstr(S_NO_INI_UPLOAD, "can't access configuration file"));
       rc = read_xml_file(action);
       if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
       get_zip_upload();

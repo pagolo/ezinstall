@@ -92,30 +92,17 @@ int ReadGlobalConfig(void) {
   }
   if (globaldata.gd_mysql->password == NULL)
     globaldata.gd_mysql->password = "";
+  
+  // per ora hard coded, poi si vedrà
+  globaldata.gd_session_timeout = (time_t)1200;
 
   return 1;
 }
 
 int GetInputUserData(char **id, char **pass) {
-  char *cook = getcookie(COOKIE_NAME);
-  char *n = NULL;
-  char *p = NULL;
-
   *id = getfieldbyname("_main_username");
   *pass = getfieldbyname("_main_password");
   if (*id && *pass) return 1;
-
-  if (cook && *cook) n = strdup(cook);
-  if (n) p = strchr(n, '|');
-  if (p) {
-    *p = '\0';
-    ++p;
-    *id = strdup(n);
-    *pass = strdup(p);
-    free(n);
-    if (*id && *pass) return 1;
-  }
-
   return 0;
 }
 
@@ -133,19 +120,29 @@ void CreateLogPath(void) {
 }
 
 int init(int action) {
-  char *ip, *pass;
+  char *username = NULL, *pass;
   int logged = 0;
+  char *session_name = getcookie(COOKIE_NAME);
 
   CreateLogPath();
   ReadGlobalConfig();
+
+  if (session_name && *session_name) {
+    username = checksession(session_name, (action == ACTION_EXIT));
+  }
 
   if (action == ACTION_EXIT) {
     putcookie(COOKIE_NAME, "", -1L, NULL, NULL, 0);
     return 0;
   }
 
-  logged = GetInputUserData(&ip, &pass);
-  if (logged) logged = AreDataOk(ip, pass, globaldata.gd_userdata->username, globaldata.gd_userdata->password);
+  if (username && strcmp(globaldata.gd_userdata->username, username) == 0) {
+    logged = 1;
+  }
+  else {
+    logged = GetInputUserData(&username, &pass);
+    if (logged) logged = AreDataOk(username, pass, globaldata.gd_userdata->username, globaldata.gd_userdata->password);
+  }
   if (!(logged)) {
     // header_out(); implementare???
     // logout
@@ -156,7 +153,9 @@ int init(int action) {
       WriteGlobalConfig();
       ReadGlobalConfig();
     }
-    mycode = mysprintf("%s|%s", globaldata.gd_userdata->username, globaldata.gd_userdata->password);
+    if (globaldata.gd_session == NULL)
+      createsession(globaldata.gd_userdata->username);
+    mycode = mysprintf("%s", globaldata.gd_session);
     // header_out(); come sopra.........
     //putcookie(COOKIE_NAME,mycode,time(NULL)+360000,NULL,NULL,0);
     putcookie(COOKIE_NAME, mycode, -1L, NULL, NULL, 0);

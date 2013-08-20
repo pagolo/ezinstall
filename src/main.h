@@ -135,6 +135,8 @@ typedef struct GlobalData {
    int  header_sent;   // intestazione inviata?
    int  gd_loglevel;   // livello di log da utilizzare
    char *gd_logpath;   // nome completo di path del file di log
+   char *gd_session;   // nome del file di sessione
+   time_t gd_session_timeout; // timeout di sessione (20 minuti)
 } GLOBAL;
 
 extern GLOBAL globaldata;
@@ -144,6 +146,7 @@ void ChDirRoot(void);
 
 #include "socket.h"
 #include "login.h"
+#include "session.h"
 #include "configure.h"
 #include "ini.h"
 #include "getinput.h"

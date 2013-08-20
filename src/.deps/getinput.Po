@@ -30,8 +30,8 @@ getinput.o: getinput.c main.h ../config.h conditions.h \
  /usr/include/bits/siginfo.h /usr/include/bits/netdb.h \
  /usr/include/sys/stat.h /usr/include/bits/stat.h \
  /usr/include/bits/timex.h /usr/include/fcntl.h /usr/include/bits/fcntl.h \
- /usr/include/libgen.h utils.h socket.h login.h configure.h ini.h \
- /usr/lib64/gcc/x86_64-suse-linux/4.7/include-fixed/limits.h \
+ /usr/include/libgen.h utils.h socket.h login.h session.h configure.h \
+ ini.h /usr/lib64/gcc/x86_64-suse-linux/4.7/include-fixed/limits.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
@@ -181,6 +181,8 @@ utils.h:
 socket.h:
 
 login.h:
+
+session.h:
 
 configure.h:
 

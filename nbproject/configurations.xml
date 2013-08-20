@@ -19,6 +19,8 @@
         <in>main.h</in>
         <in>mysql.c</in>
         <in>mysql.h</in>
+        <in>session.c</in>
+        <in>session.h</in>
         <in>socket.c</in>
         <in>socket.h</in>
         <in>test.c</in>
@@ -75,55 +77,77 @@
       </makefileType>
       <item path="config.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="ezinstall.lng" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="ezinstall.xml" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/conditions.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/configure.c" ex="false" tool="0" flavor2="0">
+      <item path="src/configure.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/configure.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/editconfig.c" ex="false" tool="0" flavor2="0">
+      <item path="src/editconfig.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/editconfig.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/getinput.c" ex="false" tool="0" flavor2="0">
+      <item path="src/getinput.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/getinput.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/ini.c" ex="false" tool="0" flavor2="0">
+      <item path="src/ini.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/ini.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/locale.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/login.c" ex="false" tool="0" flavor2="0">
+      <item path="src/login.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/login.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/main.c" ex="false" tool="0" flavor2="0">
+      <item path="src/main.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/main.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/mysql.c" ex="false" tool="0" flavor2="0">
+      <item path="src/mysql.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/mysql.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/socket.c" ex="false" tool="0" flavor2="0">
+      <item path="src/session.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/session.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/socket.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/socket.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/test.c" ex="false" tool="0" flavor2="0">
+      <item path="src/test.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/test.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/utils.c" ex="false" tool="0" flavor2="0">
+      <item path="src/utils.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/utils.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/xml.c" ex="false" tool="0" flavor2="0">
+      <item path="src/xml.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
       </item>
       <item path="src/xml.h" ex="false" tool="3" flavor2="0">
       </item>

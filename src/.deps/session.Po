@@ -1,4 +1,4 @@
-test.o: test.c main.h ../config.h conditions.h /usr/include/stdio.h \
+session.o: session.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
  /usr/include/gnu/stubs-64.h \
@@ -35,10 +35,8 @@ test.o: test.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
  /usr/include/bits/posix2_lim.h getinput.h locale.h mysql.h editconfig.h \
- test.h xml.h /usr/include/dirent.h /usr/include/bits/dirent.h \
- /usr/include/pwd.h /usr/include/errno.h /usr/include/bits/errno.h \
- /usr/include/linux/errno.h /usr/include/asm/errno.h \
- /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h
+ test.h xml.h /usr/include/utime.h /usr/include/dirent.h \
+ /usr/include/bits/dirent.h
 
 main.h:
 
@@ -212,20 +210,8 @@ test.h:
 
 xml.h:
 
+/usr/include/utime.h:
+
 /usr/include/dirent.h:
 
 /usr/include/bits/dirent.h:
-
-/usr/include/pwd.h:
-
-/usr/include/errno.h:
-
-/usr/include/bits/errno.h:
-
-/usr/include/linux/errno.h:
-
-/usr/include/asm/errno.h:
-
-/usr/include/asm-generic/errno.h:
-
-/usr/include/asm-generic/errno-base.h:

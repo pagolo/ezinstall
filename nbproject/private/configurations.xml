@@ -21,6 +21,8 @@
         <in>main.h</in>
         <in>mysql.c</in>
         <in>mysql.h</in>
+        <in>session.c</in>
+        <in>session.h</in>
         <in>socket.c</in>
         <in>socket.h</in>
         <in>test.c</in>
