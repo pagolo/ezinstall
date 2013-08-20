@@ -122,13 +122,13 @@ void CreateLogPath(void) {
 int init(int action) {
   char *username = NULL, *pass;
   int logged = 0;
-  char *session_name = getcookie(COOKIE_NAME);
+  char *session_name_ip = getcookie(COOKIE_NAME);
 
   CreateLogPath();
   ReadGlobalConfig();
 
-  if (session_name && *session_name) {
-    username = checksession(session_name, (action == ACTION_EXIT));
+  if (session_name_ip && *session_name_ip) {
+    username = checksession(session_name_ip, (action == ACTION_EXIT));
   }
 
   if (action == ACTION_EXIT) {
@@ -155,10 +155,8 @@ int init(int action) {
     }
     if (globaldata.gd_session == NULL)
       createsession(globaldata.gd_userdata->username);
-    mycode = mysprintf("%s", globaldata.gd_session);
-    // header_out(); come sopra.........
-    //putcookie(COOKIE_NAME,mycode,time(NULL)+360000,NULL,NULL,0);
-    putcookie(COOKIE_NAME, mycode, -1L, NULL, NULL, 0);
+    mycode = mysprintf("%s %s", globaldata.gd_session, getenv("REMOTE_ADDR"));
+    putcookie(COOKIE_NAME, mycode, time(NULL) + 1200, getenv("SCRIPT_NAME"), getenv("SERVER_NAME"), 0);
     free(mycode);
   }
   return logged;

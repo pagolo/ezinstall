@@ -21,12 +21,21 @@ void freesession(char *session) {
   remove(session);
 }
 
-char *checksession(char *session, int logout) {
+char *checksession(char *session_name_ip, int logout) {
   struct stat stat;
   char *read_buf;
   char *username = NULL;
+  char *session = session_name_ip;
+  char *ip, *space;
   int fd;
 
+  space = strchr(session, ' ');
+  if (!space) return NULL;
+  *space = '\0';
+  ip = ++space;
+  if (strcmp(ip, getenv("REMOTE_ADDR")) != 0)
+    return NULL;
+  
   fd = open(session, O_EXCL);
 
   if (fd == -1) return NULL;
@@ -46,7 +55,13 @@ char *checksession(char *session, int logout) {
     close(fd);
     return NULL;
   }
+  ip = &read_buf[strlen(read_buf) + 1];
   close(fd);
+
+  if (strcmp(ip, getenv("REMOTE_ADDR")) != 0) {
+    free(read_buf);
+    return NULL;
+  }
   
   if (stat.st_size > 9)
     username = strdup(&read_buf[9]);
@@ -119,6 +134,7 @@ void freeoldsessions(void) {
 int createsession(char *username) {
   int fd;
   char *tmp = strdup("EZXXXXXX");
+  char *ip = getenv("REMOTE_ADDR");
 
   freeoldsessions();
 
@@ -134,7 +150,8 @@ int createsession(char *username) {
     return 0;
   }
   write(fd, "EZINSTALL", 9);
-  write(fd, username, strlen(username));
+  write(fd, username, strlen(username) + 1);
+  write(fd, ip, strlen(ip));
   fchmod(fd, S_IRUSR | S_IWUSR);
   close(fd);
   globaldata.gd_session = tmp;
