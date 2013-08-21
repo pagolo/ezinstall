@@ -15,6 +15,30 @@ PHPCONF *GetVar(char *s) {
   return var;
 }
 
+PHPCONF *GetDefine(char *s) {
+  PHPCONF *var;
+  if (strncmp(s, "define", 6) != 0)
+    return NULL;
+  char *z = &s[6], q, back;
+  while (isspace(*z)) ++z;
+  if (*z == '(') ++z;
+  else return NULL; // ?
+  q = *z;
+  if (q != '\'' && q != '\"')
+    return NULL;
+  s = ++z;
+  z = strchr(s, q);
+  if (z == NULL)
+    return NULL;
+  back = *z;
+  *z = '\0';
+  for (var = globaldata.gd_inidata->php_conf_list; var != NULL; var = var->next) {
+    if (strcmp(s, var->varname) == 0) break;
+  }
+  *z = back;
+  return var;
+}
+
 STRING *ParsePhp(char *line) {
   STRING *result = NULL;
   static enum PhpState state;
@@ -50,6 +74,15 @@ STRING *ParsePhp(char *line) {
         if (*prev == '/' && state == IN_CODE)
           state = IN_COMMENT_STD;
         break;
+      case 'd': // search for define
+        if (state != IN_CODE) break; // comment, string, ...
+        if (!(var = GetDefine(ptr))) break; // not my var
+        *ptr = '\0';
+        appendstring(&result, start);
+        char *def = mysprintf("define('%s', '%s')", var->varname, var->varvalue);
+        appendstring(&result, def);
+        start = strchr(&ptr[1], ';');
+        break;
       case '$':
         if (state != IN_CODE) break; // comment, string, ...
         //printf("*1*");
@@ -81,7 +114,7 @@ STRING *ParsePhp(char *line) {
     prev = ptr;
   }
 
-  appendstring(&result, start);
+  if (start) appendstring(&result, start);
 
   return result;
 }
