@@ -9,11 +9,11 @@ GLOBAL globaldata;
 
 void Error(char *msg) {
   if (!(globaldata.header_sent)) printf(HTM_HEADER);
-  printf("<br /><div class='error_title'>%s</div>: ", getstr(S_ERROR, "ERROR"));
+  printf("<br /><div class='error_title'>%s</div>: ", _("ERROR"));
   printf("%s<br />", msg);
   if (globaldata.gd_loglevel > LOG_NONE) WriteLog(msg);
   if (globaldata.gd_error) printf(globaldata.gd_error);
-  printf("<br /><a href='javascript:history.back()'>%s</a><br />", getstr(S_BACK, "BACK"));
+  printf("<br /><a href='javascript:history.back()'>%s</a><br />", _("BACK"));
   printf(HTM_FOOTER);
   xmlCleanupParser();
   exit(5);
@@ -46,24 +46,24 @@ void CreateChangeDir(char *dirname, int dir_rename) {
 
   if (root == NULL) rc = -1;
   else rc = chdir(root);
-  if (rc == -1) Error(getstr(S_NO_CDROOT, "Can't chdir to document_root"));
+  if (rc == -1) Error(_("Can't chdir to document_root"));
 
   if (dir_rename == __RENAME) {
     if (strcmp(globaldata.gd_inidata->directory, dirname) == 0) {
       printf("No need to rename folder...<br />");
     } else {
-      printf(getstr(S_RENAME, "Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
+      printf(_("Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
       rc = rename(globaldata.gd_inidata->directory, dirname);
-      if (rc == -1) Error(getstr(S_NO_RENAME, "Can't rename project folder"));
+      if (rc == -1) Error(_("Can't rename project folder"));
     }
   } else {
-    printf(getstr(S_CREATEFOLDER, "<br />Creating folder &quot;%s&quot;...<br />"), dirname);
+    printf(_("<br />Creating folder &quot;%s&quot;...<br />"), dirname);
     rc = mkdir(dirname, 0755);
-    if (rc == -1) Error(getstr(S_NOCREATEFOLDER, "Can't create project folder"));
+    if (rc == -1) Error(_("Can't create project folder"));
   }
 
   rc = chdir(dirname);
-  if (rc == -1) Error(getstr(S_NOCHDIR, "Can't chdir to project folder"));
+  if (rc == -1) Error(_("Can't chdir to project folder"));
 }
 
 int DownloadExtractArchiveFile(void) {
@@ -74,19 +74,19 @@ int DownloadExtractArchiveFile(void) {
   if (is_upload()) {
     filename = globaldata.gd_inidata->web_archive;
   } else {
-    printf(getstr(S_DOWNLOAD, "Downloading archive...<br />"));
+    printf(_("Downloading archive...<br />"));
     rc = graburl(globaldata.gd_inidata->web_archive, 0644, 0, 0);
-    if (rc == 0) Error(getstr(S_NODOWNLOAD, "Can't download the script archive"));
+    if (rc == 0) Error(_("Can't download the script archive"));
     filename = basename(globaldata.gd_inidata->web_archive);
   }
 
   command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
 
-  printf(getstr(S_UNZIP, "Uncompressing archive...<br />"));
+  printf(_("Uncompressing archive...<br />"));
 
   if (execute(command)) {
     if (globaldata.gd_loglevel > LOG_NONE)
-      WriteLog(getstr(S_UNZIP_OK, "archive files extracted"));
+      WriteLog(_("archive files extracted"));
     unlink(filename);
   }
   free(command);
@@ -113,10 +113,10 @@ char *login_string = "<form name='myform' method=\"POST\" action=\"%s?%s\">\n"
 
 void ShowLoginPage(int action) {
   printf(login_string, getenv("SCRIPT_NAME"), action == ACTION_EXIT ? "" : getenv("QUERY_STRING"),
-          getstr(S_USERNAME, "Username"),
-          getstr(S_PASSWORD, "Password"),
-          getstr(S_SUBMIT, "Submit"),
-          getstr(S_CLEAR, "Clear"));
+          _("Username"),
+          _("Password"),
+          _("Submit"),
+          _("Clear"));
 }
 
 char *createdir_string = "<form method=\"POST\" action=\"%s?%d\">\n"
@@ -144,10 +144,10 @@ void ShowCreateDirPage(void) {
           globaldata.gd_inidata->web_archive,
           getfieldbyname("overwrite"),
           getfieldbyname("upload"),
-          getstr(S_EDIT_FOLDER, "Please edit the destination web folder name"),
+          _("Please edit the destination web folder name"),
           globaldata.gd_inidata->directory,
-          getstr(S_CONTINUE, "Continue"),
-          getstr(S_CLEAR, "Clear"));
+          _("Continue"),
+          _("Clear"));
 }
 
 void ShowRenameDirPage(void) {
@@ -157,15 +157,15 @@ void ShowRenameDirPage(void) {
           globaldata.gd_inidata->web_archive,
           getfieldbyname("overwrite"),
           getfieldbyname("upload"),
-          getstr(S_EDIT_FOLDER, "Please edit the destination web folder name"),
+          _("Please edit the destination web folder name"),
           globaldata.gd_inidata->directory,
-          getstr(S_CONTINUE, "Continue"),
-          getstr(S_CLEAR, "Clear"));
+          _("Continue"),
+          _("Clear"));
 }
 
 void ShowArchive(void) {
   if (globaldata.gd_inidata && globaldata.gd_inidata->web_archive)
-    printf(getstr(S_TITLE, "<strong>Installing <em>%s</em></strong><br />&nbsp;<br />"), basename(globaldata.gd_inidata->web_archive));
+    printf(_("<strong>Installing <em>%s</em></strong><br />&nbsp;<br />"), basename(globaldata.gd_inidata->web_archive));
 }
 
 void ChDirRoot(void) {
@@ -173,7 +173,7 @@ void ChDirRoot(void) {
   char *root = getenv("DOCUMENT_ROOT");
 
   rc = chdir(root);
-  if (rc == -1) Error(getstr(S_NO_CDROOT, "Can't chdir to document_root"));
+  if (rc == -1) Error(_("Can't chdir to document_root"));
 }
 
 char *nextstep_string = "<br /><form method='POST' action='%s?%d'>\n"
@@ -198,7 +198,7 @@ void NextStep(int step) {
           getfieldbyname("folder"),
           database ? database : "",
           globaldata.gd_inidata->web_archive,
-          getstr(S_CONTINUE, "Continue")
+          _("Continue")
           );
 }
 
@@ -225,11 +225,11 @@ char *upload_string =
 void UploadForm(void) {
   printf(upload_string, getenv("SCRIPT_NAME"),
           UPLOAD_CONFIG,
-          getstr(S_CONFIGFILE, "configuration file"),
-          getstr(S_ARCHIVEFILE, "archive file"),
-          getstr(S_OVERWRITE, "overwrite file"),
-          getstr(S_SUBMIT, "Submit"),
-          getstr(S_CLEAR, "Clear"));
+          _("configuration file"),
+          _("archive file"),
+          _("overwrite file"),
+          _("Submit"),
+          _("Clear"));
 }
 
 char *download_string =
@@ -252,10 +252,10 @@ char *download_string =
 void DownloadForm(void) {
   printf(download_string, getenv("SCRIPT_NAME"),
           DOWNLOAD_CONFIG,
-          getstr(S_INSERT_URL, "Please insert the url of the configuration file"),
-          getstr(S_OVERWRITE, "overwrite file"),
-          getstr(S_SUBMIT, "Submit"),
-          getstr(S_CLEAR, "Clear"));
+          _("Please insert the url of the configuration file"),
+          _("overwrite file"),
+          _("Submit"),
+          _("Clear"));
 }
 
 char *script_string =
@@ -445,27 +445,27 @@ int main(int argc, char **argv) {
     {
       char *script = getenv("SCRIPT_NAME");
       printf("| <a href=%s?test>%s</a> | <a href=%s?download>%s</a> | <a href=%s?upload>%s</a> | <a onClick=\"if (confirm('%s')) return true; return false;\" href=%s?exit>%s</a> |",
-              script, getstr(S_CONF_TEST, "Configuration test"),
-              script, getstr(S_DOWNLOAD_INST, "Download & install"),
-              script, getstr(S_UPLOAD_INST, "Upload & install"),
-              getstr(S_EXIT_SURE, "Are you sure you want to exit?"),
-              script, getstr(S_EXIT, "Exit"));
+              script, _("Configuration test"),
+              script, _("Download & install"),
+              script, _("Upload & install"),
+              _("Are you sure you want to exit?"),
+              script, _("Exit"));
     }
       break;
     case UPLOAD_CONFIG:
       if (!(globaldata.gd_inifile = get_ini_upload()))
-        Error(getstr(S_NO_INI_UPLOAD, "can't access configuration file"));
+        Error(_("can't access configuration file"));
       rc = read_xml_file(action);
-      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      if (rc == 0) Error(_(error_read));
       get_zip_upload();
     case DOWNLOAD_CONFIG:
       if (action == DOWNLOAD_CONFIG) {
         if (!(globaldata.gd_iniaddress = get_ini_name(argc, argv)))
-          Error(getstr(S_NO_INI, "ini file name not specified"));
+          Error(_("ini file name not specified"));
         rc = graburl(globaldata.gd_iniaddress, 0644, 0, 1);
-        if (rc == 0) Error(getstr(S_NODOWNLOAD_INI, "Can't download ini file"));
+        if (rc == 0) Error(_("Can't download ini file"));
         rc = read_xml_file(action);
-        if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+        if (rc == 0) Error(_(error_read));
       }
       ShowArchive();
       // se c'è da creare la cartella...
@@ -482,7 +482,7 @@ int main(int argc, char **argv) {
     case RENAME_FOLDER:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      if (rc == 0) Error(_(error_read));
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       ShowArchive();
       if (action == CREATE_FOLDER) {
@@ -499,7 +499,7 @@ int main(int argc, char **argv) {
     case MYSQL_FORM:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      if (rc == 0) Error(_(error_read));
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       ShowArchive();
       MySqlForm();
@@ -507,20 +507,20 @@ int main(int argc, char **argv) {
     case CREATE_DB:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      if (rc == 0) Error(_(error_read));
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       globaldata.gd_mysql->db_name = getfieldbyname("database");
       ShowArchive();
       CreateDbTables();
       if (globaldata.gd_loglevel > LOG_NONE)
-        WriteLog(getstr(S_MYSQL_SETUP, "MySQL setup"));
+        WriteLog(_("MySQL setup"));
       NextStep(EDIT_CONFIG);
       break;
     case EDIT_CONFIG:
     case SAVE_CONFIG:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      if (rc == 0) Error(_(error_read));
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       globaldata.gd_mysql->db_name = getfieldbyname("database");
       ShowArchive();
@@ -529,14 +529,14 @@ int main(int argc, char **argv) {
       else {
         SaveConfigFile();
         if (globaldata.gd_loglevel > LOG_NONE)
-          WriteLog(getstr(S_CONFIG_SAVED, "Config file saved"));
+          WriteLog(_("Config file saved"));
         NextStep(CALL_SCRIPT);
       }
       break;
     case CALL_SCRIPT:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(getstr(S_ERROR_INI, error_read));
+      if (rc == 0) Error(_(error_read));
       unlink(globaldata.gd_inifile);
       LaunchScript();
       break;
@@ -544,23 +544,23 @@ int main(int argc, char **argv) {
       DeleteTemp();
     case ACTION_SAVECONF:
     case ACTION_TEST:
-      printf("<em>%s</em>", getstr(S_CONF_TEST, "Configuration test"));
-      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), getstr(S_HOME, "Home page"));
+      printf("<em>%s</em>", _("Configuration test"));
+      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), _("Home page"));
       DoTest();
       break;
     case ACTION_DOWNLOAD:
-      printf("<em>%s</em>", getstr(S_DOWNLOAD_INST, "Download & install"));
-      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), getstr(S_HOME, "Home page"));
+      printf("<em>%s</em>", _("Download & install"));
+      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), _("Home page"));
       DownloadForm();
       break;
     case ACTION_UPLOAD:
-      printf("<em>%s</em>", getstr(S_UPLOAD_INST, "Upload & install"));
-      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), getstr(S_HOME, "Home page"));
+      printf("<em>%s</em>", _("Upload & install"));
+      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), _("Home page"));
       UploadForm();
       break;
     case ACTION_EDITCONF:
-      printf("<em>%s</em>", getstr(S_EDIT_CONFIG, "Edit configuration"));
-      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), getstr(S_HOME, "Home page"));
+      printf("<em>%s</em>", _("Edit configuration"));
+      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), _("Home page"));
       ConfigForm();
       break;
     default:

@@ -20,12 +20,13 @@ ezinstall_SOURCES = \
 	getinput.h     \
 	ini.c     \
 	ini.h     \
-	locale.h     \
 	login.c     \
 	login.h     \
 	main.h     \
 	md5.c     \
 	md5.h     \
+	mylocale.c     \
+	mylocale.h     \
 	mysql.c     \
 	mysql.h     \
 	session.c      \

@@ -40,7 +40,7 @@ int create_file(char *filename, int mask) {
   u_mask = umask(0);
   if (filename && access(filename, F_OK) == 0 && overwrite == 0) {
     umask(u_mask);
-    globaldata.gd_error = mysprintf(getstr(S_FILEEXISTS, "File \"%s\" already exists!<br>Please go back to overwrite it<br><br>"), filename);
+    globaldata.gd_error = mysprintf(_( "File \"%s\" already exists!<br>Please go back to overwrite it<br><br>"), filename);
     return fd;
   }
   if (filename) fd = open(filename, O_CREAT | O_RDWR, mask);
@@ -92,9 +92,9 @@ int Download(int hSocket, char *remote_host, char *remote_file, char *filename, 
       buf = &dat[4];
       done = check_data(Buffer);
       if (done) fd = create_file(filename, mask);
-      else Error(getstr(S_NODOWNLOAD, "Can't download data"));
+      else Error(_( "Can't download data"));
       if (fd == NO_FILE) {
-        Error(getstr(S_NOARCHIVE, "Can't create archive file"));
+        Error(_( "Can't create archive file"));
       }
     }
     write(fd, buf, rc);
@@ -122,13 +122,13 @@ int OpenConnection(char *hostname, unsigned long ip, int port, int nonblock) {
   if (hostname && *hostname) {
     HostAddr = (struct hostent *) gethostbyname(hostname);
     if (!HostAddr) {
-      Error(getstr(S_NO_SERVER, "http domain not found"));
+      Error(_("http domain not found"));
     }
     memcpy((char *) &INetSocketAddr.sin_addr, HostAddr->h_addr, HostAddr->h_length);
   } else {
     HostAddr = (struct hostent *) gethostbyaddr((char *) &ip, 4, PF_INET);
     if (!HostAddr) {
-      Error(getstr(S_NO_IP, "ip address not found"));
+      Error(_("ip address not found"));
     }
     memcpy((char *) &INetSocketAddr.sin_addr, HostAddr->h_addr, HostAddr->h_length);
   }
@@ -139,21 +139,21 @@ int OpenConnection(char *hostname, unsigned long ip, int port, int nonblock) {
   hSocket = socket(AF_INET, SOCK_STREAM, 0);
 
   if (!hSocket) {
-    Error(getstr(S_NO_SOCKET, "can't alloc socket"));
+    Error(_("can't alloc socket"));
   }
 
   if (connect(hSocket, (struct sockaddr *) &INetSocketAddr, sizeof (INetSocketAddr)) == -1) {
-    Error(getstr(S_NO_CONNECT, "can't connect to the http host"));
+    Error(_("can't connect to the http host"));
   }
 
   if (nonblock) {
 #ifdef O_NONBLOCK
     if (fcntl(hSocket, F_SETFL, O_NONBLOCK) == -1L) {
-      Error(getstr(S_NO_NONBLOCK, "can't set nonblock io"));
+      Error(_("can't set nonblock io"));
     }
 #else
     if (ioctlsocket(hSocket, FIONBIO, (void *) &one) == -1L) {
-      Error(getstr(S_NO_NONBLOCK, "can't set nonblock io"));
+      Error(_("can't set nonblock io"));
     }
 #endif
   }

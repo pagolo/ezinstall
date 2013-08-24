@@ -68,7 +68,7 @@ int execute(char *s) {
   if (!(rc = calloc(512, 1))) return 0;
   fh = popen(s, "r");
   if (!(fh)) {
-    printf(getstr(S_NO_PROCESS, "External process failure..."));
+    printf(_("External process failure..."));
     free(rc);
     return 0;
   }
@@ -211,26 +211,26 @@ int get_zip_upload(void) {
   overwrite = (overwrite_str && strcasecmp(overwrite_str, "on") == 0) ? 1 : 0;
 
   if (!buffer)
-    Error(getstr(S_NO_INPUT, "error receiving archive file..."));
+    Error(_("error receiving archive file..."));
 
   // controllare il nome del file
   if (strcasecmp(win_basename(getfieldbyname("zip")), basename(globaldata.gd_inidata->web_archive)) != 0)
-    Error(getstr(S_NO_ARCHIVE_MATCH, "archive filename does not match with configuration data..."));
+    Error(_("archive filename does not match with configuration data..."));
 
   // controllare se il file esiste
   if (access(globaldata.gd_inidata->web_archive, F_OK) == 0 && overwrite == 0)
-    Error(getstr(S_ARCHIVE_EXISTS, "archive already exists! Please use the checkbox to overwrite it"));
+    Error(_("archive already exists! Please use the checkbox to overwrite it"));
 
   u_mask = umask(0);
   fd = open(globaldata.gd_inidata->web_archive, O_CREAT | O_RDWR, 0644);
   umask(u_mask);
   if (fd == NO_FILE)
-    Error(getstr(S_NO_CREATE_ARCHIVE, "can't create archive file, check user and permissions."));
+    Error(_("can't create archive file, check user and permissions."));
   write(fd, buffer, len);
   close(fd);
 
   if (globaldata.gd_loglevel > LOG_NONE)
-    WriteLog(getstr(S_UPLOAD_OK, "upload successfull"));
+    WriteLog(_("upload successfull"));
 
   return 1;
 }
@@ -259,7 +259,7 @@ int graburl(char *url, int permissions, int expand, int tempname) {
   if (site) free(site);
 
   if (success && globaldata.gd_loglevel > LOG_NONE)
-    WriteLog(getstr(S_DOWNLOAD_OK, "download successfull"));
+    WriteLog(_("download successfull"));
 
   return success;
 }
@@ -304,7 +304,7 @@ void ChangePermissionsRecurse(void) {
     chm = chm->next;
   }
   if (globaldata.gd_inidata->perm_list_rec && globaldata.gd_loglevel > LOG_NONE)
-    WriteLog(getstr(S_RECURSE_OK, "recursive permissions setup"));
+    WriteLog(_("recursive permissions setup"));
 }
 
 void ChangePermissions(void) {
@@ -317,5 +317,5 @@ void ChangePermissions(void) {
     chm = chm->next;
   }
   if (globaldata.gd_inidata->perm_list && globaldata.gd_loglevel > LOG_NONE)
-    WriteLog(getstr(S_CHMOD_OK, "permissions setup"));
+    WriteLog(_("permissions setup"));
 }

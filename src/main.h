@@ -15,9 +15,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <locale.h>
 #include <memory.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <libintl.h>
+#include <langinfo.h>
+#include <dirent.h>
 #ifdef HAVE_NETDB_H
 #include <netdb.h>
 #endif
@@ -29,6 +33,7 @@
 #endif
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/mman.h>
 #include <time.h>
 #include <fcntl.h>
 #include <libgen.h>
@@ -149,8 +154,8 @@ void ChDirRoot(void);
 #include "session.h"
 #include "configure.h"
 #include "ini.h"
+#include "mylocale.h"
 #include "getinput.h"
-#include "locale.h"
 #include "mysql.h"
 #include "editconfig.h"
 #include "test.h"

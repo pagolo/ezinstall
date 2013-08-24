@@ -123,7 +123,7 @@ void OutputConfigFile(void) {
   char buffer[512];
   FILE *fh = fopen(globaldata.gd_inidata->php_conf_name, "r");
 
-  if (!(fh)) Error(getstr(S_NO_CONF, "can't open php configuration file"));
+  if (!(fh)) Error(_("can't open php configuration file"));
 
   printf("<TextArea cols=90 rows=20 name=configfile>\n");
 
@@ -144,11 +144,11 @@ void OutputConfigFile(void) {
 
 void EditConfigForm(void) {
   int rc;
-  printf(getstr(S_CHECK_CONF, "<br>Please check php configuration file<br>\n"));
+  printf(_("<br>Please check php configuration file<br>\n"));
 
   ChDirRoot();
   rc = chdir(getfieldbyname("folder"));
-  if (rc == -1) Error(getstr(S_NOCHDIR, "Can't chdir to project folder"));
+  if (rc == -1) Error(_( "Can't chdir to project folder"));
 
   printf("\n<form method=POST action=\"%s?%d\">\n",
           getenv("SCRIPT_NAME"),
@@ -166,8 +166,8 @@ void EditConfigForm(void) {
   OutputConfigFile();
 
   printf("<tr><td colspan=2><br>\n<input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td></tr>\n",
-          getstr(S_CONTINUE, "Continue"),
-          getstr(S_CLEAR, "Clear"));
+          _( "Continue"),
+          _( "Clear"));
   printf("</form>\n");
 
 }
@@ -179,11 +179,11 @@ void SaveConfigFile(void) {
 
   ChDirRoot();
   rc = chdir(getfieldbyname("folder"));
-  if (rc == -1) Error(getstr(S_NOCHDIR, "Can't chdir to project folder"));
+  if (rc == -1) Error(_( "Can't chdir to project folder"));
 
   fh = fopen(globaldata.gd_inidata->php_conf_save, "w");
-  if (!(fh)) Error(getstr(S_NO_SAVE_CONF, "can't save configuration file"));
+  if (!(fh)) Error(_("can't save configuration file"));
   fwrite(filebuf, strlen(filebuf), 1, fh);
   fclose(fh);
-  printf(getstr(S_SAVE_CONF_OK, "<br>Configuration file has been saved..."));
+  printf(_("<br>Configuration file has been saved..."));
 }

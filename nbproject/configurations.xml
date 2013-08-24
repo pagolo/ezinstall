@@ -12,13 +12,14 @@
         <in>getinput.h</in>
         <in>ini.c</in>
         <in>ini.h</in>
-        <in>locale.h</in>
         <in>login.c</in>
         <in>login.h</in>
         <in>main.c</in>
         <in>main.h</in>
         <in>md5.c</in>
         <in>md5.h</in>
+        <in>mylocale.c</in>
+        <in>mylocale.h</in>
         <in>mysql.c</in>
         <in>mysql.h</in>
         <in>session.c</in>
@@ -105,8 +106,6 @@
       </item>
       <item path="src/ini.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/locale.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/login.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
@@ -122,6 +121,10 @@
       <item path="src/md5.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/md5.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mylocale.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/mylocale.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/mysql.c" ex="false" tool="0" flavor2="2">
         <cTool>

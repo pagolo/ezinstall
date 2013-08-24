@@ -687,7 +687,7 @@ configure:6210: $? = 0
 configure:6210: result: yes
 configure:6210: checking for stricmp
 configure:6210: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lxml2 -lmysqlclient  >&5
-/tmp/ccAb9D1F.o: In function `main':
+/tmp/ccwMquiO.o: In function `main':
 /home/paolo/ezinstall-remote/conftest.c:80: undefined reference to `stricmp'
 collect2: error: ld returned 1 exit status
 configure:6210: $? = 1
@@ -797,7 +797,7 @@ configure:6210: $? = 0
 configure:6210: result: yes
 configure:6210: checking for strnicmp
 configure:6210: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lxml2 -lmysqlclient  >&5
-/tmp/ccmuhBL2.o: In function `main':
+/tmp/ccaQ2fQ5.o: In function `main':
 /home/paolo/ezinstall-remote/conftest.c:84: undefined reference to `strnicmp'
 collect2: error: ld returned 1 exit status
 configure:6210: $? = 1
@@ -926,6 +926,7 @@ on linux-l6dg
 config.status:885: creating Makefile
 config.status:885: creating src/Makefile
 config.status:885: creating config.h
+config.status:1066: config.h is unchanged
 config.status:1114: executing depfiles commands
 
 ## ---------------- ##

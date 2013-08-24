@@ -95,7 +95,7 @@ char *setUnzip(char *filename, char *mode) {
       sprintf(buffer, "%s", "tar --bzip2 -xf");
     else if (ptr && (strcasecmp(ptr, ".Z") == 0))
       sprintf(buffer, "%s", "tar -xZf");
-    else Error(getstr(S_UNKNOWN_FORMAT, "Unknown format of archive file"));
+    else Error(_("Unknown format of archive file"));
   } else {
     // accepted values: auto, zip, gzip, bzip
     if (strcasecmp(mode, "zip") == 0)
@@ -104,7 +104,7 @@ char *setUnzip(char *filename, char *mode) {
       sprintf(buffer, "%s", "tar -xzf");
     else if (strcasecmp(mode, "bzip") == 0)
       sprintf(buffer, "%s", "tar --bzip2 -xf");
-    else Error(getstr(S_UNKNOWN_FORMAT, "Unknown format of archive file"));
+    else Error(_("Unknown format of archive file"));
   }
   return strdup(buffer);
 }
