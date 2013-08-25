@@ -59,7 +59,7 @@ char *search(char *command) {
     if (!ph) return NULL;
     fread(buffer, 64, 1, ph);
     pclose(ph);
-    if (strlen(buffer) == 0) return (_("<font color=red>not found</font>"));
+    if (strlen(buffer) == 0) return (_("<span style='color:red'>not found</span>"));
     return buffer;
 }
 
@@ -77,7 +77,7 @@ void DoTest(void) {
     if (user)
         user_string = user->pw_name;
     else
-        user_string = mysprintf("<font color=red>%s</font>", strerror(errno));
+        user_string = mysprintf("<span style='color:red'>%s</span>", strerror(errno));
     printf("%s%s: %s%s", punct1, _("Application user"), user_string, punct2);
     if (!user) free(user_string);
     printf("%s%s: %s%s", punct1, _( "Localization setup"), globaldata.gd_language, punct2);
@@ -98,5 +98,5 @@ void DoTest(void) {
     printf("%s%s: %s%s\n", punct1, _("Unzip path"), search("unzip"), punct2);
     printf("%s%s: %s%s\n", punct1, _("MySql client path"), search("mysql"), punct2);
 
-    printf("<br><br><a href=\"%s?editconf\">%s</a>", getenv("SCRIPT_NAME"), _("Edit configuration"));
+    printf("<br /><br /><a href=\"%s?editconf\">%s</a>", getenv("SCRIPT_NAME"), _("Edit configuration"));
 }

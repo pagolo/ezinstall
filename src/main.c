@@ -24,13 +24,13 @@ void CreateFileSystemObject(void) {
   FSOBJ *object;
   for (object = globaldata.gd_inidata->filesys_list; object != NULL; object = object->next) {
     if (object->isfolder) {
-      printf("Creating folder &quot;%s&quot;...<br />", object->file);
+      printf(_("Creating folder &quot;%s&quot;...<br />"), object->file);
       rc = mkdir(object->file, 0755);
-      if (rc == -1) Error("Can't create folder");
+      if (rc == -1) Error(_("Can't create folder"));
     } else {
-      printf("Creating file &quot;%s&quot;...<br />", object->file);
+      printf(_("Creating file &quot;%s&quot;...<br />"), object->file);
       rc = creat(object->file, 0644);
-      if (rc == -1) Error("Can't create file");
+      if (rc == -1) Error(_("Can't create file"));
       else close(rc);
     }
   }
@@ -50,7 +50,7 @@ void CreateChangeDir(char *dirname, int dir_rename) {
 
   if (dir_rename == __RENAME) {
     if (strcmp(globaldata.gd_inidata->directory, dirname) == 0) {
-      printf("No need to rename folder...<br />");
+      printf(_("No need to rename folder...<br />"));
     } else {
       printf(_("Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
       rc = rename(globaldata.gd_inidata->directory, dirname);
@@ -191,7 +191,7 @@ void NextStep(int step) {
   if ((globaldata.gd_inidata->flags & _SKIP_CONFIGFILE) && step <= CALL_SCRIPT && step >= EDIT_CONFIG)
     step = CALL_SCRIPT;
   if (step == CALL_SCRIPT && globaldata.gd_inidata->finalmessage)
-    printf("<br>%s<br>\n", globaldata.gd_inidata->finalmessage);
+    printf("<br />%s<br />\n", globaldata.gd_inidata->finalmessage);
   printf(nextstep_string, getenv("SCRIPT_NAME"),
           step,
           globaldata.gd_inifile,

@@ -83,12 +83,12 @@ int ReadGlobalConfig(void) {
   if (!(globaldata.gd_userdata) ||
           !(globaldata.gd_userdata->username) ||
           !(globaldata.gd_userdata->password)) {
-    Error("Configuration error, admin data...");
+    Error(_("Configuration error, admin data..."));
   }
   if (!(globaldata.gd_mysql) ||
           !(globaldata.gd_mysql->username) ||
           !(globaldata.gd_mysql->host)) {
-    Error("Configuration error, mysql data...");
+    Error(_("Configuration error, mysql data..."));
   }
   if (globaldata.gd_mysql->password == NULL)
     globaldata.gd_mysql->password = "";
@@ -255,4 +255,3 @@ void SetPhpVar(char *varname, char *varvalue) {
     ptr->next = var;
   }
 }
-

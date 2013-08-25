@@ -36,19 +36,19 @@ parseMainConfig(char *docname) {
   doc = xmlParseFile(docname);
 
   if (doc == NULL) {
-    Error("Configuration xml document not parsed successfully. \n");
+    Error(_("Configuration xml document not parsed successfully. \n"));
   }
 
   cur = nodeptr = xmlDocGetRootElement(doc);
 
   if (cur == NULL) {
     xmlFreeDoc(doc);
-    Error("Configuration: empty document\n");
+    Error(_("Configuration: empty document\n"));
   }
 
   if (xmlStrcmp(cur->name, (const xmlChar *) "ezinstall") != 0) {
     xmlFreeDoc(doc);
-    Error("Configuration: document of the wrong type, root node != ezinstall");
+    Error(_("Configuration: document of the wrong type, root node != ezinstall"));
   }
 
   cur = cur->xmlChildrenNode;
@@ -309,19 +309,19 @@ int read_xml_file(int action) {
   doc = xmlParseFile(globaldata.gd_inifile);
 
   if (doc == NULL) {
-    Error("Configuration xml document not parsed successfully. \n");
+    Error(_("Configuration xml document not parsed successfully. \n"));
   }
 
   cur = nodeptr = xmlDocGetRootElement(doc);
 
   if (cur == NULL) {
     xmlFreeDoc(doc);
-    Error("Configuration: empty document\n");
+    Error(_("Configuration: empty document\n"));
   }
 
   if (xmlStrcmp(cur->name, (const xmlChar *) "ezinstaller") != 0) {
     xmlFreeDoc(doc);
-    Error("Configuration: document of the wrong type, root node != ezinstaller");
+    Error(_("Configuration: document of the wrong type, root node != ezinstaller"));
   }
 
   cur = cur->xmlChildrenNode;
