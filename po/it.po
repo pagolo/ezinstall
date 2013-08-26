@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ezinstall 0.0.15\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-08-26 18:28+0200\n"
-"PO-Revision-Date: 2013-08-26 18:36+0100\n"
+"PO-Revision-Date: 2013-08-26 22:41+0100\n"
 "Last-Translator: pagolo <info@dbfweb.com>\n"
 "Language-Team: pagolo <pagolo.bozzo@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -29,70 +29,70 @@ msgstr "INDIETRO"
 #: ../src/main.c:27
 #, c-format
 msgid "Creating folder &quot;%s&quot;...<br />"
-msgstr ""
+msgstr "Creo la cartella &quot;%s&quot;...<br />"
 
 #: ../src/main.c:29
 msgid "Can't create folder"
-msgstr ""
+msgstr "Impossibile creare la cartella"
 
 #: ../src/main.c:31
 #, c-format
 msgid "Creating file &quot;%s&quot;...<br />"
-msgstr ""
+msgstr "Creo il file &quot;%s&quot;...<br />"
 
 #: ../src/main.c:33
 msgid "Can't create file"
-msgstr ""
+msgstr "Impossibile creare il file"
 
 #: ../src/main.c:49 ../src/main.c:176
 msgid "Can't chdir to document_root"
-msgstr ""
+msgstr "Impossibile spostarsi alla radice del sito"
 
 #: ../src/main.c:53
 #, c-format
 msgid "No need to rename folder...<br />"
-msgstr ""
+msgstr "Non &egrave; necessario rinominare la cartella...<br />"
 
 #: ../src/main.c:55
 #, c-format
 msgid "Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"
-msgstr ""
+msgstr "Rinomino la cartella &quot;%s&quot; in &quot;%s&quot;...<br />"
 
 #: ../src/main.c:57
 msgid "Can't rename project folder"
-msgstr ""
+msgstr "Impossibile rinominare la cartella del progetto"
 
 #: ../src/main.c:60
 #, c-format
 msgid "<br />Creating folder &quot;%s&quot;...<br />"
-msgstr ""
+msgstr "<br />Creo la cartella &quot;%s&quot;...<br />"
 
 #: ../src/main.c:62
 msgid "Can't create project folder"
-msgstr ""
+msgstr "Impossibile creare la cartella principale del progetto"
 
 #: ../src/main.c:66 ../src/editconfig.c:151 ../src/editconfig.c:182
 #: ../src/mysql.c:102
 msgid "Can't chdir to project folder"
-msgstr ""
+msgstr "Impossibile spostarsi alla cartella principale del progetto"
 
 #: ../src/main.c:77
 #, c-format
 msgid "Downloading archive...<br />"
-msgstr ""
+msgstr "Scarico l'archivio...<br />"
 
 #: ../src/main.c:79
 msgid "Can't download the script archive"
-msgstr ""
+msgstr "Impossibile scaricare l'archivio"
 
 #: ../src/main.c:85
 #, c-format
 msgid "Uncompressing archive...<br />"
-msgstr ""
+msgstr "Decomprimo l'archivio...<br />"
 
 #: ../src/main.c:89
 msgid "archive files extracted"
-msgstr ""
+msgstr "i file sono stati estratti dall'archivio"
 
 #: ../src/main.c:116
 msgid "Username"
@@ -109,85 +109,85 @@ msgstr "Invia"
 #: ../src/main.c:119 ../src/main.c:150 ../src/main.c:163 ../src/main.c:232
 #: ../src/main.c:258 ../src/editconfig.c:170 ../src/mysql.c:83
 msgid "Clear"
-msgstr ""
+msgstr "Azzera"
 
 #: ../src/main.c:147 ../src/main.c:160
 msgid "Please edit the destination web folder name"
-msgstr ""
+msgstr "Modifica, se vuoi, il nome della cartella"
 
 #: ../src/main.c:149 ../src/main.c:162 ../src/main.c:201
 #: ../src/editconfig.c:169 ../src/mysql.c:82
 msgid "Continue"
-msgstr ""
+msgstr "Continua"
 
 #: ../src/main.c:168
 #, c-format
 msgid "<strong>Installing <em>%s</em></strong><br />&nbsp;<br />"
-msgstr ""
+msgstr "<strong>Installazione di <em>%s</em></strong><br />&nbsp;<br />"
 
 #: ../src/main.c:228
 msgid "configuration file"
-msgstr ""
+msgstr "file di configurazione"
 
 #: ../src/main.c:229
 msgid "archive file"
-msgstr ""
+msgstr "file di archivio"
 
 #: ../src/main.c:230 ../src/main.c:256
 msgid "overwrite file"
-msgstr ""
+msgstr "sovrascrivi il file"
 
 #: ../src/main.c:255
 msgid "Please insert the url of the configuration file"
-msgstr ""
+msgstr "Inserisci l'url del file di configurazione"
 
 #: ../src/main.c:448 ../src/main.c:547
 msgid "Configuration test"
-msgstr ""
+msgstr "Test della configurazione"
 
 #: ../src/main.c:449 ../src/main.c:552
 msgid "Download & install"
-msgstr ""
+msgstr "Scarica e installa"
 
 #: ../src/main.c:450 ../src/main.c:557
 msgid "Upload & install"
-msgstr ""
+msgstr "Invia e installa"
 
 #: ../src/main.c:451
 msgid "Are you sure you want to exit?"
-msgstr ""
+msgstr "Sicuro di voler uscire?"
 
 #: ../src/main.c:452
 msgid "Exit"
-msgstr ""
+msgstr "Esci"
 
 #: ../src/main.c:457
 msgid "can't access configuration file"
-msgstr ""
+msgstr "File di configurazione non trovato"
 
 #: ../src/main.c:464
 msgid "ini file name not specified"
-msgstr ""
+msgstr "File di inizializzazione del pacchetto non specificato"
 
 #: ../src/main.c:466
 msgid "Can't download ini file"
-msgstr ""
+msgstr "Impossibile scaricare il file di inizializzazione del pacchetto"
 
 #: ../src/main.c:516
 msgid "MySQL setup"
-msgstr ""
+msgstr "Impostazioni MySQL"
 
 #: ../src/main.c:532
 msgid "Config file saved"
-msgstr ""
+msgstr "File di configurazione salvato"
 
 #: ../src/main.c:548 ../src/main.c:553 ../src/main.c:558 ../src/main.c:563
 msgid "Home page"
-msgstr ""
+msgstr "Pagina iniziale"
 
 #: ../src/main.c:562 ../src/test.c:101
 msgid "Edit configuration"
-msgstr ""
+msgstr "Modifica la configurazione"
 
 #: ../src/configure.c:86
 msgid "Configuration error, admin data..."
