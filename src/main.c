@@ -430,10 +430,13 @@ int main(int argc, char **argv) {
   action = ReadAction(argc, argv);
 
   logged = init(action);
+  setlocale(LC_ALL, "it_IT.UTF-8");
+  bindtextdomain(PACKAGE, LOCALEDIR);
+  textdomain(PACKAGE);
 
   printf(HTM_HEADER);
   globaldata.header_sent = 1;
-
+  printf("%s",LOCALEDIR);
   if (!(logged)) {
     ShowLoginPage(action);
     printf(HTM_FOOTER);

@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src
+SUBDIRS = src po
 
 ezinstalldocdir = ${prefix}/doc/ezinstall
 ezinstalldoc_DATA = \
@@ -18,10 +18,22 @@ ezinstallcss_DATA = ezinstall.css
 ezinstallcfgdir = ${prefix}/public_html/cgi-bin
 ezinstallcfg_DATA = ezinstall.xml
 
-EXTRA_DIST = $(ezinstalldoc_DATA) $(ezinstallcss_DATA) $(ezinstallcfg_DATA)
+INTLTOOL_FILES = intltool-extract.in \
+	intltool-merge.in \
+	intltool-update.in
 
+EXTRA_DIST = $(ezinstalldoc_DATA) $(ezinstallcss_DATA) $(ezinstallcfg_DATA) $(INTLTOOL_FILES)
 
+DISTCLEANFILES = intltool-extract \
+	intltool-merge \
+	intltool-update \
+	po/.intltool-merge-cache
 
-AM_CFLAGS = -static 
+datadir = @datadir@
+datarootdir= @datarootdir@
+localedir = @localedir@
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
-AM_LDFLAGS = -static 
+# Remove doc directory on uninstall
+uninstall-local:
+	-rm -r $(ezinstalldocdir)

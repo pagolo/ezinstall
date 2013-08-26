@@ -160,30 +160,48 @@ am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
 ACLOCAL = ${SHELL} /home/paolo/ezinstall-remote/missing --run aclocal-1.12
+ALL_LINGUAS = 
 AMTAR = $${TAR-tar}
+AM_DEFAULT_VERBOSITY = 1
 AUTOCONF = ${SHELL} /home/paolo/ezinstall-remote/missing --run autoconf
 AUTOHEADER = ${SHELL} /home/paolo/ezinstall-remote/missing --run autoheader
 AUTOMAKE = ${SHELL} /home/paolo/ezinstall-remote/missing --run automake-1.12
 AWK = gawk
+CATALOGS = 
+CATOBJEXT = .gmo
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS =  -I/usr/include/libxml2
 CYGPATH_W = echo
-DEFS = -DHAVE_CONFIG_H
+DATADIRNAME = share
+DEFS = -DLOCALEDIR=\"$(localedir)\" -DHAVE_CONFIG_H
 DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
 EGREP = /usr/bin/grep -E
 EXEEXT = .cgi
+GETTEXT_PACKAGE = ezinstall
+GMOFILES = 
+GMSGFMT = /usr/bin/msgfmt
 GREP = /usr/bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
+INSTOBJEXT = .mo
+INTLLIBS = 
+INTLTOOL_EXTRACT = /usr/bin/intltool-extract
+INTLTOOL_MERGE = /usr/bin/intltool-merge
+INTLTOOL_PERL = /usr/bin/perl
+INTLTOOL_UPDATE = /usr/bin/intltool-update
+INTLTOOL_V_MERGE = $(INTLTOOL__v_MERGE_$(V))
+INTLTOOL_V_MERGE_OPTIONS = $(intltool__v_merge_options_$(V))
+INTLTOOL__v_MERGE_ = $(INTLTOOL__v_MERGE_$(AM_DEFAULT_VERBOSITY))
+INTLTOOL__v_MERGE_0 = @echo "  ITMRG " $@;
 LDFLAGS = 
 LIBOBJS = 
 LIBS = -lxml2 -lmysqlclient 
@@ -191,6 +209,10 @@ LTLIBOBJS =
 MAINT = #
 MAKEINFO = ${SHELL} /home/paolo/ezinstall-remote/missing --run makeinfo
 MKDIR_P = /usr/bin/mkdir -p
+MKINSTALLDIRS = ./mkinstalldirs
+MSGFMT = /usr/bin/msgfmt
+MSGFMT_OPTS = -c
+MSGMERGE = /usr/bin/msgmerge
 OBJEXT = o
 PACKAGE = ezinstall
 PACKAGE_BUGREPORT = 
@@ -200,10 +222,16 @@ PACKAGE_TARNAME = ezinstall
 PACKAGE_URL = 
 PACKAGE_VERSION = 0.0.15
 PATH_SEPARATOR = :
+POFILES = 
+POSUB = po
+PO_IN_DATADIR_FALSE = 
+PO_IN_DATADIR_TRUE = 
 SET_MAKE = 
 SHELL = /bin/sh
 STRIP = 
+USE_NLS = yes
 VERSION = 0.0.15
+XGETTEXT = /usr/bin/xgettext
 abs_builddir = /home/paolo/ezinstall-remote
 abs_srcdir = /home/paolo/ezinstall-remote
 abs_top_builddir = /home/paolo/ezinstall-remote
@@ -217,7 +245,7 @@ am__untar = $${TAR-tar} xf -
 bindir = /home/paolo/public_html/cgi-bin
 build_alias = 
 builddir = .
-datadir = ${datarootdir}
+datadir = /home/paolo
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
@@ -227,6 +255,8 @@ htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
 install_sh = ${SHELL} /home/paolo/ezinstall-remote/install-sh
+intltool__v_merge_options_ = $(intltool__v_merge_options_$(AM_DEFAULT_VERBOSITY))
+intltool__v_merge_options_0 = -q
 libdir = ${exec_prefix}/lib64
 libexecdir = ${exec_prefix}/lib
 localedir = ${datarootdir}/locale
@@ -247,7 +277,7 @@ top_build_prefix =
 top_builddir = .
 top_srcdir = .
 xml2_config = xml2-config
-SUBDIRS = src
+SUBDIRS = src po
 ezinstalldocdir = ${prefix}/doc/ezinstall
 ezinstalldoc_DATA = \
 	README.md\
@@ -261,9 +291,16 @@ ezinstallcssdir = ${prefix}/public_html
 ezinstallcss_DATA = ezinstall.css
 ezinstallcfgdir = ${prefix}/public_html/cgi-bin
 ezinstallcfg_DATA = ezinstall.xml
-EXTRA_DIST = $(ezinstalldoc_DATA) $(ezinstallcss_DATA) $(ezinstallcfg_DATA)
-AM_CFLAGS = -static 
-AM_LDFLAGS = -static 
+INTLTOOL_FILES = intltool-extract.in \
+	intltool-merge.in \
+	intltool-update.in
+
+EXTRA_DIST = $(ezinstalldoc_DATA) $(ezinstallcss_DATA) $(ezinstallcfg_DATA) $(INTLTOOL_FILES)
+DISTCLEANFILES = intltool-extract \
+	intltool-merge \
+	intltool-update \
+	po/.intltool-merge-cache
+
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -759,6 +796,7 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -832,7 +870,7 @@ ps: ps-recursive
 ps-am:
 
 uninstall-am: uninstall-ezinstallcfgDATA uninstall-ezinstallcssDATA \
-	uninstall-ezinstalldocDATA
+	uninstall-ezinstalldocDATA uninstall-local
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all \
 	cscopelist-recursive ctags-recursive install-am install-strip \
@@ -855,8 +893,13 @@ uninstall-am: uninstall-ezinstallcfgDATA uninstall-ezinstallcssDATA \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-generic pdf pdf-am ps ps-am tags tags-recursive \
 	uninstall uninstall-am uninstall-ezinstallcfgDATA \
-	uninstall-ezinstallcssDATA uninstall-ezinstalldocDATA
+	uninstall-ezinstallcssDATA uninstall-ezinstalldocDATA \
+	uninstall-local
 
+
+# Remove doc directory on uninstall
+uninstall-local:
+	-rm -r $(ezinstalldocdir)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

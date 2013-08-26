@@ -1,0 +1,15 @@
+# List of source files containing translatable strings.
+
+src/main.c
+src/configure.c
+src/editconfig.c
+src/getinput.c
+src/login.c
+src/md5.c
+src/mylocale.c
+src/mysql.c
+src/session.c 
+src/socket.c
+src/test.c
+src/utils.c
+src/xml.c
