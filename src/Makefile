@@ -109,7 +109,7 @@ CPP = gcc -E
 CPPFLAGS =  -I/usr/include/libxml2
 CYGPATH_W = echo
 DATADIRNAME = share
-DEFS = -DHAVE_CONFIG_H
+DEFS = -DMYLOCALEDIR=\"$(localedir)\" -DHAVE_CONFIG_H
 DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n

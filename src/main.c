@@ -431,12 +431,12 @@ int main(int argc, char **argv) {
 
   logged = init(action);
   setlocale(LC_ALL, "it_IT.UTF-8");
-  bindtextdomain(PACKAGE, LOCALEDIR);
+  bindtextdomain(PACKAGE, MYLOCALEDIR);
   textdomain(PACKAGE);
 
   printf(HTM_HEADER);
   globaldata.header_sent = 1;
-  printf("%s",LOCALEDIR);
+
   if (!(logged)) {
     ShowLoginPage(action);
     printf(HTM_FOOTER);

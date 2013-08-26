@@ -45,3 +45,7 @@ ezinstall_LDFLAGS =
 
 ezinstall_LDADD = 
 
+datadir = @datadir@
+datarootdir= @datarootdir@
+localedir = @localedir@
+DEFS = -DMYLOCALEDIR=\"$(localedir)\" @DEFS@

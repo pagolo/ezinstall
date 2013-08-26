@@ -687,7 +687,7 @@ configure:6261: $? = 0
 configure:6261: result: yes
 configure:6261: checking for stricmp
 configure:6261: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lxml2 -lmysqlclient  >&5
-/tmp/ccDJW0I2.o: In function `main':
+/tmp/ccFtJtpo.o: In function `main':
 /home/paolo/ezinstall-remote/conftest.c:80: undefined reference to `stricmp'
 collect2: error: ld returned 1 exit status
 configure:6261: $? = 1
@@ -797,7 +797,7 @@ configure:6261: $? = 0
 configure:6261: result: yes
 configure:6261: checking for strnicmp
 configure:6261: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lxml2 -lmysqlclient  >&5
-/tmp/ccg8oP2r.o: In function `main':
+/tmp/ccclFxXC.o: In function `main':
 /home/paolo/ezinstall-remote/conftest.c:84: undefined reference to `strnicmp'
 collect2: error: ld returned 1 exit status
 configure:6261: $? = 1

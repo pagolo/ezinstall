@@ -29,11 +29,6 @@ DISTCLEANFILES = intltool-extract \
 	intltool-update \
 	po/.intltool-merge-cache
 
-datadir = @datadir@
-datarootdir= @datarootdir@
-localedir = @localedir@
-DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
-
 # Remove doc directory on uninstall
 uninstall-local:
 	-rm -r $(ezinstalldocdir)
