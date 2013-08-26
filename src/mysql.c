@@ -74,7 +74,7 @@ void MySqlForm(void) {
    }
    if (res_set) mysql_free_result(res_set);
    mysql_close(conn);
-   // fine sezione per men�
+   // fine sezione per menu
    
    printf("<tr><td align=right width=33%%>%s</td><td><input type=text name=database value=%s></td></tr>\n",_("database name"),globaldata.gd_mysql->db_name);
 
