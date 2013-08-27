@@ -39,7 +39,7 @@ void setMainConfig(char *section, char *name, char *value) {
 
 int ReadGlobalConfig(void) {
 
-  parseMainConfig(CONFIG_NAME);
+  parseMainConfig();
 
   // ...check if important fields are filled
   if (!(globaldata.gd_userdata) ||
@@ -154,50 +154,7 @@ int is_upload(void) {
   if (is && *is == '1') return 1;
   return 0;
 }
-/*
-FSOBJ *get_filesys_data(struct CfgStruct *mv) {
-  struct CfgStruct *mvptr;
-  FSOBJ *object = NULL;
-  for (mvptr = mv; mvptr && mvptr->Name; ++mvptr) {
-    FSOBJ *tmp;
-    FSOBJ *ptr = calloc(sizeof (FSOBJ), 1);
-    if (!ptr) break; // no memory
-    // fill values
-    if (strcasecmp("folder", mvptr->Name) == 0 || strncasecmp("dir", mvptr->Name, 3) == 0)
-      ptr->isfolder = 1;
-    ptr->file = strdup((const char *) mvptr->DataPtr);
-    free(mvptr->DataPtr);
-    if (object == NULL) object = ptr;
-    else {
-      tmp = object;
-      while (tmp->next) tmp = tmp->next;
-      tmp->next = ptr;
-    }
-  }
-  return object;
-}
 
-CHMOD *get_chmod_data(struct CfgStruct *mv) {
-  struct CfgStruct *mvptr;
-  CHMOD *chmd = NULL;
-  for (mvptr = mv; mvptr && mvptr->Name; ++mvptr) {
-    char *z;
-    CHMOD *tmp;
-    CHMOD *ptr = calloc(sizeof (CHMOD), 1);
-    if (!ptr) break; // no memory
-    ptr->file = mvptr->Name;
-    ptr->permissions = strtol((const char *) mvptr->DataPtr, &z, 8);
-    free(mvptr->DataPtr);
-    if (chmd == NULL) chmd = ptr;
-    else {
-      tmp = chmd;
-      while (tmp->next) tmp = tmp->next;
-      tmp->next = ptr;
-    }
-  }
-  return chmd;
-}
-*/
 void SetPhpVar(char *varname, char *varvalue) {
   PHPCONF *var, *ptr;
 

@@ -3,7 +3,7 @@
 
 #define MEMORY
 
-void parseMainConfig(char *docname);
+void parseMainConfig(void);
 int read_xml_file(int action);
 int WriteGlobalConfig(void);
 

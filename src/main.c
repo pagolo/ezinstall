@@ -8,7 +8,7 @@
 GLOBAL globaldata;
 
 void Error(char *msg) {
-  if (!(globaldata.header_sent)) printf(HTM_HEADER);
+  if (!(globaldata.gd_header_sent)) printf(HTM_HEADER);
   printf("<br /><div class='error_title'>%s</div>: ", _("ERROR"));
   printf("%s<br />", msg);
   if (globaldata.gd_loglevel > LOG_NONE) WriteLog(msg);
@@ -436,7 +436,7 @@ int main(int argc, char **argv) {
   textdomain(PACKAGE);
 
   printf(HTM_HEADER);
-  globaldata.header_sent = 1;
+  globaldata.gd_header_sent = 1;
 
   if (!(logged)) {
     ShowLoginPage(action);

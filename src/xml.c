@@ -27,13 +27,17 @@ parseSection(xmlDocPtr doc, xmlNodePtr cur, STRING *string, const xmlChar *secti
 }
 
 void
-parseMainConfig(char *docname) {
+parseMainConfig(void) {
 
   xmlDocPtr doc;
   xmlNodePtr cur, nodeptr;
   STRING *stringlist = NULL;
 
-  doc = xmlParseFile(docname);
+  doc = xmlParseFile(CONFIG_NAME_ROOT);
+  if (doc == NULL)
+    doc = xmlParseFile(CONFIG_NAME);
+  else
+    globaldata.gd_config_root = 1;
 
   if (doc == NULL) {
     Error(_("Configuration xml document not parsed successfully. \n"));
@@ -350,6 +354,7 @@ int read_xml_file(int action) {
 int WriteGlobalConfig(void) {
   int rc, result = 0;
   char *username, *password;
+  char *config_name = globaldata.gd_config_root ? CONFIG_NAME_ROOT : CONFIG_NAME;
   xmlTextWriterPtr writer;
 #ifdef MEMORY
   int fd;
@@ -372,7 +377,7 @@ int WriteGlobalConfig(void) {
   }
 #else
   // create the file
-  writer = xmlNewTextWriterFilename(CONFIG_NAME, 0);
+  writer = xmlNewTextWriterFilename(globaldata.gd_config_root ? CONFIG_NAME_ROOT : CONFIG_NAME, 0);
   if (writer == NULL) return 0;
 #endif
 
@@ -487,8 +492,8 @@ int WriteGlobalConfig(void) {
   xmlFreeTextWriter(writer);
   writer = NULL;
 
-  remove(CONFIG_NAME);
-  fd = open(CONFIG_NAME, O_CREAT | O_RDWR | O_TRUNC, 0600);
+  remove(config_name);
+  fd = open(config_name, O_CREAT | O_RDWR | O_TRUNC, 0600);
   if (fd == NO_FILE) goto finish;
   write(fd, (const void *) buf->content, buf->size);
   close(fd);
