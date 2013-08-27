@@ -4,7 +4,6 @@
 #define getstr(a,b) _(b)
 #define _(string) gettext(string)
 #define LOCALEDIR "/usr/lib/locale"   // NO final slash
-#define MYLOCALES "./"  // ALLWAYS final slah              
 
 #define	LIMAGIC(category) \
 	  (category == LC_COLLATE						\

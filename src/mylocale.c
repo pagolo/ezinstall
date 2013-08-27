@@ -32,9 +32,9 @@ static int my_dirs(const struct dirent *dirent) {
     mode_t mode = 0;
     {
       struct stat st;
-      char buf[sizeof (MYLOCALES) + strlen(dirent->d_name) + 1];
+      char buf[sizeof (MYLOCALEDIR) + strlen(dirent->d_name) + 1];
 
-      stpcpy(stpcpy(buf, MYLOCALES), dirent->d_name);
+      stpcpy(stpcpy(stpcpy(buf, MYLOCALEDIR), "/"), dirent->d_name);
 
       if (stat(buf, &st) == 0)
         mode = st.st_mode;
@@ -146,7 +146,7 @@ LOCALELIST *get_locales_all() {
   int ndirents;
   int cnt;
   current_language[2] = '_';
-  ndirents = scandir(MYLOCALES, &dirents, my_dirs, alphasort);
+  ndirents = scandir(MYLOCALEDIR, &dirents, my_dirs, alphasort);
 
   list = calloc(sizeof (LOCALELIST), 1);
   if (!list) return NULL;
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
 
   printf("default locale: %s\n", getenv("LANG"));  
   setlocale(LC_ALL, argc > 1 ? argv[1] : "");
-  bindtextdomain("test", MYLOCALES);
+  bindtextdomain("test", MYLOCALEDIR);
   textdomain("test");
   printf(_("Hello World!\n"));
   

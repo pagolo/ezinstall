@@ -133,7 +133,7 @@
       </item>
       <item path="src/main.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/md5.c" ex="false" tool="0" flavor2="2">
+      <item path="src/md5.c" ex="false" tool="0" flavor2="0">
         <cTool>
           <preprocessorList>
             <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
@@ -142,7 +142,7 @@
       </item>
       <item path="src/md5.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/mylocale.c" ex="false" tool="0" flavor2="2">
+      <item path="src/mylocale.c" ex="false" tool="0" flavor2="0">
         <cTool>
           <preprocessorList>
             <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
@@ -160,7 +160,7 @@
       </item>
       <item path="src/mysql.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/session.c" ex="false" tool="0" flavor2="2">
+      <item path="src/session.c" ex="false" tool="0" flavor2="0">
         <cTool>
           <preprocessorList>
             <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
