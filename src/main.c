@@ -340,13 +340,13 @@ char *config_string =
 
 char *InsertLanguages(void) {
   char *result, *old;
-  STRING *list = GetSectionNames(LANG_NAME);
+  LOCALELIST *list = get_locales_all();
 
   result = mysprintf("<small>%s</small>\n", "Language");
-  result = append_cstring(result, "<select name=\"Language\">\n<option>English (default)</option>\n");
+  result = append_cstring(result, "<select name=\"Language\">\n");
   for (; list; list = list->next) {
     old = result;
-    result = mysprintf("%s<option %s>%s</option>\n", old, (strcmp(list->string, globaldata.gd_language) == 0) ? "selected=\"selected\"" : "", list->string);
+    result = mysprintf("%s<option %s value='%s'>%s</option>\n", old, (strcmp(list->locale_code, globaldata.gd_locale_code) == 0) ? "selected=\"selected\"" : "", list->locale_code, list->language_name);
     free(old);
   }
   result = append_cstring(result, "</select>\n");
@@ -423,6 +423,7 @@ int ReadAction(int argc, char **argv) {
 
 int main(int argc, char **argv) {
   int action, logged, rc;
+  char *ld = globaldata.gd_locale_path;
   char error_read[] = "Error reading xml file";
 
   LIBXML_TEST_VERSION
@@ -430,8 +431,8 @@ int main(int argc, char **argv) {
   action = ReadAction(argc, argv);
 
   logged = init(action);
-  setlocale(LC_ALL, "it_IT.UTF-8");
-  bindtextdomain(PACKAGE, MYLOCALEDIR);
+  setlocale(LC_ALL, globaldata.gd_locale_code ? globaldata.gd_locale_code : "");
+  bindtextdomain(PACKAGE, ld && *ld ? ld : MYLOCALEDIR);
   textdomain(PACKAGE);
 
   printf(HTM_HEADER);

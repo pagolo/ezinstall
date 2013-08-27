@@ -18,8 +18,6 @@ ezinstall_SOURCES = \
 	editconfig.h     \
 	getinput.c     \
 	getinput.h     \
-	ini.c     \
-	ini.h     \
 	login.c     \
 	login.h     \
 	main.h     \

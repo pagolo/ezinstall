@@ -80,7 +80,7 @@ void DoTest(void) {
         user_string = mysprintf("<span style='color:red'>%s</span>", strerror(errno));
     printf("%s%s: %s%s", punct1, _("Application user"), user_string, punct2);
     if (!user) free(user_string);
-    printf("%s%s: %s%s", punct1, _( "Localization setup"), globaldata.gd_language, punct2);
+    printf("%s%s: %s%s", punct1, _( "Localization setup"), globaldata.gd_locale_code, punct2);
     if (MySqlTest())
         printf("%s%s%s", punct1, _("MySQL connection is OK"), punct2);
     else

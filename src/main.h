@@ -134,9 +134,8 @@ typedef struct GlobalData {
    char *gd_inifile;   // nome file ini scaricato
    INIDATA *gd_inidata;// configurazione da file ini scaricato
    char *gd_error;     // stringa di errore
-   char *gd_language;  // lingua da utilizzare
-   int  gd_string_no;  // numero stringhe localizzate
-   char **gd_locale;   // array di stringhe localizzate
+   char *gd_locale_code;//codice tipo it_IT.UTF8
+   char *gd_locale_path;//codice tipo it_IT.UTF8
    int  header_sent;   // intestazione inviata?
    int  gd_loglevel;   // livello di log da utilizzare
    char *gd_logpath;   // nome completo di path del file di log
@@ -153,7 +152,6 @@ void ChDirRoot(void);
 #include "login.h"
 #include "session.h"
 #include "configure.h"
-#include "ini.h"
 #include "mylocale.h"
 #include "getinput.h"
 #include "mysql.h"

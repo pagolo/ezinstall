@@ -66,10 +66,10 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_ezinstall_OBJECTS = main.$(OBJEXT) configure.$(OBJEXT) \
-	editconfig.$(OBJEXT) getinput.$(OBJEXT) ini.$(OBJEXT) \
-	login.$(OBJEXT) md5.$(OBJEXT) mylocale.$(OBJEXT) \
-	mysql.$(OBJEXT) session.$(OBJEXT) socket.$(OBJEXT) \
-	test.$(OBJEXT) utils.$(OBJEXT) xml.$(OBJEXT)
+	editconfig.$(OBJEXT) getinput.$(OBJEXT) login.$(OBJEXT) \
+	md5.$(OBJEXT) mylocale.$(OBJEXT) mysql.$(OBJEXT) \
+	session.$(OBJEXT) socket.$(OBJEXT) test.$(OBJEXT) \
+	utils.$(OBJEXT) xml.$(OBJEXT)
 ezinstall_OBJECTS = $(am_ezinstall_OBJECTS)
 ezinstall_DEPENDENCIES =
 ezinstall_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(ezinstall_LDFLAGS) \
@@ -221,8 +221,6 @@ ezinstall_SOURCES = \
 	editconfig.h     \
 	getinput.c     \
 	getinput.h     \
-	ini.c     \
-	ini.h     \
 	login.c     \
 	login.h     \
 	main.h     \
@@ -333,7 +331,6 @@ distclean-compile:
 include ./$(DEPDIR)/configure.Po
 include ./$(DEPDIR)/editconfig.Po
 include ./$(DEPDIR)/getinput.Po
-include ./$(DEPDIR)/ini.Po
 include ./$(DEPDIR)/login.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/md5.Po

@@ -2,53 +2,15 @@
 
 /**** GLOBAL CONFIGURATION ****/
 
-int read_locale_strings(char *language) {
-  struct CfgStruct *mv = NULL, *mvptr;
-  char *file, **locale;
-  int count = 0, i;
-
-  count = GetSectionData(LANG_NAME, language, NULL);
-  if (count) file = LANG_NAME;
-
-  if (!count) {
-    globaldata.gd_string_no = 0;
-    if ((locale = globaldata.gd_locale) != NULL) {
-      for (i = 0; locale[i] != NULL; i++)
-        free(locale[i]);
-      free(locale);
-    }
-    globaldata.gd_locale = NULL;
-    globaldata.gd_language = strdup("English (default)");
-    return 0; // no locale strings
-  }
-
-  mv = calloc(sizeof (struct CfgStruct), count + 1);
-  locale = calloc(sizeof (char *), count + 1);
-  if (!mv || !locale) return 0; // no memory?
-  count = GetSectionData(file, language, mv);
-
-  for (mvptr = mv; mvptr && mvptr->Name; ++mvptr) {
-    i = atoi(mvptr->Name);
-    free(mvptr->Name);
-    if (i < count && i >= 0) locale[i] = (char *) mvptr->DataPtr;
-  }
-  free(mv);
-  mv = NULL;
-
-  globaldata.gd_string_no = count;
-  globaldata.gd_locale = locale;
-  globaldata.gd_language = strdup(language);
-
-  return count;
-}
-
 void setMainConfig(char *section, char *name, char *value) {
   static USER *user = NULL;
   static MYSQLDATA *mysql = NULL;
 
   if (strcasecmp(section, "main") == 0) {
     if (strcasecmp(name, "language") == 0 && value && *value) {
-      read_locale_strings(value);
+      globaldata.gd_locale_code = strdup(value);
+    } else if (strcasecmp(name, "locale_path") == 0 && value && *value) {
+      globaldata.gd_locale_path = strdup(value);
     } else if (strcasecmp(name, "loglevel") == 0 && value && *value) {
       globaldata.gd_loglevel = atoi(value);
     }
@@ -192,7 +154,7 @@ int is_upload(void) {
   if (is && *is == '1') return 1;
   return 0;
 }
-
+/*
 FSOBJ *get_filesys_data(struct CfgStruct *mv) {
   struct CfgStruct *mvptr;
   FSOBJ *object = NULL;
@@ -235,7 +197,7 @@ CHMOD *get_chmod_data(struct CfgStruct *mv) {
   }
   return chmd;
 }
-
+*/
 void SetPhpVar(char *varname, char *varvalue) {
   PHPCONF *var, *ptr;
 
