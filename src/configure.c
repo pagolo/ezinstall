@@ -5,7 +5,7 @@
 void setMainConfig(char *section, char *name, char *value) {
   static USER *user = NULL;
   static MYSQLDATA *mysql = NULL;
-
+  
   if (strcasecmp(section, "main") == 0) {
     if (strcasecmp(name, "language") == 0 && value && *value) {
       globaldata.gd_locale_code = strdup(value);

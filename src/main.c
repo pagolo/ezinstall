@@ -423,7 +423,7 @@ int ReadAction(int argc, char **argv) {
 
 int main(int argc, char **argv) {
   int action, logged, rc;
-  char *ld = globaldata.gd_locale_path;
+  char *ld;
   char *error_read = _("Error reading xml file");
 
   LIBXML_TEST_VERSION
@@ -431,6 +431,7 @@ int main(int argc, char **argv) {
   action = ReadAction(argc, argv);
 
   logged = init(action);
+  ld = globaldata.gd_locale_path;
   setlocale(LC_ALL, globaldata.gd_locale_code ? globaldata.gd_locale_code : "");
   bindtextdomain(PACKAGE, ld && *ld ? ld : MYLOCALEDIR);
   textdomain(PACKAGE);

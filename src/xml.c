@@ -59,6 +59,7 @@ parseMainConfig(void) {
   while (cur != NULL) {
     if ((!xmlStrcmp(cur->name, (const xmlChar *) "main"))) {
       appendstring(&stringlist, "language");
+      appendstring(&stringlist, "locale_path");
       appendstring(&stringlist, "loglevel");
       parseSection(doc, cur, stringlist, cur->name);
       freestringlist(stringlist);
@@ -403,6 +404,14 @@ int WriteGlobalConfig(void) {
   // newline
   rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
   if (rc < 0) goto finish;
+  // the locale path
+  if (globaldata.gd_locale_path && *(globaldata.gd_locale_path)) {
+    rc = xmlTextWriterWriteElement(writer, BAD_CAST "locale_path", BAD_CAST globaldata.gd_locale_path);
+    if (rc < 0) goto finish;
+    // newline
+    rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+    if (rc < 0) goto finish;
+  }
   // the loglevel
   rc = xmlTextWriterWriteElement(writer, BAD_CAST "loglevel", BAD_CAST getfieldbyname("LogLevel"));
   if (rc < 0) goto finish;

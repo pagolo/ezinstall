@@ -27,14 +27,16 @@ void free_localelist(LOCALELIST **head) {
 }
 
 static int my_dirs(const struct dirent *dirent) {
+  char *ld = globaldata.gd_locale_path;
   int result = 0;
+  if (ld == NULL || ld[0] == '\0') ld = MYLOCALEDIR;
   if (dirent->d_name[0] != '.' && strlen(dirent->d_name) == 2) {
     mode_t mode = 0;
     {
       struct stat st;
-      char buf[sizeof (MYLOCALEDIR) + strlen(dirent->d_name) + 1];
+      char buf[strlen (ld) + 1 + strlen(dirent->d_name) + 1];
 
-      stpcpy(stpcpy(stpcpy(buf, MYLOCALEDIR), "/"), dirent->d_name);
+      stpcpy(stpcpy(stpcpy(buf, ld), "/"), dirent->d_name);
 
       if (stat(buf, &st) == 0)
         mode = st.st_mode;
@@ -146,7 +148,10 @@ LOCALELIST *get_locales_all() {
   int ndirents;
   int cnt;
   current_language[2] = '_';
-  ndirents = scandir(MYLOCALEDIR, &dirents, my_dirs, alphasort);
+  char *ld = globaldata.gd_locale_path;
+
+  if (ld == NULL || ld[0] == '\0') ld = MYLOCALEDIR;
+  ndirents = scandir(ld, &dirents, my_dirs, alphasort);
 
   list = calloc(sizeof (LOCALELIST), 1);
   if (!list) return NULL;
