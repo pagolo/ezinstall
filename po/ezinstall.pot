@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-27 23:53+0200\n"
+"POT-Creation-Date: 2013-08-28 12:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -140,6 +140,86 @@ msgstr ""
 msgid "Please insert the url of the configuration file"
 msgstr ""
 
+#: ../src/main.c:345
+msgid "Language"
+msgstr ""
+
+#: ../src/main.c:359
+msgid "LogLevel"
+msgstr ""
+
+#: ../src/main.c:361
+msgid "None"
+msgstr ""
+
+#: ../src/main.c:364
+msgid "Level 1"
+msgstr ""
+
+#: ../src/main.c:375
+msgid "Please insert a username for the administrator"
+msgstr ""
+
+#: ../src/main.c:376
+msgid "The administrator password must be at least six chars long"
+msgstr ""
+
+#: ../src/main.c:377
+msgid "Administrator password and confirmation don't match. Please try again."
+msgstr ""
+
+#: ../src/main.c:378
+msgid "Please insert a username for the mysql user"
+msgstr ""
+
+#: ../src/main.c:379
+msgid "Please insert a password for the mysql user"
+msgstr ""
+
+#: ../src/main.c:380
+msgid "Mysql user password and confirmation don't match. Please try again."
+msgstr ""
+
+#: ../src/main.c:386
+msgid "Administrator"
+msgstr ""
+
+#: ../src/main.c:387 ../src/main.c:397
+msgid "username"
+msgstr ""
+
+#: ../src/main.c:389 ../src/main.c:399
+msgid "password"
+msgstr ""
+
+#: ../src/main.c:391 ../src/main.c:401
+msgid "password (repeat)"
+msgstr ""
+
+#: ../src/main.c:393
+msgid "Localization & Log"
+msgstr ""
+
+#: ../src/main.c:396
+msgid "MySQL"
+msgstr ""
+
+#: ../src/main.c:403
+msgid "hostname"
+msgstr ""
+
+#: ../src/main.c:405
+msgid "default database"
+msgstr ""
+
+#: ../src/main.c:407
+msgid "Save"
+msgstr ""
+
+#: ../src/main.c:427
+msgid "Error reading xml file"
+msgstr ""
+
 #: ../src/main.c:452 ../src/main.c:551
 msgid "Configuration test"
 msgstr ""
@@ -202,7 +282,7 @@ msgstr ""
 
 #: ../src/editconfig.c:147
 #, c-format
-msgid "<br>Please check php configuration file<br>\n"
+msgid "<br />Please check php configuration file<br />\n"
 msgstr ""
 
 #: ../src/editconfig.c:185
@@ -211,7 +291,7 @@ msgstr ""
 
 #: ../src/editconfig.c:188
 #, c-format
-msgid "<br>Configuration file has been saved..."
+msgid "<br />Configuration file has been saved..."
 msgstr ""
 
 #: ../src/mysql.c:56 ../src/mysql.c:132
@@ -253,12 +333,12 @@ msgstr ""
 
 #: ../src/mysql.c:145
 #, c-format
-msgid "Database '%s' has been created<br>"
+msgid "Database '%s' has been created<br />"
 msgstr ""
 
 #: ../src/mysql.c:149
 #, c-format
-msgid "Database '%s' was found<br>"
+msgid "Database '%s' was found<br />"
 msgstr ""
 
 #: ../src/mysql.c:155
@@ -268,7 +348,8 @@ msgstr ""
 
 #: ../src/socket.c:43
 #, c-format
-msgid "File \"%s\" already exists!<br>Please go back to overwrite it<br><br>"
+msgid ""
+"File \"%s\" already exists!<br />Please go back to overwrite it<br /><br />"
 msgstr ""
 
 #: ../src/socket.c:95

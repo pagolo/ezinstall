@@ -40,7 +40,7 @@ int create_file(char *filename, int mask) {
   u_mask = umask(0);
   if (filename && access(filename, F_OK) == 0 && overwrite == 0) {
     umask(u_mask);
-    globaldata.gd_error = mysprintf(_( "File \"%s\" already exists!<br>Please go back to overwrite it<br><br>"), filename);
+    globaldata.gd_error = mysprintf(_( "File \"%s\" already exists!<br />Please go back to overwrite it<br /><br />"), filename);
     return fd;
   }
   if (filename) fd = open(filename, O_CREAT | O_RDWR, mask);
@@ -50,7 +50,7 @@ int create_file(char *filename, int mask) {
     //if (fd!=NO_FILE) write(fd,mark,strlen(mark)); // mark the file as an easinstall temporary file...
   }
   if (fd == NO_FILE) {
-    //printf("File \"%s\" can't be created<br>Please check permissions",filename);
+    //printf("File \"%s\" can't be created<br />Please check permissions",filename);
     umask(u_mask);
     return fd;
   }

@@ -144,7 +144,7 @@ void OutputConfigFile(void) {
 
 void EditConfigForm(void) {
   int rc;
-  printf(_("<br>Please check php configuration file<br>\n"));
+  printf(_("<br />Please check php configuration file<br />\n"));
 
   ChDirRoot();
   rc = chdir(getfieldbyname("folder"));
@@ -165,7 +165,7 @@ void EditConfigForm(void) {
 
   OutputConfigFile();
 
-  printf("<tr><td colspan=2><br>\n<input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td></tr>\n",
+  printf("<tr><td colspan=2><br />\n<input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td></tr>\n",
           _( "Continue"),
           _( "Clear"));
   printf("</form>\n");
@@ -185,5 +185,5 @@ void SaveConfigFile(void) {
   if (!(fh)) Error(_("can't save configuration file"));
   fwrite(filebuf, strlen(filebuf), 1, fh);
   fclose(fh);
-  printf(_("<br>Configuration file has been saved..."));
+  printf(_("<br />Configuration file has been saved..."));
 }

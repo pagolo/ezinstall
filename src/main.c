@@ -342,7 +342,7 @@ char *InsertLanguages(void) {
   char *result, *old;
   LOCALELIST *list = get_locales_all();
 
-  result = mysprintf("<small>%s</small>\n", "Language");
+  result = mysprintf("<small>%s</small>\n", _("Language"));
   result = append_cstring(result, "<select name=\"Language\">\n");
   for (; list; list = list->next) {
     old = result;
@@ -356,12 +356,12 @@ char *InsertLanguages(void) {
 char *InsertLogLevels(void) {
   char *result, *old;
 
-  result = mysprintf("<small>%s</small>\n<select name=\"LogLevel\">\n", "LogLevel");
+  result = mysprintf("<small>%s</small>\n<select name=\"LogLevel\">\n", _("LogLevel"));
   old = result;
-  result = mysprintf("%s<option %s value=\"0\">%s</option>\n", old, (globaldata.gd_loglevel == 0) ? "selected=\"selected\"" : "", "None");
+  result = mysprintf("%s<option %s value=\"0\">%s</option>\n", old, (globaldata.gd_loglevel == 0) ? "selected=\"selected\"" : "", _("None"));
   free(old);
   old = result;
-  result = mysprintf("%s<option %s value=\"1\">%s</option>\n", old, (globaldata.gd_loglevel == 1) ? "selected=\"selected\"" : "", "Level 1");
+  result = mysprintf("%s<option %s value=\"1\">%s</option>\n", old, (globaldata.gd_loglevel == 1) ? "selected=\"selected\"" : "", _("Level 1"));
   free(old);
 
   result = append_cstring(result, "</select>\n");
@@ -372,39 +372,39 @@ void ConfigForm(void) {
 
   printf(
           script_string,
-          "Please insert a username for the administrator",
-          "The administrator password must be at least six chars long",
-          "Administrator password and confirmation don't match. Please try again.",
-          "Please insert a username for the mysql user",
-          "Please insert a password for the mysql user",
-          "Mysql user password and confirmation don't match. Please try again."
+          _("Please insert a username for the administrator"),
+          _("The administrator password must be at least six chars long"),
+          _("Administrator password and confirmation don't match. Please try again."),
+          _("Please insert a username for the mysql user"),
+          _("Please insert a password for the mysql user"),
+          _("Mysql user password and confirmation don't match. Please try again.")
           );
 
   printf(
           config_string,
           getenv("SCRIPT_NAME"),
-          "Administrator",
-          "username",
+          _("Administrator"),
+          _("username"),
           globaldata.gd_userdata->username,
-          "password",
+          _("password"),
           "",
-          "password (repeat)",
+          _("password (repeat)"),
           "",
-          "Localization & Log",
+          _("Localization & Log"),
           InsertLanguages(),
           InsertLogLevels(),
-          "MySQL",
-          "username",
+          _("MySQL"),
+          _("username"),
           globaldata.gd_mysql->username,
-          "password",
+          _("password"),
           globaldata.gd_mysql->password,
-          "password (repeat)",
+          _("password (repeat)"),
           globaldata.gd_mysql->password,
-          "hostname",
+          _("hostname"),
           globaldata.gd_mysql->host,
-          "default database",
+          _("default database"),
           globaldata.gd_mysql->db_name,
-          "Save"
+          _("Save")
           );
 }
 
@@ -424,7 +424,7 @@ int ReadAction(int argc, char **argv) {
 int main(int argc, char **argv) {
   int action, logged, rc;
   char *ld = globaldata.gd_locale_path;
-  char error_read[] = "Error reading xml file";
+  char *error_read = _("Error reading xml file");
 
   LIBXML_TEST_VERSION
   
@@ -460,7 +460,7 @@ int main(int argc, char **argv) {
       if (!(globaldata.gd_inifile = get_ini_upload()))
         Error(_("can't access configuration file"));
       rc = read_xml_file(action);
-      if (rc == 0) Error(_(error_read));
+      if (rc == 0) Error(error_read);
       get_zip_upload();
     case DOWNLOAD_CONFIG:
       if (action == DOWNLOAD_CONFIG) {
@@ -469,7 +469,7 @@ int main(int argc, char **argv) {
         rc = graburl(globaldata.gd_iniaddress, 0644, 0, 1);
         if (rc == 0) Error(_("Can't download ini file"));
         rc = read_xml_file(action);
-        if (rc == 0) Error(_(error_read));
+        if (rc == 0) Error(error_read);
       }
       ShowArchive();
       // se c'è da creare la cartella...
@@ -486,7 +486,7 @@ int main(int argc, char **argv) {
     case RENAME_FOLDER:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(_(error_read));
+      if (rc == 0) Error(error_read);
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       ShowArchive();
       if (action == CREATE_FOLDER) {
@@ -503,7 +503,7 @@ int main(int argc, char **argv) {
     case MYSQL_FORM:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(_(error_read));
+      if (rc == 0) Error(error_read);
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       ShowArchive();
       MySqlForm();
@@ -511,7 +511,7 @@ int main(int argc, char **argv) {
     case CREATE_DB:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(_(error_read));
+      if (rc == 0) Error(error_read);
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       globaldata.gd_mysql->db_name = getfieldbyname("database");
       ShowArchive();
@@ -524,7 +524,7 @@ int main(int argc, char **argv) {
     case SAVE_CONFIG:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(_(error_read));
+      if (rc == 0) Error(error_read);
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       globaldata.gd_mysql->db_name = getfieldbyname("database");
       ShowArchive();
@@ -540,7 +540,7 @@ int main(int argc, char **argv) {
     case CALL_SCRIPT:
       globaldata.gd_inifile = getfieldbyname("inifile");
       rc = read_xml_file(action);
-      if (rc == 0) Error(_(error_read));
+      if (rc == 0) Error(error_read);
       unlink(globaldata.gd_inifile);
       LaunchScript();
       break;
@@ -549,22 +549,22 @@ int main(int argc, char **argv) {
     case ACTION_SAVECONF:
     case ACTION_TEST:
       printf("<em>%s</em>", _("Configuration test"));
-      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), _("Home page"));
+      printf(" | <a href=\"%s\">%s</a><br /><br />", getenv("SCRIPT_NAME"), _("Home page"));
       DoTest();
       break;
     case ACTION_DOWNLOAD:
       printf("<em>%s</em>", _("Download & install"));
-      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), _("Home page"));
+      printf(" | <a href=\"%s\">%s</a><br /><br />", getenv("SCRIPT_NAME"), _("Home page"));
       DownloadForm();
       break;
     case ACTION_UPLOAD:
       printf("<em>%s</em>", _("Upload & install"));
-      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), _("Home page"));
+      printf(" | <a href=\"%s\">%s</a><br /><br />", getenv("SCRIPT_NAME"), _("Home page"));
       UploadForm();
       break;
     case ACTION_EDITCONF:
       printf("<em>%s</em>", _("Edit configuration"));
-      printf(" | <a href=\"%s\">%s</a><br><br>", getenv("SCRIPT_NAME"), _("Home page"));
+      printf(" | <a href=\"%s\">%s</a><br /><br />", getenv("SCRIPT_NAME"), _("Home page"));
       ConfigForm();
       break;
     default:

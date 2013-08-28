@@ -84,7 +84,7 @@ void DoTest(void) {
     if (MySqlTest())
         printf("%s%s%s", punct1, _("MySQL connection is OK"), punct2);
     else
-        printf("%s<font color=red>%s</font>%s", punct1, _("Error with MySQL connection"), punct2);
+        printf("%s<span style='color:red'>%s</span>%s", punct1, _("Error with MySQL connection"), punct2);
     tno = TempCount();
     printf("%s%s: %d%s", punct1, _( "Temporary files found"), tno, punct2);
     if (tno > 0) {

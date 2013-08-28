@@ -78,7 +78,7 @@ void MySqlForm(void) {
    
    printf("<tr><td align=right width=33%%>%s</td><td><input type=text name=database value=%s></td></tr>\n",_("database name"),globaldata.gd_mysql->db_name);
 
-   printf("<tr><td colspan=2><br>\n<input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td></tr>\n",
+   printf("<tr><td colspan=2><br />\n<input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td></tr>\n",
           _("Continue"),
           _("Clear"));
    
@@ -125,7 +125,7 @@ void CreateDbTables(void) {
    MYSQL *conn;
    char *query;
 
-   printf("<br>");
+   printf("<br />");
    
    // cercare/creare il database
    conn = mysql_init(NULL);
@@ -142,11 +142,11 @@ void CreateDbTables(void) {
 	mysql_close(conn);
 	Error(_("can't create new database, please go back and select an existing db"));
       } else {
-        printf(_("Database '%s' has been created<br>"),globaldata.gd_mysql->db_name);
+        printf(_("Database '%s' has been created<br />"),globaldata.gd_mysql->db_name);
       }
       free(query);
     } else {
-      printf(_("Database '%s' was found<br>"),globaldata.gd_mysql->db_name);
+      printf(_("Database '%s' was found<br />"),globaldata.gd_mysql->db_name);
     }
    mysql_close(conn);
 
