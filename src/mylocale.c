@@ -1,5 +1,6 @@
 #include "main.h"
 #include "mylocale.h"
+#include <sys/param.h>
 
 char current_language[4];
 
@@ -68,6 +69,11 @@ static int select_dirs(const struct dirent *dirent) {
   return result;
 }
 
+#ifdef BSD
+static char *get_language(void *mapped, size_t size) {
+  return NULL;
+}
+#else
 static char *get_language(void *mapped, size_t size) {
   char *str = NULL;
 
@@ -87,6 +93,7 @@ static char *get_language(void *mapped, size_t size) {
           + filedata->strindex[_NL_ITEM_INDEX(_NL_IDENTIFICATION_LANGUAGE)]);
   return str;
 }
+#endif
 
 LOCALELIST *get_locales_language() {
   LOCALELIST *list = NULL;
@@ -115,7 +122,8 @@ LOCALELIST *get_locales_language() {
           void *mapped = mmap(NULL, st.st_size, PROT_READ,
                   MAP_SHARED, fd, 0);
           if (mapped != MAP_FAILED) {
-            ptr->language_name = mysprintf("%s (%.2s)", get_language(mapped, st.st_size), &ptr->locale_code[3]);
+            char *lang = get_language(mapped, st.st_size);
+            ptr->language_name = mysprintf("%s (%.2s)", lang ? lang : ptr->locale_code, &ptr->locale_code[3]);
             munmap(mapped, st.st_size);
           }
           close(fd);
