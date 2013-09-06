@@ -19,7 +19,7 @@
 
 GETTEXT_PACKAGE = ezinstall
 PACKAGE = ezinstall
-VERSION = 0.0.16
+VERSION = 0.0.17
 
 SHELL = /bin/sh
 
