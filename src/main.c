@@ -49,7 +49,7 @@ void CreateChangeDir(char *dirname, int dir_rename) {
   if (rc == -1) Error(_("Can't chdir to document_root"));
 
   if (dir_rename == __RENAME) {
-    if (strcmp(globaldata.gd_inidata->directory, dirname) == 0) {
+    if (dirname == NULL || strcmp(globaldata.gd_inidata->directory, dirname) == 0) {
       printf(_("No need to rename folder...<br />"));
     } else {
       printf(_("Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
@@ -129,7 +129,7 @@ char *createdir_string = "<form method=\"POST\" action=\"%s?%d\">\n"
         "<td>%s:</td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td><input type='text' name='folder' value='%s' size='32'></td>\n"
+        "<td><input type='text' name='folder' %s value='%s' size='32'></td>\n"
         "</tr>\n"
         "<tr>\n"
         "<td class='submit_row_onecol'><input type='submit' value='%s' name='B1'><input type='reset' value='%s' name='B2'></td>\n"
@@ -145,20 +145,24 @@ void ShowCreateDirPage(void) {
           getfieldbyname("overwrite"),
           getfieldbyname("upload"),
           _("Please edit the destination web folder name"),
+          "",
           globaldata.gd_inidata->directory,
           _("Continue"),
           _("Clear"));
 }
 
 void ShowRenameDirPage(void) {
+  char *dir = globaldata.gd_inidata->directory;
+  int dont_show_edit = dir[0] == '.' && (dir[1] == '\0' || (dir[1] == '/' && dir[2] == '\0'));
   printf(createdir_string, getenv("SCRIPT_NAME"),
           RENAME_FOLDER,
           globaldata.gd_inifile,
           globaldata.gd_inidata->web_archive,
           getfieldbyname("overwrite"),
           getfieldbyname("upload"),
-          _("Please edit the destination web folder name"),
-          globaldata.gd_inidata->directory,
+          dont_show_edit ? "" : _("Please edit the destination web folder name"),
+          dont_show_edit ? "style='display: none'" : "",
+          dir,
           _("Continue"),
           _("Clear"));
 }
