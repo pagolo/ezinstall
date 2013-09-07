@@ -42,7 +42,7 @@ PHPCONF *GetDefine(char *s) {
 STRING *ParsePhp(char *line) {
   STRING *result = NULL;
   static enum PhpState state;
-  char *ptr, *start, *prev, z, quote = '\'';
+  char *ptr, *start, *prev, *string = NULL, z, quote = '\'';
   PHPCONF *var = NULL;
 
   if (state != IN_COMMENT_STD) state = IN_CODE;
@@ -54,8 +54,42 @@ STRING *ParsePhp(char *line) {
         if (state == IN_CODE) {
           state = IN_STRING;
           quote = *ptr;
+          string = &ptr[1];
         } else if (state == IN_STRING && *ptr == quote) {
           state = IN_CODE;
+          *ptr = '\0';
+          string = strdup(string);
+          *ptr = quote;
+          for (var = globaldata.gd_inidata->php_conf_list; var != NULL; var = var->next) {
+            if (strcmp(string, var->varname) == 0) break;
+          }
+          if (string) {
+            free(string);
+            string = NULL;
+          }
+          if (var) {
+            ++ptr;
+            while (isspace(*ptr)) ++ptr; // skip spaces
+            if (ptr[0] != '=' || ptr[1] != '>') { // not an assign
+              --ptr;
+              break;
+            }
+            ++ptr;
+            ++ptr;
+            while (isspace(*ptr)) ++ptr; // skip spaces
+            if (*ptr != '\'' && *ptr != '\"') break;
+            quote = *ptr;
+            z = ptr[1];
+            ptr[1] = '\0'; // backup next char  terminate string
+            appendstring(&result, start);
+            ++ptr;
+            *ptr = z; // restore previous value
+            appendstring(&result, var->varvalue); // insert correct value!
+            //printf("*3*");
+            while (*ptr != quote) ++ptr; // skip default value;
+            start = ptr;
+            break;
+          }
         }
         break;
       case '#':
