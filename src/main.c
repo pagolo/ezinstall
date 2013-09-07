@@ -126,7 +126,7 @@ char *createdir_string = "<form method=\"POST\" action=\"%s?%d\">\n"
         "<input type='hidden' name='upload' value=\"%s\">\n"
         "<table id='createdir_table'>\n"
         "<tr>\n"
-        "<td>%s:</td>\n"
+        "<td>%s%s</td>\n"
         "</tr>\n"
         "<tr>\n"
         "<td><input type='text' name='folder' %s value='%s' size='32'></td>\n"
@@ -145,6 +145,7 @@ void ShowCreateDirPage(void) {
           getfieldbyname("overwrite"),
           getfieldbyname("upload"),
           _("Please edit the destination web folder name"),
+          ":",
           "",
           globaldata.gd_inidata->directory,
           _("Continue"),
@@ -161,6 +162,7 @@ void ShowRenameDirPage(void) {
           getfieldbyname("overwrite"),
           getfieldbyname("upload"),
           dont_show_edit ? "" : _("Please edit the destination web folder name"),
+          dont_show_edit ? "" : ":",
           dont_show_edit ? "style='display: none'" : "",
           dir,
           _("Continue"),
