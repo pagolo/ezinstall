@@ -106,8 +106,15 @@ enum {
    _SKIP_CONFIGFILE = 4
 };
 
+enum {
+  _VARIABLES,
+  _DEFINES,
+  _ARRAY
+};
+
 typedef struct IniData {
    int  flags;          // flags, vedi sopra
+   int  data_mode;      // config data mode (_VARIABLES,_DEFINES,_ARRAY)
    char *directory;     // nome cartella di default
    char *web_archive;   // archivio da scaricare via http
    char *unzip;         // formato archivio

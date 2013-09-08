@@ -175,6 +175,17 @@ int parseConfigNode(xmlDocPtr doc, xmlNodePtr cur) {
       xmlFree(key);
       continue;
     }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "datamode"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      if ((!xmlStrcmp(key, (xmlChar *) "variables")))
+        inidata->data_mode = _VARIABLES;
+      else if ((!xmlStrcmp(key, (xmlChar *) "defines")))
+        inidata->data_mode = _DEFINES;
+      else if ((!xmlStrcmp(key, (xmlChar *) "array")))
+        inidata->data_mode = _ARRAY;
+      xmlFree(key);
+      continue;
+    }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "myuser"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       SetPhpVar((char *) key, globaldata.gd_mysql->username);

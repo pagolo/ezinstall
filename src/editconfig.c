@@ -57,6 +57,8 @@ STRING *ParsePhp(char *line) {
           string = &ptr[1];
         } else if (state == IN_STRING && *ptr == quote) {
           state = IN_CODE;
+          if (globaldata.gd_inidata->data_mode != _ARRAY)
+            break;
           *ptr = '\0';
           string = strdup(string);
           *ptr = quote;
@@ -110,6 +112,7 @@ STRING *ParsePhp(char *line) {
         break;
       case 'd': // search for define
         if (state != IN_CODE) break; // comment, string, ...
+        if (globaldata.gd_inidata->data_mode != _DEFINES) break;
         if (!(var = GetDefine(ptr))) break; // not my var
         *ptr = '\0';
         appendstring(&result, start);
@@ -119,6 +122,7 @@ STRING *ParsePhp(char *line) {
         break;
       case '$':
         if (state != IN_CODE) break; // comment, string, ...
+        if (globaldata.gd_inidata->data_mode != _VARIABLES) break;
         //printf("*1*");
         if (!(var = GetVar(ptr))) break; // not my var
         ++ptr; // skip initial $
