@@ -431,6 +431,7 @@ int main(int argc, char **argv) {
   int action, logged, rc;
   char *ld;
   char *error_read = _("Error reading xml file");
+  static char absolute_path[512];
 
   LIBXML_TEST_VERSION
   
@@ -438,8 +439,10 @@ int main(int argc, char **argv) {
 
   logged = init(action);
   ld = globaldata.gd_locale_path;
+  if (ld && *ld)
+    realpath(ld, absolute_path);
   setlocale(LC_ALL, globaldata.gd_locale_code ? globaldata.gd_locale_code : "");
-  bindtextdomain(PACKAGE, ld && *ld ? ld : MYLOCALEDIR);
+  bindtextdomain(PACKAGE, ld && *ld ? absolute_path : MYLOCALEDIR);
   textdomain(PACKAGE);
 
   printf(HTM_HEADER);
