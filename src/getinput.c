@@ -230,7 +230,7 @@ char *getfieldbyname_sanitize(char *name, int do_sanitize) {
       break;
     }
   }
-  if (do_sanitize) sanitize_xss(rc);
+  if (do_sanitize && rc) sanitize_xss(rc);
   return rc;
 }
 
