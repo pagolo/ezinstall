@@ -163,7 +163,7 @@ void OutputConfigFile(void) {
 
   if (!(fh)) Error(_("can't open php configuration file"));
 
-  printf("<TextArea cols=90 rows=20 name=configfile>\n");
+  printf("<TextArea cols='90' rows='20' name=configfile>\n");
 
   while (fgets(buffer, 512, fh)) {
     STRING *s = ParsePhp(buffer);
@@ -211,7 +211,7 @@ void EditConfigForm(void) {
 }
 
 void SaveConfigFile(void) {
-  char *filebuf = getfieldbyname("configfile");
+  char *filebuf = getfieldbyname_sanitize("configfile", 0);
   FILE *fh;
   int rc;
 

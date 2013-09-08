@@ -199,7 +199,28 @@ FIELD *ParseInput(void) {
   return start;
 }
 
-char *getfieldbyname(char *name) {
+void sanitize_xss(char *string) {
+  char *ptr, quote = '\0';
+  int tag = 0, instring = 0;
+  for (ptr = string; *ptr != '\0'; ptr++) {
+    if (*ptr == '<') tag = 1;
+    if (*ptr == '>' && tag && !instring) tag = 0;
+    if ((*ptr == '\'' || *ptr == '\"') && tag) {
+      if (!instring) {
+        quote = *ptr;
+        instring = 1;
+      }
+      else if (*ptr == quote) {
+        instring = 0;
+      }
+    }
+    if (strncasecmp(ptr,"script",6) == 0 && tag && !instring) {
+      memcpy(ptr, " span ", 6);
+    }
+  }
+}
+
+char *getfieldbyname_sanitize(char *name, int do_sanitize) {
   FIELD *inp;
   char *rc = NULL;
 
@@ -209,7 +230,12 @@ char *getfieldbyname(char *name) {
       break;
     }
   }
+  if (do_sanitize) sanitize_xss(rc);
   return rc;
+}
+
+char *getfieldbyname(char *name) {
+  return getfieldbyname_sanitize(name, 1);
 }
 
 char *getbinarybyname(char *name, int *len) {
