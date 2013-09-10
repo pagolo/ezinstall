@@ -32,18 +32,18 @@ void MySqlForm(void) {
   char *query;
   unsigned int numrows = 0;
 
-  printf("\n<form method=POST action=\"%s?%d\">\n<table>\n",
+  printf("\n<form method='POST' action=\"%s?%d\">\n<table>\n",
           getenv("SCRIPT_NAME"),
           CREATE_DB);
 
-  printf("<input type=hidden name=inifile value=\"%s\">\n"
-          "<input type=hidden name=folder value=\"%s\">\n"
-          "<input type=hidden name=webarchive value=\"%s\">\n",
+  printf("<input type='hidden' name='inifile' value=\"%s\">\n"
+          "<input type='hidden' name='folder' value=\"%s\">\n"
+          "<input type='hidden' name='webarchive' value=\"%s\">\n",
           globaldata.gd_inifile,
           getfieldbyname("folder"),
           globaldata.gd_inidata->web_archive);
 
-  // sezione per men� drop-down
+  // sezione per menu drop-down
   conn = mysql_init(NULL);
   if (!(conn)) Error(_("error initiating MySQL"));
 
@@ -57,12 +57,12 @@ void MySqlForm(void) {
     numrows = mysql_num_rows(res_set);
   }
   if (numrows > 0) {
-    printf("<tr><td colspan=2>%s<hr>&nbsp;</td></tr>\n", _("Please insert a new name or choose an existing database..."));
-    printf("<tr><td align=right width=33%%>%s</td>\n<td><select name=dbases onChange='if (this.value!=\"\") database.value=this.value'>\n<option value=''>%s</option>\n", _("select existing db"), _("database"));
+    printf("<tr><td colspan='2'>%s<hr>&nbsp;</td></tr>\n", _("Please insert a new name or choose an existing database..."));
+    printf("<tr><td style='text-align:right; width:33%%;'>%s</td>\n<td><select name='dbases' onChange='if (this.value!=\"\") database.value=this.value'>\n<option value=''>%s</option>\n", _("select existing db"), _("database"));
     while ((row = mysql_fetch_row(res_set)) != NULL) {
       if (strcmp(row[0], "information_schema") == 0 || strcmp(row[0], "performance_schema") == 0)
         continue;
-      printf("<option value=%s>%s</option>\n", row[0], row[0]);
+      printf("<option value='%s'>%s</option>\n", row[0], row[0]);
     }
     printf("</select>\n</td></tr>");
   }
@@ -70,7 +70,7 @@ void MySqlForm(void) {
   mysql_close(conn);
   // fine sezione per menu
 
-  printf("<tr><td align=right width=33%%>%s</td><td><input type=text name=database value=%s></td></tr>\n", _("database name"), globaldata.gd_mysql->db_name);
+  printf("<tr><td style='text-align:right; width:33%%;'>%s</td><td><input type='text' name='database' value=%s></td></tr>\n", _("database name"), globaldata.gd_mysql->db_name);
 
   printf("<tr><td colspan=2><br />\n<input type=submit value=\"%s\" name=B1><input type=reset value=\"%s\" name=B2></td></tr>\n",
           _("Continue"),
