@@ -42,7 +42,12 @@ utils.o: utils.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix2_lim.h \
  /usr/include/bits/xopen_lim.h /usr/include/linux/param.h \
- /usr/include/asm/param.h /usr/include/asm-generic/param.h
+ /usr/include/asm/param.h /usr/include/asm-generic/param.h \
+ /usr/include/sys/wait.h /usr/include/signal.h /usr/include/bits/signum.h \
+ /usr/include/bits/sigaction.h /usr/include/bits/sigcontext.h \
+ /usr/include/bits/sigstack.h /usr/include/sys/ucontext.h \
+ /usr/include/bits/sigthread.h /usr/include/sys/resource.h \
+ /usr/include/bits/resource.h
 
 main.h:
 
@@ -247,3 +252,23 @@ md5.h:
 /usr/include/asm/param.h:
 
 /usr/include/asm-generic/param.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/signal.h:
+
+/usr/include/bits/signum.h:
+
+/usr/include/bits/sigaction.h:
+
+/usr/include/bits/sigcontext.h:
+
+/usr/include/bits/sigstack.h:
+
+/usr/include/sys/ucontext.h:
+
+/usr/include/bits/sigthread.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/bits/resource.h:

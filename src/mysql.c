@@ -80,16 +80,19 @@ void MySqlForm(void) {
 }
 
 void ExecuteSqlFile(void) {
-  char buffer[256], *command;
+  char buffer[256];
   int rc;
   FILE *fh;
-  FILE *ph;
-
-  command = mysprintf("mysql -h'%s' -u'%s' -p'%s' '%s'",
-          globaldata.gd_mysql->host,
-          globaldata.gd_mysql->username,
-          globaldata.gd_mysql->password,
-          globaldata.gd_mysql->db_name);
+  int pipe[3];
+  int pid;
+  char *args[] = {
+    "mysql",
+    mysprintf("-h%s", globaldata.gd_mysql->host),
+    mysprintf("-u%s", globaldata.gd_mysql->username),
+    mysprintf("-p%s", globaldata.gd_mysql->password),
+    mysprintf("%s", globaldata.gd_mysql->db_name),
+    NULL
+  };
 
   ChDirRoot();
   rc = chdir(getfieldbyname("folder"));
@@ -101,17 +104,27 @@ void ExecuteSqlFile(void) {
       fh = fopen(script->string, "r");
       if (!(fh)) Error(_("can't find sql file"));
 
-      ph = popen(command, "w");
-      if (!(ph)) Error(_("can't execute mysql client..."));
-
-      while (fgets(buffer, 256, fh)) fputs(buffer, ph);
-
+      pid = popenRWE(pipe, args[0], args);
+      if (pid == -1) Error(_("can't execute mysql client..."));
+      
+      FILE *in = fdopen(pipe[0], "w");
+      FILE *err = fdopen(pipe[2], "r");
+      while (fgets(buffer, 256, fh)) fputs(buffer, in);
       fclose(fh);
-      pclose(ph);
+      fclose(in);
+      if (fgets(buffer, 256, err)) {
+        fclose(err);
+        pcloseRWE(pid, pipe);
+        Error(buffer);
+      }
+      fclose(err);
+      pcloseRWE(pid, pipe);
     }
   }
-
-  free(command);
+  if (args[1]) free(args[1]);
+  if (args[2]) free(args[2]);
+  if (args[3]) free(args[3]);
+  if (args[4]) free(args[4]);
 }
 
 void CreateDbTables(void) {

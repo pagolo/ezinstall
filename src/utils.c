@@ -350,7 +350,8 @@ void ChangePermissions(void) {
  * execution it can then write to element 0 (stdin of exe), and read from
  * element 1 (stdout) and 2 (stderr).
  */
-static int popenRWE(int *rwepipe, const char *exe, const char *const argv[]) {
+
+int popenRWE(int *rwepipe, char *exe, char **argv) {
   int in[2];
   int out[2];
   int err[2];
@@ -409,30 +410,11 @@ error_in:
   return -1;
 }
 
-static int pcloseRWE(int pid, int *rwepipe) {
-  int rc, status;
+int pcloseRWE(int pid, int *rwepipe) {
+  int status;
   close(rwepipe[0]);
   close(rwepipe[1]);
   close(rwepipe[2]);
-  rc = waitpid(pid, &status, 0);
+  waitpid(pid, &status, 0);
   return status;
 }
-
-/**
- * example
- int pipe[3];
-    int pid;
-    const char *const args[] = {
-            "cat",
-            "-n",
-            NULL
-    };
-
-    pid = popenRWE(pipe, args[0], args);
-
-    // write to pipe[0] - input to cat
-    // read from pipe[1] - output from cat
-    // read from pipe[2] - errors from cat
-
-    pcloseRWE(pid, pipe);
- */

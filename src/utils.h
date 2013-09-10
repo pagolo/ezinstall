@@ -30,4 +30,7 @@ int graburl(char *url,int permissions, int expand, int tempname);
 void ChangePermissionsRecurse(void);
 void ChangePermissions(void);
 
+//------------------ popenRWE
+int popenRWE(int *, char *, char **);
+int pcloseRWE(int, int *);
 #endif
