@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "main.h"
 #include <dirent.h>
 #include <sys/param.h>
@@ -272,7 +273,17 @@ char *get_current_dir(void) {
   return buffer;
 }
 
-void chmod_recurse(char *dir, int bits) {
+int do_chmod(char *name, STRING *extensions) {
+  STRING *ptr;
+  if (!extensions) return 1;
+  for (ptr = extensions; ptr != NULL; ptr = ptr->next) {
+    if (memmem(name, strlen(name) + 1, ptr->string, strlen(ptr->string) + 1))
+      return 1;
+  }
+  return 0;
+}
+
+void chmod_recurse(char *dir, int bits, STRING *extensions) {
   char *current_dir;
   struct dirent *de;
   struct stat mystat;
@@ -286,10 +297,12 @@ void chmod_recurse(char *dir, int bits) {
   mydir = opendir(".");
   if (mydir) {
     while ((de = readdir(mydir)) && lstat(de->d_name, &mystat) == 0) {
-      if ((strcmp(de->d_name, "..") != 0))
-        chmod(de->d_name, bits);
+      if ((strcmp(de->d_name, "..") != 0)) {
+        if (do_chmod(de->d_name, extensions))
+          chmod(de->d_name, bits);
+      }
       if ((mystat.st_mode & S_IFDIR) && (strcmp(de->d_name, ".") != 0) && (strcmp(de->d_name, "..") != 0))
-        chmod_recurse(de->d_name, bits);
+        chmod_recurse(de->d_name, bits, extensions);
     }
   }
   chdir(current_dir);
@@ -300,7 +313,7 @@ void ChangePermissionsRecurse(void) {
   CHMOD *chm = globaldata.gd_inidata->perm_list_rec;
   while (chm) {
     printf("chmod -R 0%o \"%s\"...<br />", chm->permissions, chm->file);
-    chmod_recurse(chm->file, chm->permissions);
+    chmod_recurse(chm->file, chm->permissions, chm->extensions);
     chm = chm->next;
   }
   if (globaldata.gd_inidata->perm_list_rec && globaldata.gd_loglevel > LOG_NONE)

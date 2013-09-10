@@ -114,7 +114,7 @@ char *setUnzip(char *filename, char *mode) {
   return strdup(buffer);
 }
 
-void addChmod(char *file, char *mode, INIDATA *inidata, int recourse, int createfolder) {
+void addChmod(char *file, char *mode, INIDATA *inidata, int recourse, int createfolder, char *extensions_string) {
   char *z;
   CHMOD *tmp;
   CHMOD *chmd = recourse ? inidata->perm_list_rec : inidata->perm_list;
@@ -123,6 +123,19 @@ void addChmod(char *file, char *mode, INIDATA *inidata, int recourse, int create
   ptr->file = strdup(file);
   ptr->permissions = strtol((const char *) mode, &z, 8);
   ptr->createfolder = createfolder;
+  if (extensions_string && *extensions_string) {
+    char *s = extensions_string;
+    while (1) {
+      char *sep = strchr(s, '|');
+      if (sep) {
+        *sep = '\0';
+        ++sep;
+      }
+      appendstring(&(ptr->extensions), s);
+      if (sep) s = sep;
+      else break;
+    }
+  }
 
   if (chmd == NULL) {
     if (recourse) inidata->perm_list_rec = ptr;
@@ -135,7 +148,7 @@ void addChmod(char *file, char *mode, INIDATA *inidata, int recourse, int create
 }
 
 int parsePermissionsNode(xmlDocPtr doc, xmlNodePtr cur) {
-  xmlChar *file, *mode, *createfolder;
+  xmlChar *file, *mode, *createfolder, *extensions;
   cur = cur->xmlChildrenNode;
   INIDATA *inidata = globaldata.gd_inidata;
 
@@ -144,9 +157,12 @@ int parsePermissionsNode(xmlDocPtr doc, xmlNodePtr cur) {
       file = xmlGetProp(cur, (xmlChar *) "fsobject");
       mode = xmlGetProp(cur, (xmlChar *) "mode");
       createfolder = xmlGetProp(cur, (xmlChar *) "createfolder");
-      addChmod((char *) file, (char *) mode, inidata, (!xmlStrcmp(cur->name, (xmlChar *) "chmod")) ? FALSE : TRUE, (xmlStrcmp(createfolder, (xmlChar *)"yes") == 0) ? 1 : 0);
+      extensions = xmlGetProp(cur, (xmlChar *) "extensions");
+      addChmod((char *) file, (char *) mode, inidata, (!xmlStrcmp(cur->name, (xmlChar *) "chmod")) ? FALSE : TRUE, (xmlStrcmp(createfolder, (xmlChar *)"yes") == 0) ? 1 : 0, (char *)extensions);
       if (file) xmlFree(file);
       if (mode) xmlFree(mode);
+      if (createfolder) xmlFree(createfolder);
+      if (extensions) xmlFree(extensions);
     }
     cur = cur->next;
   }
