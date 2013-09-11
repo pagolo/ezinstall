@@ -34,6 +34,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <semaphore.h>
 #include <time.h>
 #include <fcntl.h>
 #include <libgen.h>
