@@ -7,6 +7,10 @@
 #define CONFIG_NAME_ROOT "../../ezinstall.xml"
 #define LOG_NAME        "ezinstall.log"
 #define TEMP_MARK       "<ezinstall_temporary_file />\r\n"
+#define PATH_SIZE       512
+#define SHARED_MEM_SIZE 2048
+
+#define _XOPEN_SOURCE_EXTENDED 1
 
 #include "../config.h"
 #include "conditions.h"
@@ -138,15 +142,25 @@ enum {
    LOG_1
 };
 
+typedef struct MySemaphore {
+  key_t sem_key; // chiave del semaforo
+  sem_t *sem_sem; // struttura del semaforo
+  char *sem_name; // nome del semaforo
+  char *sem_buffer; // buffer di memoria condivisa
+  int sem_buffer_id; // buffer di memoria condivisa
+} MYSEMAPHORE;
+
 typedef struct GlobalData {
    USER *gd_userdata;  // nome utente loggato
    MYSQLDATA *gd_mysql;// dati per uso mysql
+   MYSEMAPHORE *gd_semaphore; // dati per l'uso del semaforo
    char *gd_iniaddress;// indirizzo web del file da scaricare
    char *gd_inifile;   // nome file ini scaricato
    INIDATA *gd_inidata;// configurazione da file ini scaricato
    char *gd_error;     // stringa di errore
    char *gd_locale_code;//codice tipo it_IT.UTF8
    char *gd_locale_path;//codice tipo it_IT.UTF8
+   char *gd_start_path; //cartella iniziale di lavoro
    int  gd_header_sent;// intestazione inviata?
    int  gd_config_root;// configurazione nella cartella superiore della superiore (../../)
    int  gd_loglevel;   // livello di log da utilizzare

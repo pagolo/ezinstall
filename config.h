@@ -37,6 +37,9 @@
 /* Define to 1 if you have the `mysqlclient' library (-lmysqlclient). */
 #define HAVE_LIBMYSQLCLIENT 1
 
+/* Define to 1 if you have the `pthread' library (-lpthread). */
+#define HAVE_LIBPTHREAD 1
+
 /* Define to 1 if you have the `xml2' library (-lxml2). */
 #define HAVE_LIBXML2 1
 

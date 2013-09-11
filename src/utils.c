@@ -335,6 +335,30 @@ void ChangePermissions(void) {
     WriteLog(_("permissions setup"));
 }
 
+void StartSemaphore(void) {
+  time_t mytime = time(NULL);
+  char *mypath = mysprintf("%s/%s", globaldata.gd_start_path, globaldata.gd_config_root ? CONFIG_NAME_ROOT : CONFIG_NAME);
+  if (!mypath)
+    return;
+  if (!(globaldata.gd_semaphore = calloc(sizeof(MYSEMAPHORE), 1)))
+    return;
+  globaldata.gd_semaphore->sem_key = ftok(mypath, (int)mytime);
+  globaldata.gd_semaphore->sem_name = mysprintf("%ld", mytime);
+  globaldata.gd_semaphore->sem_sem = sem_open(globaldata.gd_semaphore->sem_name,O_CREAT,0644,1);
+  globaldata.gd_semaphore->sem_buffer_id = shmget(globaldata.gd_semaphore->sem_key, SHARED_MEM_SIZE, IPC_CREAT|0666);
+  globaldata.gd_semaphore->sem_buffer = shmat(globaldata.gd_semaphore->sem_buffer_id, NULL, 0);
+}
+void EndSemaphore(void) {
+  if (!globaldata.gd_semaphore)
+    return;
+  if (globaldata.gd_semaphore->sem_sem)
+    sem_close(globaldata.gd_semaphore->sem_sem);
+  if (globaldata.gd_semaphore->sem_name)
+    sem_unlink(globaldata.gd_semaphore->sem_name);
+  if (globaldata.gd_semaphore->sem_buffer)
+    shmctl(globaldata.gd_semaphore->sem_buffer_id, IPC_RMID, 0);
+  free(globaldata.gd_semaphore);
+}
 /**
  * Copyright 2009-2010 Bart Trojanowski <bart@jukie.net>
  * Licensed under GPLv2, or later, at your choosing.

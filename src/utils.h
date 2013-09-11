@@ -33,4 +33,8 @@ void ChangePermissions(void);
 //------------------ popenRWE
 int popenRWE(int *, char *, char **);
 int pcloseRWE(int, int *);
+
+//------------------ start/end semaphore
+void StartSemaphore(void);
+void EndSemaphore(void);
 #endif

@@ -33,9 +33,13 @@ login.o: login.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/bits/in.h /usr/include/rpc/netdb.h \
  /usr/include/bits/netdb.h /usr/include/sys/stat.h \
  /usr/include/bits/stat.h /usr/include/sys/mman.h \
- /usr/include/bits/mman.h /usr/include/fcntl.h /usr/include/bits/fcntl.h \
- /usr/include/libgen.h utils.h socket.h login.h session.h configure.h \
- mylocale.h getinput.h mysql.h editconfig.h test.h xml.h md5.h
+ /usr/include/bits/mman.h /usr/include/sys/ipc.h \
+ /usr/include/bits/ipctypes.h /usr/include/bits/ipc.h \
+ /usr/include/sys/shm.h /usr/include/bits/shm.h /usr/include/semaphore.h \
+ /usr/include/bits/semaphore.h /usr/include/fcntl.h \
+ /usr/include/bits/fcntl.h /usr/include/libgen.h utils.h socket.h login.h \
+ session.h configure.h mylocale.h getinput.h mysql.h editconfig.h test.h \
+ xml.h md5.h
 
 main.h:
 
@@ -188,6 +192,20 @@ conditions.h:
 /usr/include/sys/mman.h:
 
 /usr/include/bits/mman.h:
+
+/usr/include/sys/ipc.h:
+
+/usr/include/bits/ipctypes.h:
+
+/usr/include/bits/ipc.h:
+
+/usr/include/sys/shm.h:
+
+/usr/include/bits/shm.h:
+
+/usr/include/semaphore.h:
+
+/usr/include/bits/semaphore.h:
 
 /usr/include/fcntl.h:
 

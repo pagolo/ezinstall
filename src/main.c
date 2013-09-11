@@ -16,6 +16,7 @@ void Error(char *msg) {
   printf("<br /><a href='javascript:history.back()'>%s</a><br />", _("BACK"));
   printf(HTM_FOOTER);
   xmlCleanupParser();
+  EndSemaphore();
   exit(5);
 }
 
@@ -427,6 +428,13 @@ int ReadAction(int argc, char **argv) {
   return ACTION_START;
 }
 
+void GetStartPath(void) {
+  char *path = malloc(PATH_SIZE);
+  if (!path) return;
+  if (!(getcwd(path, PATH_SIZE))) return;
+  globaldata.gd_start_path = path;
+}
+
 int main(int argc, char **argv) {
   int action, logged, rc;
   char *ld;
@@ -435,6 +443,8 @@ int main(int argc, char **argv) {
 
   LIBXML_TEST_VERSION
   
+  GetStartPath();
+
   action = ReadAction(argc, argv);
 
   logged = init(action);
@@ -453,7 +463,7 @@ int main(int argc, char **argv) {
     printf(HTM_FOOTER);
     return 0;
   }
-
+  StartSemaphore();
   switch (action) {
     case ACTION_START:
     {
@@ -584,6 +594,8 @@ int main(int argc, char **argv) {
   printf(HTM_FOOTER);
 
   xmlCleanupParser();
+  
+  EndSemaphore();
 
   return 0;
 }

@@ -41,6 +41,8 @@ fi
 AC_CHECK_LIB([mysqlclient], [main])
 # FIXME: Replace `main' with a function in `-lxml2':
 AC_CHECK_LIB([xml2], [main])
+# FIXME: Replace `main' with a function in `-lpthread':
+AC_CHECK_LIB([pthread], [main])
 
 AC_CHECK_HEADERS([fcntl.h limits.h memory.h netdb.h netinet/in.h stdlib.h string.h sys/param.h sys/socket.h unistd.h])
 xml2_config=''
