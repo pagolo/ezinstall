@@ -435,6 +435,23 @@ void GetStartPath(void) {
   globaldata.gd_start_path = path;
 }
 
+void daemonize(void) {
+  int i;
+  if (getppid() == 1) return; /* already a daemon */
+  i = fork();
+  if (i < 0) exit(1); /* fork error */
+  if (i > 0) return; /* parent exits */
+  /* child (daemon) continues */
+  setsid(); /* obtain a new process group */
+  for (i = getdtablesize(); i >= 0; --i) close(i); /* close all descriptors */
+  i = open("/dev/null", O_RDWR);
+  dup(i);
+  dup(i); /* handle standart I/O */
+  umask(027); /* set newly created file permissions */
+  DownloadExtractArchiveFile();
+  exit(0);
+}
+
 int main(int argc, char **argv) {
   int action, logged, rc;
   char *ld;
@@ -498,7 +515,7 @@ int main(int argc, char **argv) {
       }        // altrimenti scaricare il file...
       else {
         ChDirRoot();
-        DownloadExtractArchiveFile();
+        daemonize();
         ShowRenameDirPage();
       }
       break;
