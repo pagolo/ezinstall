@@ -1,5 +1,6 @@
 #define _GNU_SOURCE
 #include "main.h"
+#include <assert.h>
 #include <dirent.h>
 #include <sys/param.h>
 #include <sys/types.h>
@@ -345,8 +346,30 @@ void StartSemaphore(void) {
   globaldata.gd_semaphore->sem_key = ftok(mypath, (int)mytime);
   globaldata.gd_semaphore->sem_name = mysprintf("%ld", mytime);
   globaldata.gd_semaphore->sem_sem = sem_open(globaldata.gd_semaphore->sem_name,O_CREAT,0644,1);
+  if(globaldata.gd_semaphore->sem_sem == SEM_FAILED)
+    {
+      sem_unlink(globaldata.gd_semaphore->sem_name);
+      Error(_("unable to create semaphore"));
+    }
   globaldata.gd_semaphore->sem_buffer_id = shmget(globaldata.gd_semaphore->sem_key, SHARED_MEM_SIZE, IPC_CREAT|0666);
+  if(globaldata.gd_semaphore->sem_buffer_id < 0)
+    {
+      Error(_("failure in shmget"));
+    }
   globaldata.gd_semaphore->sem_buffer = shmat(globaldata.gd_semaphore->sem_buffer_id, NULL, 0);
+  globaldata.gd_semaphore->sem_buffer[0] = '\0';
+}
+void AddSemaphoreText(char *s) {
+  sem_wait(globaldata.gd_semaphore->sem_sem);
+  if (strlen(globaldata.gd_semaphore->sem_buffer) + strlen(s) + 1 > SHARED_MEM_SIZE) {
+    sem_post(globaldata.gd_semaphore->sem_sem);
+    return;
+  }
+  strcat(globaldata.gd_semaphore->sem_buffer, s);
+  sem_post(globaldata.gd_semaphore->sem_sem);
+}
+void EndSemaphoreText(void) {
+  AddSemaphoreText("\n.\n---");
 }
 void EndSemaphore(void) {
   if (!globaldata.gd_semaphore)

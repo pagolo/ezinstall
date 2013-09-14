@@ -68,7 +68,8 @@ enum {
    ACTION_DELTEMP,
    ACTION_EDITCONF,
    ACTION_SAVECONF,
-   ACTION_EXIT
+   ACTION_EXIT,
+   SEMAPHORE_CLIENT=200
 };
 
 typedef struct UserData {
@@ -161,6 +162,7 @@ typedef struct GlobalData {
    char *gd_locale_code;//codice tipo it_IT.UTF8
    char *gd_locale_path;//codice tipo it_IT.UTF8
    char *gd_start_path; //cartella iniziale di lavoro
+   int  gd_action;      //azione da eseguire
    int  gd_header_sent;// intestazione inviata?
    int  gd_config_root;// configurazione nella cartella superiore della superiore (../../)
    int  gd_loglevel;   // livello di log da utilizzare

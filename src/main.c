@@ -3,6 +3,7 @@
 #include <libxml/parser.h>
 
 #define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>&nbsp;<br />\n"
+#define HTM_HEADER_CLIENT "Content-type: text/html\r\n\r\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n<meta http-equiv=\"refresh\" content=\"1; URL=%s?%s\">\n</head>\n<body>\n"
 #define HTM_FOOTER "</body></html>\n"
 
 GLOBAL globaldata;
@@ -75,7 +76,7 @@ int DownloadExtractArchiveFile(void) {
   if (is_upload()) {
     filename = globaldata.gd_inidata->web_archive;
   } else {
-    printf(_("Downloading archive...<br />"));
+    AddSemaphoreText(_("Downloading archive...<br />"));
     rc = graburl(globaldata.gd_inidata->web_archive, 0644, 0, 0);
     if (rc == 0) Error(_("Can't download the script archive"));
     filename = basename(globaldata.gd_inidata->web_archive);
@@ -83,7 +84,7 @@ int DownloadExtractArchiveFile(void) {
 
   command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
 
-  printf(_("Uncompressing archive...<br />"));
+  AddSemaphoreText(_("Uncompressing archive...<br />"));
 
   if (execute(command)) {
     if (globaldata.gd_loglevel > LOG_NONE)
@@ -425,6 +426,10 @@ int ReadAction(int argc, char **argv) {
   if (strcasecmp("editconf", argv[1]) == 0) return ACTION_EDITCONF;
   if (strcasecmp("saveconf", argv[1]) == 0) return ACTION_SAVECONF;
   if (strcasecmp("exit", argv[1]) == 0) return ACTION_EXIT;
+  if (strstr(argv[1], "client") == argv[1]) {
+    // TODO: semaphore initialization
+    return SEMAPHORE_CLIENT;
+  } 
   return ACTION_START;
 }
 
@@ -434,8 +439,51 @@ void GetStartPath(void) {
   if (!(getcwd(path, PATH_SIZE))) return;
   globaldata.gd_start_path = path;
 }
+// TODO: tutto più accurato!!!!!
+int semaphore_client_main(int argc, char **argv) {
+  sem_t *mutex;
+  key_t key = (key_t)atoi(argv[2]);
+  int shmid;
+  char *text;
 
-void daemonize(void) {
+  //name[0] = '\0';
+  //++name;
+  //key = (key_t)atol(key_s);
+  
+  printf(HTM_HEADER_CLIENT, getenv("SCRIPT_NAME"), getenv("QUERY_STRING"));
+  printf(argv[3]);
+  mutex = sem_open(argv[3],0,0644,0);
+  if(mutex == SEM_FAILED)
+    {
+      printf(_("client:unable to execute semaphore"));
+      sem_close(mutex);
+      exit(-1);
+    }
+  shmid = shmget(key,SHARED_MEM_SIZE,0666);
+  if(shmid<0)
+    {
+      printf(_("client:failure in shmget"));
+     sem_close(mutex);
+       exit(-1);
+    }
+  text = shmat(shmid,NULL,0);
+  globaldata.gd_header_sent = 1;
+  sem_wait(mutex);
+  printf(text);
+  sem_post(mutex);
+  printf(HTM_FOOTER);
+  sem_close(mutex);
+  shmctl(shmid, IPC_RMID, 0);
+  exit(0);
+}
+
+void SemaphorePrepare() {
+  printf("<div><iframe src='ezinstall.cgi?client+%d+%s'></iframe></div>\n",
+          globaldata.gd_semaphore->sem_key,
+          globaldata.gd_semaphore->sem_name);
+}
+
+void Daemonize(void) {
   int i;
   if (getppid() == 1) return; /* already a daemon */
   i = fork();
@@ -448,7 +496,13 @@ void daemonize(void) {
   dup(i);
   dup(i); /* handle standart I/O */
   umask(027); /* set newly created file permissions */
-  DownloadExtractArchiveFile();
+  
+  switch (globaldata.gd_action) {
+    case UPLOAD_CONFIG:
+    case DOWNLOAD_CONFIG:
+      DownloadExtractArchiveFile();
+      break;
+  }
   exit(0);
 }
 
@@ -462,7 +516,7 @@ int main(int argc, char **argv) {
   
   GetStartPath();
 
-  action = ReadAction(argc, argv);
+  globaldata.gd_action = action = ReadAction(argc, argv);
 
   logged = init(action);
   ld = globaldata.gd_locale_path;
@@ -472,6 +526,11 @@ int main(int argc, char **argv) {
   bindtextdomain(PACKAGE, ld && *ld ? absolute_path : MYLOCALEDIR);
   textdomain(PACKAGE);
 
+  if (action == SEMAPHORE_CLIENT)
+    semaphore_client_main(argc, argv);
+
+  StartSemaphore();
+
   printf(HTM_HEADER);
   globaldata.gd_header_sent = 1;
 
@@ -480,7 +539,7 @@ int main(int argc, char **argv) {
     printf(HTM_FOOTER);
     return 0;
   }
-  StartSemaphore();
+
   switch (action) {
     case ACTION_START:
     {
@@ -515,7 +574,8 @@ int main(int argc, char **argv) {
       }        // altrimenti scaricare il file...
       else {
         ChDirRoot();
-        daemonize();
+        SemaphorePrepare();
+        Daemonize();
         ShowRenameDirPage();
       }
       break;
