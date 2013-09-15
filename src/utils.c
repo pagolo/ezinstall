@@ -357,7 +357,7 @@ void StartSemaphore(void) {
       Error(_("failure in shmget"));
     }
   globaldata.gd_semaphore->sem_buffer = shmat(globaldata.gd_semaphore->sem_buffer_id, NULL, 0);
-  globaldata.gd_semaphore->sem_buffer[0] = '\0';
+  strcpy(globaldata.gd_semaphore->sem_buffer, "\n<ul>\n");
 }
 void AddSemaphoreText(char *s) {
   sem_wait(globaldata.gd_semaphore->sem_sem);
@@ -369,7 +369,9 @@ void AddSemaphoreText(char *s) {
   sem_post(globaldata.gd_semaphore->sem_sem);
 }
 void EndSemaphoreText(void) {
-  AddSemaphoreText(_(SEMAPHORE_END));
+  char *se = mysprintf("<li>%s</li>\n</ul>\n", _(SEMAPHORE_END));
+  AddSemaphoreText(se);
+  if (se) free(se);
 }
 void HandleSemaphoreText(char *text, STRING **list, int append) {
   STRING *ptr = *list;
@@ -383,7 +385,9 @@ void HandleSemaphoreText(char *text, STRING **list, int append) {
   }
   globaldata.gd_semaphore->sem_buffer[0] = '\0'; // empty string
   for (ptr = *list; ptr != NULL; ptr = ptr->next) {
-    AddSemaphoreText(ptr->string);
+    char *li = mysprintf("<li>%s</li>\n", ptr->string);
+    AddSemaphoreText(li);
+    if (li) free(li);
   }
 }
 void EndSemaphore(void) {
