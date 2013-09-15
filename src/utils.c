@@ -371,6 +371,21 @@ void AddSemaphoreText(char *s) {
 void EndSemaphoreText(void) {
   AddSemaphoreText(_(SEMAPHORE_END));
 }
+void HandleSemaphoreText(char *text, STRING **list, int append) {
+  STRING *ptr = *list;
+  if (ptr == NULL || append) {
+    appendstring(list, text);
+  }
+  else { // modify last
+    while (ptr->next) ptr = ptr->next;
+    free(ptr->string);
+    ptr->string = strdup(text);
+  }
+  globaldata.gd_semaphore->sem_buffer[0] = '\0'; // empty string
+  for (ptr = *list; ptr != NULL; ptr = ptr->next) {
+    AddSemaphoreText(ptr->string);
+  }
+}
 void EndSemaphore(void) {
   if (!globaldata.gd_semaphore)
     return;

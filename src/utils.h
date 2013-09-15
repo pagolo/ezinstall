@@ -39,4 +39,5 @@ void StartSemaphore(void);
 void EndSemaphore(void);
 void AddSemaphoreText(char *s);
 void EndSemaphoreText();
+void HandleSemaphoreText(char *text, STRING **list, int append);
 #endif

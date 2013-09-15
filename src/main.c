@@ -73,11 +73,12 @@ int DownloadExtractArchiveFile(void) {
   int rc;
   char *command;
   char *filename;
+  STRING *list = NULL;
 
   if (is_upload()) {
     filename = globaldata.gd_inidata->web_archive;
   } else {
-    AddSemaphoreText(_("Downloading archive...<br />"));
+    HandleSemaphoreText(_("Downloading archive...<br />"), &list, 1);
     rc = graburl(globaldata.gd_inidata->web_archive, 0644, 0, 0);
     if (rc == 0) Error(_("Can't download the script archive"));
     filename = basename(globaldata.gd_inidata->web_archive);
@@ -85,7 +86,7 @@ int DownloadExtractArchiveFile(void) {
 
   command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
 
-  AddSemaphoreText(_("Uncompressing archive...<br />"));
+  HandleSemaphoreText(_("Uncompressing archive...<br />"), &list, 1);
 
   if (execute(command)) {
     if (globaldata.gd_loglevel > LOG_NONE)
@@ -93,7 +94,8 @@ int DownloadExtractArchiveFile(void) {
     unlink(filename);
   }
   free(command);
-
+  freestringlist(list);
+          
   return 1;
 }
 
