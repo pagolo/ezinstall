@@ -288,7 +288,9 @@ ezinstalldoc_DATA = \
 	NEWS
 
 ezinstallcssdir = ${prefix}/public_html
-ezinstallcss_DATA = ezinstall.css
+ezinstallcss_DATA = ezinstall.css\
+                    ezinstall.js
+
 ezinstallcfgdir = ${prefix}/public_html/cgi-bin
 ezinstallcfg_DATA = ezinstall.xml
 INTLTOOL_FILES = intltool-extract.in \

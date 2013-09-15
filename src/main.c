@@ -3,8 +3,8 @@
 #include <libxml/parser.h>
 #include <errno.h>
 
-#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>&nbsp;<br />\n"
-#define HTM_HEADER_CLIENT "Content-type: text/html\r\n\r\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n"
+#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n<script type=\"text/javascript\" src=\"/ezinstall.js\"></script>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>&nbsp;<br />\n"
+#define HTM_HEADER_CLIENT "Content-type: text/html\r\n\r\n"
 #define HTM_FOOTER "</body></html>\n"
 
 GLOBAL globaldata;
@@ -455,7 +455,8 @@ int semaphore_client_main(int argc, char **argv) {
   if(mutex == SEM_FAILED)
     {
       //printf(_("client:unable to execute semaphore"));
-    printf("%s<br />", strerror(errno));
+    //printf("%s<br />", strerror(errno));
+    printf("*");
       sem_close(mutex);
       exit(-1);
     }
@@ -472,6 +473,7 @@ int semaphore_client_main(int argc, char **argv) {
   printf(text);
   if (strstr(text, _(SEMAPHORE_END))) *text = '*';
   sem_post(mutex);
+  /*
   printf("<script>\n%s\n", "cont = window.parent.document.getElementById('continue');");
   if (*text != '*') {
     printf("%s\n", "setTimeout(function(){location.reload(true);},1000);");
@@ -481,7 +483,8 @@ int semaphore_client_main(int argc, char **argv) {
     printf("%s\n", "cont.disabled = false;");
   }
   printf("</script>\n");
-  printf(HTM_FOOTER);
+  */
+  //printf(HTM_FOOTER);
   sem_close(mutex);
   //shmctl(shmid, IPC_RMID, 0);
   exit(0);
@@ -490,9 +493,7 @@ int semaphore_client_main(int argc, char **argv) {
 void SemaphorePrepare() {
   StartSemaphore();
   globaldata.gd_semaphore->sem_keep = 1;
-  printf("<div><iframe src='ezinstall.cgi?client+%d+%s'></iframe></div>\n",
-          globaldata.gd_semaphore->sem_key,
-          globaldata.gd_semaphore->sem_name);
+  printf("<div id='from_semaphore'></div>&nbsp;<br />\n");  
 }
 
 void Daemonize(void) {
@@ -681,6 +682,13 @@ int main(int argc, char **argv) {
     default:
       break;
   }
+
+  // do ajax script
+  if (globaldata.gd_semaphore && globaldata.gd_semaphore->sem_keep)
+    printf("<script type=\"text/javascript\">do_ajax('client',%d,'%s','%s')</script>\n",
+          globaldata.gd_semaphore->sem_key,
+          globaldata.gd_semaphore->sem_name,
+          getenv("SCRIPT_NAME"));
 
   printf(HTM_FOOTER);
 
