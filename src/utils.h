@@ -25,6 +25,7 @@ char *get_ini_upload(void);
 int get_zip_upload(void);
 char *get_ini_name(int argc, char **argv);
 int graburl(char *url,int permissions, int expand, int tempname);
+int graburl_list(char *url,int permissions, int expand, int tempname, STRING **list);
 
 //------------------ PERMISSIONS
 void ChangePermissionsRecurse(void);

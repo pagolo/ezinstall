@@ -1,8 +1,7 @@
 #include "main.h"
 
 /*********************************************/
-// controlla se il protocollo � HTTP e la risposta 200
-
+// controlla se il protocollo è HTTP e la risposta 200
 int check_data(char *Buffer) {
   int i;
   char *ptr = Buffer, *protocol = NULL, *response = NULL;
@@ -22,6 +21,13 @@ int check_data(char *Buffer) {
   if (strncmp(protocol, "HTTP/", 5) != 0) return 0;
   if (response == NULL || atoi(response) != 200) return 0;
   return 1;
+}
+
+int get_length(char *Buffer) {
+  char *ptr = strstr(Buffer, "Content-Length:");
+  if (!ptr) return 0;
+  ptr = &ptr[sizeof("Content-Length:")];
+  return atoi(ptr);
 }
 
 /*********************************************/
@@ -62,12 +68,13 @@ int create_file(char *filename, int mask) {
 // dall'host di nome remote_host
 // gli da' nome filename con i permessi unix mask
 
-int Download(int hSocket, char *remote_host, char *remote_file, char *filename, int mask) {
+int Download(int hSocket, char *remote_host, char *remote_file, char *filename, int mask, STRING **list) {
   int fd = NO_FILE;
   static char StrBuf[DATBUF_SIZE];
   static char Buffer[DATBUF_SIZE];
   char *dat = NULL;
   int rc = 0, done = 0;
+  int total = 0, sum = 0;
 
   if (hSocket == NO_SOCKET) return rc;
 
@@ -87,6 +94,7 @@ int Download(int hSocket, char *remote_host, char *remote_file, char *filename, 
       dat = strstr(Buffer, "\r\n\r\n");
       if (!dat) break;
       *dat = '\0';
+      total = get_length(Buffer);
       len = strlen(Buffer) + 4;
       rc -= len;
       buf = &dat[4];
@@ -97,7 +105,14 @@ int Download(int hSocket, char *remote_host, char *remote_file, char *filename, 
         Error(_( "Can't create archive file"));
       }
     }
+    sum += rc;
     write(fd, buf, rc);
+    if (list && total) {
+      int x = (sum * 100) / total;
+      char *s = mysprintf(_("Downloading archive (%d%%)"), x > 100 ? 100 : x);
+      HandleSemaphoreText(s, list, 0);
+      if (s) free(s);
+    }
   }
   // if temp file write a newline at end of file
   if (!filename && fd != NO_FILE) write(fd, "\n", 1);

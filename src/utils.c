@@ -240,6 +240,10 @@ int get_zip_upload(void) {
 }
 
 int graburl(char *url, int permissions, int expand, int tempname) {
+  return graburl_list(url, permissions, expand, tempname, NULL);
+}
+
+int graburl_list(char *url, int permissions, int expand, int tempname, STRING **list) {
   int success = 0;
   SOCKET sock;
   char *z = NULL, *site = NULL, *dir = NULL;
@@ -258,7 +262,7 @@ int graburl(char *url, int permissions, int expand, int tempname) {
   sock = OpenConnection(site, 0, 80, 0);
   if (!(sock)) return 0;
 
-  success = Download(sock, site, dir, tempname ? NULL : basename(url), permissions);
+  success = Download(sock, site, dir, tempname ? NULL : basename(url), permissions, list);
   CloseConnection(sock);
   if (site) free(site);
 

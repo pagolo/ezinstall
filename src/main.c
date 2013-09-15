@@ -79,7 +79,7 @@ int DownloadExtractArchiveFile(void) {
     filename = globaldata.gd_inidata->web_archive;
   } else {
     HandleSemaphoreText(_("Downloading archive...<br />"), &list, 1);
-    rc = graburl(globaldata.gd_inidata->web_archive, 0644, 0, 0);
+    rc = graburl_list(globaldata.gd_inidata->web_archive, 0644, 0, 0, &list);
     if (rc == 0) Error(_("Can't download the script archive"));
     filename = basename(globaldata.gd_inidata->web_archive);
   }

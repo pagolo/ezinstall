@@ -7,6 +7,6 @@
 
 int OpenConnection(char *hostname, unsigned long ip, int port, int nonblock);
 void CloseConnection(SOCKET sock);
-int Download(int hSocket, char *remote_host, char *remote_file, char *filename, int mask);
+int Download(int hSocket, char *remote_host, char *remote_file, char *filename, int mask, STRING **list);
 
 #endif
