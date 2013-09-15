@@ -6,7 +6,7 @@
 #define CONFIG_NAME     "ezinstall.xml"
 #define CONFIG_NAME_ROOT "../../ezinstall.xml"
 #define LOG_NAME        "ezinstall.log"
-#define TEMP_MARK       "<ezinstall_temporary_file />\r\n"
+#define SEMAPHORE_END   "\nDONE..."
 #define PATH_SIZE       512
 #define SHARED_MEM_SIZE 2048
 
@@ -149,6 +149,7 @@ typedef struct MySemaphore {
   char *sem_name; // nome del semaforo
   char *sem_buffer; // buffer di memoria condivisa
   int sem_buffer_id; // buffer di memoria condivisa
+  int sem_keep; // NON terminare il semaforo
 } MYSEMAPHORE;
 
 typedef struct GlobalData {

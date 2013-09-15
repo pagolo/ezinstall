@@ -37,4 +37,6 @@ int pcloseRWE(int, int *);
 //------------------ start/end semaphore
 void StartSemaphore(void);
 void EndSemaphore(void);
+void AddSemaphoreText(char *s);
+void EndSemaphoreText();
 #endif

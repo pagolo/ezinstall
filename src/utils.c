@@ -369,7 +369,7 @@ void AddSemaphoreText(char *s) {
   sem_post(globaldata.gd_semaphore->sem_sem);
 }
 void EndSemaphoreText(void) {
-  AddSemaphoreText("\n.\n---");
+  AddSemaphoreText(_(SEMAPHORE_END));
 }
 void EndSemaphore(void) {
   if (!globaldata.gd_semaphore)

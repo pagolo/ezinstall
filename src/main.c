@@ -1,9 +1,10 @@
 #include "main.h"
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <errno.h>
 
 #define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>&nbsp;<br />\n"
-#define HTM_HEADER_CLIENT "Content-type: text/html\r\n\r\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n<meta http-equiv=\"refresh\" content=\"1; URL=%s?%s\">\n</head>\n<body>\n"
+#define HTM_HEADER_CLIENT "Content-type: text/html\r\n\r\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n</head>\n<body>\n"
 #define HTM_FOOTER "</body></html>\n"
 
 GLOBAL globaldata;
@@ -134,7 +135,7 @@ char *createdir_string = "<form method=\"POST\" action=\"%s?%d\">\n"
         "<td><input type='text' name='folder' %s value='%s' size='32'></td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td class='submit_row_onecol'><input type='submit' value='%s' name='B1'><input type='reset' value='%s' name='B2'></td>\n"
+        "<td class='submit_row_onecol'><input id='continue' type='submit' value='%s' name='B1'><input type='reset' value='%s' name='B2'></td>\n"
         "</tr>\n"
         "</table>\n"
         "</form>";
@@ -439,23 +440,20 @@ void GetStartPath(void) {
   if (!(getcwd(path, PATH_SIZE))) return;
   globaldata.gd_start_path = path;
 }
-// TODO: tutto più accurato!!!!!
+
 int semaphore_client_main(int argc, char **argv) {
   sem_t *mutex;
   key_t key = (key_t)atoi(argv[2]);
   int shmid;
   char *text;
 
-  //name[0] = '\0';
-  //++name;
-  //key = (key_t)atol(key_s);
-  
-  printf(HTM_HEADER_CLIENT, getenv("SCRIPT_NAME"), getenv("QUERY_STRING"));
-  printf(argv[3]);
+  printf(HTM_HEADER_CLIENT);
+
   mutex = sem_open(argv[3],0,0644,0);
   if(mutex == SEM_FAILED)
     {
-      printf(_("client:unable to execute semaphore"));
+      //printf(_("client:unable to execute semaphore"));
+    printf("%s<br />", strerror(errno));
       sem_close(mutex);
       exit(-1);
     }
@@ -470,14 +468,26 @@ int semaphore_client_main(int argc, char **argv) {
   globaldata.gd_header_sent = 1;
   sem_wait(mutex);
   printf(text);
+  if (strstr(text, _(SEMAPHORE_END))) *text = '*';
   sem_post(mutex);
+  printf("<script>\n%s\n", "cont = window.parent.document.getElementById('continue');");
+  if (*text != '*') {
+    printf("%s\n", "setTimeout(function(){location.reload(true);},1000);");
+    printf("%s\n", "cont.disabled = true;");
+  }
+  else {
+    printf("%s\n", "cont.disabled = false;");
+  }
+  printf("</script>\n");
   printf(HTM_FOOTER);
   sem_close(mutex);
-  shmctl(shmid, IPC_RMID, 0);
+  //shmctl(shmid, IPC_RMID, 0);
   exit(0);
 }
 
 void SemaphorePrepare() {
+  StartSemaphore();
+  globaldata.gd_semaphore->sem_keep = 1;
   printf("<div><iframe src='ezinstall.cgi?client+%d+%s'></iframe></div>\n",
           globaldata.gd_semaphore->sem_key,
           globaldata.gd_semaphore->sem_name);
@@ -503,6 +513,10 @@ void Daemonize(void) {
       DownloadExtractArchiveFile();
       break;
   }
+  
+  EndSemaphoreText();
+  while (globaldata.gd_semaphore->sem_buffer[0] != '*') sleep(1);
+  EndSemaphore();
   exit(0);
 }
 
@@ -528,8 +542,6 @@ int main(int argc, char **argv) {
 
   if (action == SEMAPHORE_CLIENT)
     semaphore_client_main(argc, argv);
-
-  StartSemaphore();
 
   printf(HTM_HEADER);
   globaldata.gd_header_sent = 1;
@@ -672,7 +684,8 @@ int main(int argc, char **argv) {
 
   xmlCleanupParser();
   
-  EndSemaphore();
+  if (globaldata.gd_semaphore && !globaldata.gd_semaphore->sem_keep)
+    EndSemaphore();
 
   return 0;
 }
