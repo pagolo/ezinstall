@@ -73,8 +73,8 @@ int Download(int hSocket, char *remote_host, char *remote_file, char *filename, 
   static char StrBuf[DATBUF_SIZE];
   static char Buffer[DATBUF_SIZE];
   char *dat = NULL;
-  int rc = 0, done = 0;
-  int total = 0, sum = 0;
+  long int rc = 0, done = 0;
+  long int total = 0, sum = 0;
 
   if (hSocket == NO_SOCKET) return rc;
 
@@ -90,25 +90,37 @@ int Download(int hSocket, char *remote_host, char *remote_file, char *filename, 
     char *buf = Buffer;
     int len;
     if (!done) {
-      //dat=memmem(Buffer,rc,"\r\n\r\n",4);
+      int offset = 4;
       dat = strstr(Buffer, "\r\n\r\n");
+      if (!dat) {
+        dat = strstr(Buffer, "\n\n");
+        offset = 2;
+      }
       if (!dat) break;
       *dat = '\0';
       total = get_length(Buffer);
-      len = strlen(Buffer) + 4;
+      len = strlen(Buffer) + offset;
       rc -= len;
-      buf = &dat[4];
+      buf = &dat[offset];
       done = check_data(Buffer);
       if (done) fd = create_file(filename, mask);
-      else Error(_( "Can't download data"));
+      else {
+        if (list)
+          DaemonError(_( "Can't download data"), list);
+        else
+          Error(_( "Can't download data"));
+      }
       if (fd == NO_FILE) {
-        Error(_( "Can't create archive file"));
+        if (list)
+          DaemonError(_( "Can't create archive file"), list);
+        else
+          Error(_( "Can't create archive file"));
       }
     }
     sum += rc;
     write(fd, buf, rc);
     if (list && total) {
-      int x = (sum * 100) / total;
+      long int x = (long int)((sum * 100) / total);
       char *s = mysprintf(_("Downloading archive (%d%%)"), x > 100 ? 100 : x);
       HandleSemaphoreText(s, list, 0);
       if (s) free(s);

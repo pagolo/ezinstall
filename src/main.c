@@ -21,19 +21,33 @@ void Error(char *msg) {
   EndSemaphore();
   exit(5);
 }
+void DaemonError(char *msg, STRING **list) {
+  char *s1 = mysprintf("<br /><div class='error_title'>%s</div>: ", _("ERROR"));
+  char *s2 = mysprintf("%s<br />", msg);
+  HandleSemaphoreText(s1, list, 1);
+  HandleSemaphoreText(s2, list, 1);
+  if (globaldata.gd_loglevel > LOG_NONE) WriteLog(msg);
+  xmlCleanupParser();
+  EndSemaphore();
+  exit(5);
+}
 
-void CreateFileSystemObject(void) {
+void CreateFileSystemObject(STRING **list) {
   int rc;
   FSOBJ *object;
   for (object = globaldata.gd_inidata->filesys_list; object != NULL; object = object->next) {
     if (object->isfolder) {
-      printf(_("Creating folder &quot;%s&quot;...<br />"), object->file);
+      char *s = mysprintf(_("Creating folder &quot;%s&quot;..."), object->file);
+      HandleSemaphoreText(s, list, 1);
+      if (s) free(s);
       rc = mkdir(object->file, 0755);
-      if (rc == -1) Error(_("Can't create folder"));
+      if (rc == -1) DaemonError(_("Can't create folder"), list);
     } else {
-      printf(_("Creating file &quot;%s&quot;...<br />"), object->file);
+      char *s = mysprintf(_("Creating file &quot;%s&quot;...<br />"), object->file);
+      HandleSemaphoreText(s, list, 1);
+      if (s) free(s);
       rc = creat(object->file, 0644);
-      if (rc == -1) Error(_("Can't create file"));
+      if (rc == -1) DaemonError(_("Can't create file"), list);
       else close(rc);
     }
   }
@@ -43,50 +57,53 @@ enum {
   __CREATE, __RENAME
 };
 
-void CreateChangeDir(char *dirname, int dir_rename) {
+void CreateChangeDir(char *dirname, STRING **list, int dir_rename) {
   int rc;
   char *root = getenv("DOCUMENT_ROOT");
 
   if (root == NULL) rc = -1;
   else rc = chdir(root);
-  if (rc == -1) Error(_("Can't chdir to document_root"));
+  if (rc == -1) DaemonError(_("Can't chdir to document_root"), list);
 
   if (dir_rename == __RENAME) {
     if (dirname == NULL || strcmp(globaldata.gd_inidata->directory, dirname) == 0) {
-      printf(_("No need to rename folder...<br />"));
+      HandleSemaphoreText(_("No need to rename folder...<br />"), list, 1);
     } else {
-      printf(_("Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
+      char *s = mysprintf(_("Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"), globaldata.gd_inidata->directory, dirname);
+      HandleSemaphoreText(s, list, 1);
+      if (s) free(s);
       rc = rename(globaldata.gd_inidata->directory, dirname);
-      if (rc == -1) Error(_("Can't rename project folder"));
+      if (rc == -1) DaemonError(_("Can't rename project folder"), list);
     }
   } else {
-    printf(_("<br />Creating folder &quot;%s&quot;...<br />"), dirname);
+    char *s = mysprintf(_("Creating folder &quot;%s&quot;..."), dirname);
+    HandleSemaphoreText(s, list, 1);
+    if (s) free(s);
     rc = mkdir(dirname, 0755);
-    if (rc == -1) Error(_("Can't create project folder"));
+    if (rc == -1) DaemonError(_("Can't create project folder"), list);
   }
 
   rc = chdir(dirname);
-  if (rc == -1) Error(_("Can't chdir to project folder"));
+  if (rc == -1) DaemonError(_("Can't chdir to project folder"), list);
 }
 
-int DownloadExtractArchiveFile(void) {
+int DownloadExtractArchiveFile(STRING **list) {
   int rc;
   char *command;
   char *filename;
-  STRING *list = NULL;
 
   if (is_upload()) {
     filename = globaldata.gd_inidata->web_archive;
   } else {
-    HandleSemaphoreText(_("Downloading archive...<br />"), &list, 1);
-    rc = graburl_list(globaldata.gd_inidata->web_archive, 0644, 0, 0, &list);
-    if (rc == 0) Error(_("Can't download the script archive"));
+    HandleSemaphoreText(_("Downloading archive...<br />"), list, 1);
+    rc = graburl_list(globaldata.gd_inidata->web_archive, 0644, 0, 0, list);
+    if (rc == 0) DaemonError(_("Can't download the script archive"), list);
     filename = basename(globaldata.gd_inidata->web_archive);
   }
 
   command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
 
-  HandleSemaphoreText(_("Uncompressing archive...<br />"), &list, 1);
+  HandleSemaphoreText(_("Uncompressing archive...<br />"), list, 1);
 
   if (execute(command)) {
     if (globaldata.gd_loglevel > LOG_NONE)
@@ -94,7 +111,6 @@ int DownloadExtractArchiveFile(void) {
     unlink(filename);
   }
   free(command);
-  freestringlist(list);
           
   return 1;
 }
@@ -110,7 +126,7 @@ char *login_string = "<form name='myform' method=\"POST\" action=\"%s?%s\">\n"
         "<td><input type='password' name='_main_password' size='29'></td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td colspan='2' class='submit_row'><input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td>\n"
+        "<td colspan='2' class='submit_row'><input id='continue' type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td>\n"
         "</tr>\n"
         "</table>\n"
         "</form>\n"
@@ -192,7 +208,7 @@ char *nextstep_string = "<br /><form method='POST' action='%s?%d'>\n"
         "<input type='hidden' name='folder' value=\"%s\">\n"
         "<input type='hidden' name='database' value=\"%s\">\n"
         "<input type='hidden' name='webarchive' value=\"%s\">\n\n"
-        "<input type='submit' value=\"%s\" name='B1'>\n"
+        "<input id='continue' type='submit' value=\"%s\" name='B1'>\n"
         "</form>";
 
 void NextStep(int step) {
@@ -497,6 +513,7 @@ void SemaphorePrepare() {
 }
 
 void Daemonize(void) {
+  STRING *list = NULL;
   int i;
   if (getppid() == 1) return; /* already a daemon */
   i = fork();
@@ -513,13 +530,27 @@ void Daemonize(void) {
   switch (globaldata.gd_action) {
     case UPLOAD_CONFIG:
     case DOWNLOAD_CONFIG:
-      DownloadExtractArchiveFile();
+      //HandleSemaphoreText("DEBUG", &list, 1);
+      DownloadExtractArchiveFile(&list);
+      break;
+    case CREATE_FOLDER:
+    case RENAME_FOLDER:
+      if (globaldata.gd_action == CREATE_FOLDER) {
+        CreateChangeDir(getfieldbyname("folder"), &list, __CREATE);
+        DownloadExtractArchiveFile(&list);
+      } else {
+        CreateChangeDir(getfieldbyname("folder"), &list, __RENAME);
+      }
+      CreateFileSystemObject(&list);
+      ChangePermissionsRecurse(&list);
+      ChangePermissions(&list);
       break;
   }
   
   EndSemaphoreText();
   while (globaldata.gd_semaphore->sem_buffer[0] != '*') sleep(1);
   EndSemaphore();
+  freestringlist(list);
   exit(0);
 }
 
@@ -601,15 +632,8 @@ int main(int argc, char **argv) {
       if (rc == 0) Error(error_read);
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       ShowArchive();
-      if (action == CREATE_FOLDER) {
-        CreateChangeDir(getfieldbyname("folder"), __CREATE);
-        DownloadExtractArchiveFile();
-      } else {
-        CreateChangeDir(getfieldbyname("folder"), __RENAME);
-      }
-      CreateFileSystemObject();
-      ChangePermissionsRecurse();
-      ChangePermissions();
+      SemaphorePrepare();
+      Daemonize();
       NextStep(MYSQL_FORM);
       break;
     case MYSQL_FORM:

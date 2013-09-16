@@ -28,8 +28,8 @@ int graburl(char *url,int permissions, int expand, int tempname);
 int graburl_list(char *url,int permissions, int expand, int tempname, STRING **list);
 
 //------------------ PERMISSIONS
-void ChangePermissionsRecurse(void);
-void ChangePermissions(void);
+void ChangePermissionsRecurse(STRING **);
+void ChangePermissions(STRING **);
 
 //------------------ popenRWE
 int popenRWE(int *, char *, char **);

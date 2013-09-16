@@ -108,7 +108,10 @@ char *mycrypt(char *username, char *password)
 
 STRING *newstring(char *s) {
   STRING *rc = calloc(sizeof (STRING), 1);
-  if (rc) rc->string = strdup(s);
+  if (rc) {
+    rc->string = strdup(s);
+    rc->next = NULL;
+  }
   return rc;
 }
 
@@ -316,10 +319,12 @@ void chmod_recurse(char *dir, int bits, STRING *extensions) {
   free(current_dir);
 }
 
-void ChangePermissionsRecurse(void) {
+void ChangePermissionsRecurse(STRING **list) {
   CHMOD *chm = globaldata.gd_inidata->perm_list_rec;
   while (chm) {
-    printf("chmod -R 0%o \"%s\"...<br />", chm->permissions, chm->file);
+    char *s = mysprintf("chmod -R 0%o \"%s\"...<br />", chm->permissions, chm->file);
+    HandleSemaphoreText(s, list, 1);
+    if (s) free(s);
     chmod_recurse(chm->file, chm->permissions, chm->extensions);
     chm = chm->next;
   }
@@ -327,10 +332,12 @@ void ChangePermissionsRecurse(void) {
     WriteLog(_("recursive permissions setup"));
 }
 
-void ChangePermissions(void) {
+void ChangePermissions(STRING **list) {
   CHMOD *chm = globaldata.gd_inidata->perm_list;
   while (chm) {
-    printf("chmod 0%o \"%s\"...<br />", chm->permissions, chm->file);
+    char *s = mysprintf("chmod 0%o \"%s\"...<br />", chm->permissions, chm->file);
+    HandleSemaphoreText(s, list, 1);
+    if (s) free(s);
     if (chm->createfolder)
       mkdir(chm->file, chm->permissions);
     chmod(chm->file, chm->permissions);
@@ -378,6 +385,7 @@ void EndSemaphoreText(void) {
   if (se) free(se);
 }
 void HandleSemaphoreText(char *text, STRING **list, int append) {
+  if (text == NULL) text = "";
   STRING *ptr = *list;
   if (ptr == NULL || append) {
     appendstring(list, text);
