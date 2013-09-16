@@ -79,7 +79,7 @@ void MySqlForm(void) {
   printf("</table>\n</form>");
 }
 
-void ExecuteSqlFile(void) {
+void ExecuteSqlFile(STRING **list) {
   char buffer[256];
   int rc;
   FILE *fh;
@@ -96,16 +96,16 @@ void ExecuteSqlFile(void) {
 
   ChDirRoot();
   rc = chdir(getfieldbyname("folder"));
-  if (rc == -1) Error(_("Can't chdir to project folder"));
+  if (rc == -1) DaemonError(_("Can't chdir to project folder"), list);
 
   {
     STRING *script = globaldata.gd_mysql->db_files;
     for (; script != NULL; script = script->next) {
       fh = fopen(script->string, "r");
-      if (!(fh)) Error(_("can't find sql file"));
+      if (!(fh)) DaemonError(_("can't find sql file"), list);
 
       pid = popenRWE(pipe, args[0], args);
-      if (pid == -1) Error(_("can't execute mysql client..."));
+      if (pid == -1) DaemonError(_("can't execute mysql client..."), list);
       
       FILE *in = fdopen(pipe[0], "w");
       FILE *err = fdopen(pipe[2], "r");
@@ -115,7 +115,7 @@ void ExecuteSqlFile(void) {
       if (fgets(buffer, 256, err)) {
         fclose(err);
         pcloseRWE(pid, pipe);
-        Error(buffer);
+        DaemonError(buffer, list);
       }
       fclose(err);
       pcloseRWE(pid, pipe);
@@ -127,37 +127,40 @@ void ExecuteSqlFile(void) {
   if (args[4]) free(args[4]);
 }
 
-void CreateDbTables(void) {
+void CreateDbTables(STRING **list) {
   MYSQL *conn;
   char *query;
 
-  printf("<br />");
-
   // cercare/creare il database
   conn = mysql_init(NULL);
-  if (!(conn)) Error(_("error initiating MySQL"));
+  if (!(conn)) DaemonError(_("error initiating MySQL"), list);
 
   if (mysql_real_connect(conn, globaldata.gd_mysql->host, globaldata.gd_mysql->username, globaldata.gd_mysql->password, NULL, 0, NULL, 0) == NULL) {
     mysql_close(conn);
-    Error(_("error connecting to MySQL"));
+    DaemonError(_("error connecting to MySQL"), list);
   }
   if (mysql_select_db(conn, globaldata.gd_mysql->db_name) != 0) {
     // database doesn't exist? create it
     query = mysprintf("CREATE DATABASE `%s`", globaldata.gd_mysql->db_name);
     if (mysql_query(conn, query) != 0) {
       mysql_close(conn);
-      Error(_("can't create new database, please go back and select an existing db"));
+      DaemonError(_("can't create new database, please go back and select an existing db"), list);
     } else {
-      printf(_("Database '%s' has been created<br />"), globaldata.gd_mysql->db_name);
+      char *s = mysprintf(_("Database '%s' has been created<br />"), globaldata.gd_mysql->db_name);
+      HandleSemaphoreText(s, list, 1);
+      if (s) free(s);
     }
     free(query);
   } else {
-    printf(_("Database '%s' was found<br />"), globaldata.gd_mysql->db_name);
+    char *s = mysprintf(_("Database '%s' was found<br />"), globaldata.gd_mysql->db_name);
+    HandleSemaphoreText(s, list, 1);
+    if (s) free(s);
   }
   mysql_close(conn);
 
   if (globaldata.gd_mysql->db_files) {
-    ExecuteSqlFile();
-    printf(_("database tables have been created<br />"));
+    HandleSemaphoreText(_("creating database tables..."), list, 1);
+    ExecuteSqlFile(list);
+    HandleSemaphoreText(_("database tables have been created"), list, 0);
   }
 }

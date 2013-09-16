@@ -175,6 +175,7 @@ typedef struct GlobalData {
 extern GLOBAL globaldata;
 
 void Error (char *msg);
+void DaemonError (char *msg, STRING **list);
 void ChDirRoot(void);
 
 #include "socket.h"

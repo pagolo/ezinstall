@@ -39,6 +39,7 @@ int pcloseRWE(int, int *);
 void StartSemaphore(void);
 void EndSemaphore(void);
 void AddSemaphoreText(char *s);
-void EndSemaphoreText();
+void EndSemaphoreText(void);
+void EndSemaphoreTextError(void);
 void HandleSemaphoreText(char *text, STRING **list, int append);
 #endif

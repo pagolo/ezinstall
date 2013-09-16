@@ -384,6 +384,9 @@ void EndSemaphoreText(void) {
   AddSemaphoreText(se);
   if (se) free(se);
 }
+void EndSemaphoreTextError(void) {
+  AddSemaphoreText("</ul>\n");
+}
 void HandleSemaphoreText(char *text, STRING **list, int append) {
   if (text == NULL) text = "";
   STRING *ptr = *list;

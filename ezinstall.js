@@ -27,9 +27,11 @@ function do_ajax(arg1, arg2, arg3, url) {
   var cont = document.getElementById("continue");
   var text = http_request.responseText;
   if (text != '*') {
-    div.innerHTML = text;
-    cont.disabled = true;
-    setTimeout(function(){do_ajax(arg1, arg2, arg3, url)},1000);
+    if (text && text != '') {
+      div.innerHTML = text;
+      cont.disabled = true;
+      setTimeout(function(){do_ajax(arg1, arg2, arg3, url)},1000);
+    }
   }
   else {
     cont.disabled = false;

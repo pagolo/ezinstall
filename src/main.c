@@ -18,15 +18,16 @@ void Error(char *msg) {
   printf("<br /><a href='javascript:history.back()'>%s</a><br />", _("BACK"));
   printf(HTM_FOOTER);
   xmlCleanupParser();
-  EndSemaphore();
+  if (globaldata.gd_semaphore && !globaldata.gd_semaphore->sem_keep)
+    EndSemaphore();
   exit(5);
 }
 void DaemonError(char *msg, STRING **list) {
-  char *s1 = mysprintf("<br /><div class='error_title'>%s</div>: ", _("ERROR"));
-  char *s2 = mysprintf("%s<br />", msg);
+  char *s1 = mysprintf("<em>%s</em>: %s", _("ERROR"), msg);
   HandleSemaphoreText(s1, list, 1);
-  HandleSemaphoreText(s2, list, 1);
+  EndSemaphoreTextError();
   if (globaldata.gd_loglevel > LOG_NONE) WriteLog(msg);
+  while (globaldata.gd_semaphore->sem_buffer[0] != '*') sleep(1);
   xmlCleanupParser();
   EndSemaphore();
   exit(5);
@@ -487,20 +488,8 @@ int semaphore_client_main(int argc, char **argv) {
   globaldata.gd_header_sent = 1;
   sem_wait(mutex);
   printf(text);
-  if (strstr(text, _(SEMAPHORE_END))) *text = '*';
+  if (strstr(text, "</ul>")) *text = '*';
   sem_post(mutex);
-  /*
-  printf("<script>\n%s\n", "cont = window.parent.document.getElementById('continue');");
-  if (*text != '*') {
-    printf("%s\n", "setTimeout(function(){location.reload(true);},1000);");
-    printf("%s\n", "cont.disabled = true;");
-  }
-  else {
-    printf("%s\n", "cont.disabled = false;");
-  }
-  printf("</script>\n");
-  */
-  //printf(HTM_FOOTER);
   sem_close(mutex);
   //shmctl(shmid, IPC_RMID, 0);
   exit(0);
@@ -530,7 +519,6 @@ void Daemonize(void) {
   switch (globaldata.gd_action) {
     case UPLOAD_CONFIG:
     case DOWNLOAD_CONFIG:
-      //HandleSemaphoreText("DEBUG", &list, 1);
       DownloadExtractArchiveFile(&list);
       break;
     case CREATE_FOLDER:
@@ -544,6 +532,11 @@ void Daemonize(void) {
       CreateFileSystemObject(&list);
       ChangePermissionsRecurse(&list);
       ChangePermissions(&list);
+      break;
+    case CREATE_DB:
+      CreateDbTables(&list);
+      if (globaldata.gd_loglevel > LOG_NONE)
+        WriteLog(_("MySQL setup"));
       break;
   }
   
@@ -651,9 +644,8 @@ int main(int argc, char **argv) {
       globaldata.gd_inidata->web_archive = getfieldbyname("webarchive");
       globaldata.gd_mysql->db_name = getfieldbyname("database");
       ShowArchive();
-      CreateDbTables();
-      if (globaldata.gd_loglevel > LOG_NONE)
-        WriteLog(_("MySQL setup"));
+      SemaphorePrepare();
+      Daemonize();
       NextStep(EDIT_CONFIG);
       break;
     case EDIT_CONFIG:

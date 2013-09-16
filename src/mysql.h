@@ -3,6 +3,6 @@
 
 int MySqlTest(void);
 void MySqlForm(void);
-void CreateDbTables(void);
+void CreateDbTables(STRING **);
 
 #endif
