@@ -6,7 +6,7 @@
 #define CONFIG_NAME     "ezinstall.xml"
 #define CONFIG_NAME_ROOT "../../ezinstall.xml"
 #define LOG_NAME        "ezinstall.log"
-#define SEMAPHORE_END   "\nDONE..."
+#define SEMAPHORE_END   "\n<!-- end of ajax generated html /-->\n"
 #define PATH_SIZE       512
 #define SHARED_MEM_SIZE 2048
 

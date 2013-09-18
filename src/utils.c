@@ -380,12 +380,14 @@ void AddSemaphoreText(char *s) {
   sem_post(globaldata.gd_semaphore->sem_sem);
 }
 void EndSemaphoreText(void) {
-  char *se = mysprintf("<li>%s</li>\n</ul>\n", _(SEMAPHORE_END));
+  char *se = mysprintf("<li><em>%s</em></li>\n</ul>\n", _("DONE."));
   AddSemaphoreText(se);
   if (se) free(se);
+  AddSemaphoreText(SEMAPHORE_END);
 }
 void EndSemaphoreTextError(void) {
   AddSemaphoreText("</ul>\n");
+  AddSemaphoreText(SEMAPHORE_END);
 }
 void HandleSemaphoreText(char *text, STRING **list, int append) {
   if (text == NULL) text = "";

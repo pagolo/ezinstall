@@ -488,7 +488,7 @@ int semaphore_client_main(int argc, char **argv) {
   globaldata.gd_header_sent = 1;
   sem_wait(mutex);
   printf(text);
-  if (strstr(text, "</ul>")) *text = '*';
+  if (strstr(text, SEMAPHORE_END)) *text = '*';
   sem_post(mutex);
   sem_close(mutex);
   //shmctl(shmid, IPC_RMID, 0);
