@@ -42,7 +42,6 @@
       <itemPath>Makefile</itemPath>
       <itemPath>configure</itemPath>
     </logicalFolder>
-    <itemPath>ezinstall.lng</itemPath>
     <itemPath>ezinstall.xml</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
