@@ -121,7 +121,7 @@ int Download(int hSocket, char *remote_host, char *remote_file, char *filename, 
     write(fd, buf, rc);
     if (list && total) {
       long int x = (long int)((sum * 100) / total);
-      char *s = mysprintf(_("Downloading archive (%d%%)"), x > 100 ? 100 : x);
+      char *s = mysprintf(_("Downloading archive (%ld%%)"), x > 100 ? 100 : x);
       HandleSemaphoreText(s, list, 0);
       if (s) free(s);
     }

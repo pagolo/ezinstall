@@ -461,36 +461,36 @@ void GetStartPath(void) {
 }
 
 int semaphore_client_main(int argc, char **argv) {
-  sem_t *mutex;
+//  union semun arg;
+  int semid;
   key_t key = (key_t)atoi(argv[2]);
   int shmid;
   char *text;
 
   printf(HTM_HEADER_CLIENT);
 
-  mutex = sem_open(argv[3],0,0644,0);
-  if(mutex == SEM_FAILED)
+  semid = semget(key, 1, 0);
+  if(semid == -1)
     {
       //printf(_("client:unable to execute semaphore"));
     //printf("%s<br />", strerror(errno));
     printf("*");
-      sem_close(mutex);
       exit(-1);
     }
   shmid = shmget(key,SHARED_MEM_SIZE,0666);
   if(shmid<0)
     {
       printf(_("client:failure in shmget"));
-     sem_close(mutex);
+      //semctl(semid, 0, IPC_RMID, arg);
        exit(-1);
     }
   text = shmat(shmid,NULL,0);
   globaldata.gd_header_sent = 1;
-  sem_wait(mutex);
+  semv_wait(semid);
   printf(text);
   if (strstr(text, SEMAPHORE_END)) *text = '*';
-  sem_post(mutex);
-  sem_close(mutex);
+  semv_post(semid);
+  //    semctl(semid, 0, IPC_RMID, arg);
   //shmctl(shmid, IPC_RMID, 0);
   exit(0);
 }
@@ -613,6 +613,7 @@ int main(int argc, char **argv) {
       }        // altrimenti scaricare il file...
       else {
         ChDirRoot();
+        //exit(100);
         SemaphorePrepare();
         Daemonize();
         ShowRenameDirPage();
@@ -701,9 +702,8 @@ int main(int argc, char **argv) {
 
   // do ajax script
   if (globaldata.gd_semaphore && globaldata.gd_semaphore->sem_keep)
-    printf("<script type=\"text/javascript\">do_ajax('client',%d,'%s','%s')</script>\n",
+    printf("<script type=\"text/javascript\">do_ajax('client',%d,'%s')</script>\n",
           globaldata.gd_semaphore->sem_key,
-          globaldata.gd_semaphore->sem_name,
           getenv("SCRIPT_NAME"));
 
   printf(HTM_FOOTER);

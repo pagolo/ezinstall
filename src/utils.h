@@ -36,6 +36,8 @@ int popenRWE(int *, char *, char **);
 int pcloseRWE(int, int *);
 
 //------------------ start/end semaphore
+void semv_wait(int semid);
+void semv_post(int semid);
 void StartSemaphore(void);
 void EndSemaphore(void);
 void AddSemaphoreText(char *s);

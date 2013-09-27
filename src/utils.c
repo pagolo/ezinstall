@@ -348,6 +348,7 @@ void ChangePermissions(STRING **list) {
 }
 
 void StartSemaphore(void) {
+  semun_t arg;
   time_t mytime = time(NULL);
   char *mypath = mysprintf("%s/%s", globaldata.gd_start_path, globaldata.gd_config_root ? CONFIG_NAME_ROOT : CONFIG_NAME);
   if (!mypath)
@@ -355,29 +356,37 @@ void StartSemaphore(void) {
   if (!(globaldata.gd_semaphore = calloc(sizeof(MYSEMAPHORE), 1)))
     return;
   globaldata.gd_semaphore->sem_key = ftok(mypath, (int)mytime);
-  globaldata.gd_semaphore->sem_name = mysprintf("%ld", mytime);
-  globaldata.gd_semaphore->sem_sem = sem_open(globaldata.gd_semaphore->sem_name,O_CREAT,0644,1);
-  if(globaldata.gd_semaphore->sem_sem == SEM_FAILED)
-    {
-      sem_unlink(globaldata.gd_semaphore->sem_name);
-      Error(_("unable to create semaphore"));
-    }
+  globaldata.gd_semaphore->sem_id = semget(globaldata.gd_semaphore->sem_key, 1, 0666 | IPC_CREAT);
+  if(globaldata.gd_semaphore->sem_id == -1) {
+    Error(_("unable to create semaphore"));
+  }
   globaldata.gd_semaphore->sem_buffer_id = shmget(globaldata.gd_semaphore->sem_key, SHARED_MEM_SIZE, IPC_CREAT|0666);
-  if(globaldata.gd_semaphore->sem_buffer_id < 0)
-    {
-      Error(_("failure in shmget"));
-    }
+  if(globaldata.gd_semaphore->sem_buffer_id < 0) {
+    Error(_("failure in shmget"));
+  }
   globaldata.gd_semaphore->sem_buffer = shmat(globaldata.gd_semaphore->sem_buffer_id, NULL, 0);
   strcpy(globaldata.gd_semaphore->sem_buffer, "\n<ul>\n");
+
+  arg.val = 1;
+  semctl(globaldata.gd_semaphore->sem_id,0,SETVAL,arg);
+}
+struct sembuf sb = {0, -1, 0};
+void semv_wait(int semid) {
+  sb.sem_op = -1;
+  semop(semid, &sb, 1);  
+}
+void semv_post(int semid) {
+  sb.sem_op = 1;
+  semop(semid, &sb, 1);  
 }
 void AddSemaphoreText(char *s) {
-  sem_wait(globaldata.gd_semaphore->sem_sem);
+  semv_wait(globaldata.gd_semaphore->sem_id);
   if (strlen(globaldata.gd_semaphore->sem_buffer) + strlen(s) + 1 > SHARED_MEM_SIZE) {
-    sem_post(globaldata.gd_semaphore->sem_sem);
+    semv_post(globaldata.gd_semaphore->sem_id);
     return;
   }
   strcat(globaldata.gd_semaphore->sem_buffer, s);
-  sem_post(globaldata.gd_semaphore->sem_sem);
+  semv_post(globaldata.gd_semaphore->sem_id);
 }
 void EndSemaphoreText(void) {
   char *se = mysprintf("<li><em>%s</em></li>\n</ul>\n", _("DONE."));
@@ -408,15 +417,15 @@ void HandleSemaphoreText(char *text, STRING **list, int append) {
   }
 }
 void EndSemaphore(void) {
+  union semun arg;
   if (!globaldata.gd_semaphore)
     return;
-  if (globaldata.gd_semaphore->sem_sem)
-    sem_close(globaldata.gd_semaphore->sem_sem);
-  if (globaldata.gd_semaphore->sem_name)
-    sem_unlink(globaldata.gd_semaphore->sem_name);
+  if (globaldata.gd_semaphore->sem_id)
+    semctl(globaldata.gd_semaphore->sem_id, 0, IPC_RMID, arg);
   if (globaldata.gd_semaphore->sem_buffer)
     shmctl(globaldata.gd_semaphore->sem_buffer_id, IPC_RMID, 0);
   free(globaldata.gd_semaphore);
+  globaldata.gd_semaphore = NULL;
 }
 /**
  * Copyright 2009-2010 Bart Trojanowski <bart@jukie.net>

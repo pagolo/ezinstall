@@ -40,6 +40,7 @@
 #include <sys/mman.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/sem.h>
 #include <semaphore.h>
 #include <time.h>
 #include <fcntl.h>
@@ -143,10 +144,17 @@ enum {
    LOG_1
 };
 
+typedef union semun {
+int val; /* used for SETVAL only */
+struct semid_ds *buf; /* for IPC_STAT and IPC_SET */
+ushort *array; /* used for GETALL and SETALL */
+} semun_t;
+
 typedef struct MySemaphore {
   key_t sem_key; // chiave del semaforo
-  sem_t *sem_sem; // struttura del semaforo
-  char *sem_name; // nome del semaforo
+//  sem_t *sem_sem; // struttura del semaforo
+//  char *sem_name; // nome del semaforo
+  int sem_id;       // id del semaforo
   char *sem_buffer; // buffer di memoria condivisa
   int sem_buffer_id; // buffer di memoria condivisa
   int sem_keep; // NON terminare il semaforo

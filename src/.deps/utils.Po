@@ -36,7 +36,8 @@ utils.o: utils.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/sys/stat.h /usr/include/bits/stat.h /usr/include/sys/mman.h \
  /usr/include/bits/mman.h /usr/include/sys/ipc.h \
  /usr/include/bits/ipctypes.h /usr/include/bits/ipc.h \
- /usr/include/sys/shm.h /usr/include/bits/shm.h /usr/include/semaphore.h \
+ /usr/include/sys/shm.h /usr/include/bits/shm.h /usr/include/sys/sem.h \
+ /usr/include/bits/sem.h /usr/include/semaphore.h \
  /usr/include/bits/semaphore.h /usr/include/bits/timex.h \
  /usr/include/fcntl.h /usr/include/bits/fcntl.h /usr/include/libgen.h \
  utils.h socket.h login.h session.h configure.h mylocale.h getinput.h \
@@ -216,6 +217,10 @@ conditions.h:
 /usr/include/sys/shm.h:
 
 /usr/include/bits/shm.h:
+
+/usr/include/sys/sem.h:
+
+/usr/include/bits/sem.h:
 
 /usr/include/semaphore.h:
 

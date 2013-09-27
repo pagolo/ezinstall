@@ -13,14 +13,14 @@ function createXMLHttpRequest() {
   alert("XMLHttpRequest non supportato");
   return null;
 }
-function do_ajax(arg1, arg2, arg3, url) {
+function do_ajax(arg1, arg2, url) {
   var http_request = createXMLHttpRequest();
 
   if (!http_request) {
     alert('Javascript error: no XMLHTTP instance');
     return false;
   }
-  var querystring = '?' + arg1 + '+' + arg2 + '+' + arg3;
+  var querystring = '?' + arg1 + '+' + arg2;
   http_request.open('GET', url + querystring, false);
   http_request.send(null);
   var div = document.getElementById("from_semaphore");
@@ -30,7 +30,7 @@ function do_ajax(arg1, arg2, arg3, url) {
     if (text && text != '') {
       div.innerHTML = text;
       cont.disabled = true;
-      setTimeout(function(){do_ajax(arg1, arg2, arg3, url)},1000);
+      setTimeout(function(){do_ajax(arg1, arg2, url)},1000);
     }
   }
   else {
