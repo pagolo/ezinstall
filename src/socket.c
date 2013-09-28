@@ -73,8 +73,8 @@ int Download(int hSocket, char *remote_host, char *remote_file, char *filename, 
   static char StrBuf[DATBUF_SIZE];
   static char Buffer[DATBUF_SIZE];
   char *dat = NULL;
-  long int rc = 0, done = 0;
-  long int total = 0, sum = 0;
+  long long rc = 0, done = 0;
+  long long total = 0, sum = 0;
 
   if (hSocket == NO_SOCKET) return rc;
 
@@ -120,8 +120,8 @@ int Download(int hSocket, char *remote_host, char *remote_file, char *filename, 
     sum += rc;
     write(fd, buf, rc);
     if (list && total) {
-      long int x = (long int)((sum * 100) / total);
-      char *s = mysprintf(_("Downloading archive (%ld%%)"), x > 100 ? 100 : x);
+      long long x = ((sum * (long)100) / total);
+      char *s = mysprintf(_("Downloading archive (%d%%)"), x > 100 ? 100 : x);
       HandleSemaphoreText(s, list, 0);
       if (s) free(s);
     }
@@ -165,7 +165,7 @@ int OpenConnection(char *hostname, unsigned long ip, int port, int nonblock) {
 
   hSocket = socket(AF_INET, SOCK_STREAM, 0);
 
-  if (!hSocket) {
+  if (hSocket < 0) {
     Error(_("can't alloc socket"));
   }
 

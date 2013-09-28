@@ -263,7 +263,7 @@ int graburl_list(char *url, int permissions, int expand, int tempname, STRING **
   if (z) *z = '\0';
 
   sock = OpenConnection(site, 0, 80, 0);
-  if (!(sock)) return 0;
+  if (sock <0) return 0;
 
   success = Download(sock, site, dir, tempname ? NULL : basename(url), permissions, list);
   CloseConnection(sock);
@@ -370,14 +370,24 @@ void StartSemaphore(void) {
   arg.val = 1;
   semctl(globaldata.gd_semaphore->sem_id,0,SETVAL,arg);
 }
-struct sembuf sb = {0, -1, 0};
+static struct sembuf sb;
 void semv_wait(int semid) {
+  int counter = 16, rc;
   sb.sem_op = -1;
-  semop(semid, &sb, 1);  
+  while ((rc = semop(semid, &sb, 1)) == -1 && counter--) sleep(1);
+  if (rc == -1) {
+    printf(_("semaphore error"));
+    exit(-1);
+  }
 }
 void semv_post(int semid) {
+  int counter = 16, rc;
   sb.sem_op = 1;
-  semop(semid, &sb, 1);  
+  while ((rc = semop(semid, &sb, 1)) == -1 && counter--) sleep(1);
+  if (rc == -1) {
+    printf(_("semaphore error"));
+    exit(-1);
+  }
 }
 void AddSemaphoreText(char *s) {
   semv_wait(globaldata.gd_semaphore->sem_id);

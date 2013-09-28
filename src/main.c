@@ -514,7 +514,7 @@ void Daemonize(void) {
   i = open("/dev/null", O_RDWR);
   dup(i);
   dup(i); /* handle standart I/O */
-  umask(027); /* set newly created file permissions */
+  umask(0022); /* set newly created file permissions */
   
   switch (globaldata.gd_action) {
     case UPLOAD_CONFIG:
