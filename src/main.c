@@ -514,6 +514,7 @@ void Daemonize(void) {
   i = open("/dev/null", O_RDWR);
   dup(i);
   dup(i); /* handle standart I/O */
+  //WriteLog(mysprintf("daemon stdin file descriptor = %d", i));
   umask(0022); /* set newly created file permissions */
   
   switch (globaldata.gd_action) {
