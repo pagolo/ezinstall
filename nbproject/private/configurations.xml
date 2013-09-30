@@ -38,6 +38,7 @@
         <in>xml.h</in>
       </df>
       <in>config.h</in>
+      <in>slink</in>
     </df>
     <itemPath>ezinstall.xml</itemPath>
   </logicalFolder>
