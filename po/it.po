@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ezinstall 0.0.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-16 23:54+0200\n"
-"PO-Revision-Date: 2013-09-17 00:02+0100\n"
+"POT-Creation-Date: 2013-09-30 20:16+0200\n"
+"PO-Revision-Date: 2013-09-30 20:20+0100\n"
 "Last-Translator: pagolo <info@dbfweb.com>\n"
 "Language-Team: pagolo <pagolo.bozzo@gmail.com>\n"
 "Language: it\n"
@@ -212,57 +212,57 @@ msgstr "Salva"
 #: ../src/main.c:483
 #, c-format
 msgid "client:failure in shmget"
-msgstr ""
+msgstr "client: errore di memoria condivisa"
 
-#: ../src/main.c:539
+#: ../src/main.c:540
 msgid "MySQL setup"
 msgstr "Impostazioni MySQL"
 
-#: ../src/main.c:553
+#: ../src/main.c:554
 msgid "Error reading xml file"
 msgstr "errore nella lettura del file xml..."
 
-#: ../src/main.c:587 ../src/main.c:679
+#: ../src/main.c:588 ../src/main.c:681
 msgid "Configuration test"
 msgstr "Test della configurazione"
 
-#: ../src/main.c:588 ../src/main.c:684
+#: ../src/main.c:589 ../src/main.c:686
 msgid "Download & install"
 msgstr "Scarica e installa"
 
-#: ../src/main.c:589 ../src/main.c:689
+#: ../src/main.c:590 ../src/main.c:691
 msgid "Upload & install"
 msgstr "Invia e installa"
 
-#: ../src/main.c:590
+#: ../src/main.c:591
 msgid "Are you sure you want to exit?"
 msgstr "Sicuro di voler uscire?"
 
-#: ../src/main.c:591
+#: ../src/main.c:592
 msgid "Exit"
 msgstr "Esci"
 
-#: ../src/main.c:596
+#: ../src/main.c:597
 msgid "can't access configuration file"
 msgstr "File di configurazione non trovato"
 
-#: ../src/main.c:603
+#: ../src/main.c:604
 msgid "ini file name not specified"
 msgstr "File di inizializzazione del pacchetto non specificato"
 
-#: ../src/main.c:605
+#: ../src/main.c:606
 msgid "Can't download ini file"
 msgstr "Impossibile scaricare il file di inizializzazione del pacchetto"
 
-#: ../src/main.c:664
+#: ../src/main.c:666
 msgid "Config file saved"
 msgstr "File di configurazione salvato"
 
-#: ../src/main.c:680 ../src/main.c:685 ../src/main.c:690 ../src/main.c:695
+#: ../src/main.c:682 ../src/main.c:687 ../src/main.c:692 ../src/main.c:697
 msgid "Home page"
 msgstr "Pagina iniziale"
 
-#: ../src/main.c:694 ../src/test.c:101
+#: ../src/main.c:696 ../src/test.c:101
 msgid "Edit configuration"
 msgstr "Modifica la configurazione"
 
@@ -471,13 +471,22 @@ msgstr "impostazione di permessi ricorsivi"
 msgid "permissions setup"
 msgstr "impostazione di permessi"
 
-#: ../src/utils.c:363
+#: ../src/utils.c:361
 msgid "unable to create semaphore"
 msgstr "impossibile creare il semaforo"
 
-#: ../src/utils.c:368
+#: ../src/utils.c:365
 msgid "failure in shmget"
-msgstr ""
+msgstr "errore di memoria condivisa"
+
+#: ../src/utils.c:379 ../src/utils.c:388
+#, c-format
+msgid "semaphore error"
+msgstr "errore relativo al semaforo"
+
+#: ../src/utils.c:402
+msgid "DONE."
+msgstr "Operazioni completate."
 
 #: ../src/xml.c:43 ../src/xml.c:344
 msgid "Configuration xml document not parsed successfully. \n"
