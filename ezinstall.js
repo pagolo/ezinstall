@@ -30,8 +30,8 @@ function do_ajax(arg1, arg2, url) {
     if (text && text != '') {
       div.innerHTML = text;
       cont.disabled = true;
-      setTimeout(function(){do_ajax(arg1, arg2, url)},1000);
     }
+    setTimeout(function(){do_ajax(arg1, arg2, url)},750);
   }
   else {
     cont.disabled = false;

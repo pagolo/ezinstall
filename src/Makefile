@@ -66,9 +66,10 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_ezinstall_OBJECTS = main.$(OBJEXT) configure.$(OBJEXT) \
-	editconfig.$(OBJEXT) getinput.$(OBJEXT) login.$(OBJEXT) \
-	md5.$(OBJEXT) mylocale.$(OBJEXT) mysql.$(OBJEXT) \
-	session.$(OBJEXT) socket.$(OBJEXT) test.$(OBJEXT) \
+	editconfig.$(OBJEXT) getinput.$(OBJEXT) ioapi.$(OBJEXT) \
+	login.$(OBJEXT) md5.$(OBJEXT) mylocale.$(OBJEXT) \
+	mysql.$(OBJEXT) myunzip.$(OBJEXT) session.$(OBJEXT) \
+	socket.$(OBJEXT) test.$(OBJEXT) unzip.$(OBJEXT) \
 	utils.$(OBJEXT) xml.$(OBJEXT)
 ezinstall_OBJECTS = $(am_ezinstall_OBJECTS)
 ezinstall_DEPENDENCIES =
@@ -137,7 +138,7 @@ INTLTOOL__v_MERGE_ = $(INTLTOOL__v_MERGE_$(AM_DEFAULT_VERBOSITY))
 INTLTOOL__v_MERGE_0 = @echo "  ITMRG " $@;
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -lpthread -lxml2 -lmysqlclient 
+LIBS = -lz -lpthread -lxml2 -lmysqlclient 
 LTLIBOBJS = 
 MAINT = #
 MAKEINFO = ${SHELL} /home/paolo/ezinstall-remote/missing --run makeinfo
@@ -221,6 +222,8 @@ ezinstall_SOURCES = \
 	editconfig.h     \
 	getinput.c     \
 	getinput.h     \
+	ioapi.c     \
+	ioapi.h     \
 	login.c     \
 	login.h     \
 	main.h     \
@@ -230,12 +233,15 @@ ezinstall_SOURCES = \
 	mylocale.h     \
 	mysql.c     \
 	mysql.h     \
+	myunzip.c     \
 	session.c      \
 	session.h      \
 	socket.c     \
 	socket.h     \
 	test.c     \
 	test.h     \
+	unzip.c     \
+	unzip.h     \
 	utils.c     \
 	utils.h     \
 	xml.c     \
@@ -331,14 +337,17 @@ distclean-compile:
 include ./$(DEPDIR)/configure.Po
 include ./$(DEPDIR)/editconfig.Po
 include ./$(DEPDIR)/getinput.Po
+include ./$(DEPDIR)/ioapi.Po
 include ./$(DEPDIR)/login.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/md5.Po
 include ./$(DEPDIR)/mylocale.Po
 include ./$(DEPDIR)/mysql.Po
+include ./$(DEPDIR)/myunzip.Po
 include ./$(DEPDIR)/session.Po
 include ./$(DEPDIR)/socket.Po
 include ./$(DEPDIR)/test.Po
+include ./$(DEPDIR)/unzip.Po
 include ./$(DEPDIR)/utils.Po
 include ./$(DEPDIR)/xml.Po
 

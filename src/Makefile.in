@@ -66,9 +66,10 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_ezinstall_OBJECTS = main.$(OBJEXT) configure.$(OBJEXT) \
-	editconfig.$(OBJEXT) getinput.$(OBJEXT) login.$(OBJEXT) \
-	md5.$(OBJEXT) mylocale.$(OBJEXT) mysql.$(OBJEXT) \
-	session.$(OBJEXT) socket.$(OBJEXT) test.$(OBJEXT) \
+	editconfig.$(OBJEXT) getinput.$(OBJEXT) ioapi.$(OBJEXT) \
+	login.$(OBJEXT) md5.$(OBJEXT) mylocale.$(OBJEXT) \
+	mysql.$(OBJEXT) myunzip.$(OBJEXT) session.$(OBJEXT) \
+	socket.$(OBJEXT) test.$(OBJEXT) unzip.$(OBJEXT) \
 	utils.$(OBJEXT) xml.$(OBJEXT)
 ezinstall_OBJECTS = $(am_ezinstall_OBJECTS)
 ezinstall_DEPENDENCIES =
@@ -221,6 +222,8 @@ ezinstall_SOURCES = \
 	editconfig.h     \
 	getinput.c     \
 	getinput.h     \
+	ioapi.c     \
+	ioapi.h     \
 	login.c     \
 	login.h     \
 	main.h     \
@@ -230,12 +233,15 @@ ezinstall_SOURCES = \
 	mylocale.h     \
 	mysql.c     \
 	mysql.h     \
+	myunzip.c     \
 	session.c      \
 	session.h      \
 	socket.c     \
 	socket.h     \
 	test.c     \
 	test.h     \
+	unzip.c     \
+	unzip.h     \
 	utils.c     \
 	utils.h     \
 	xml.c     \
@@ -331,14 +337,17 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/configure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/editconfig.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getinput.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ioapi.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/login.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/md5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mylocale.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mysql.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myunzip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/session.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/socket.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unzip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml.Po@am__quote@
 

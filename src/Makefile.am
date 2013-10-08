@@ -18,6 +18,8 @@ ezinstall_SOURCES = \
 	editconfig.h     \
 	getinput.c     \
 	getinput.h     \
+	ioapi.c     \
+	ioapi.h     \
 	login.c     \
 	login.h     \
 	main.h     \
@@ -27,12 +29,18 @@ ezinstall_SOURCES = \
 	mylocale.h     \
 	mysql.c     \
 	mysql.h     \
+	myunzip.c     \
+	myunzip.h     \
 	session.c      \
 	session.h      \
 	socket.c     \
 	socket.h     \
 	test.c     \
 	test.h     \
+	untar.c    \
+	untar.h    \
+	unzip.c     \
+	unzip.h     \
 	utils.c     \
 	utils.h     \
 	xml.c     \

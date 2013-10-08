@@ -14,8 +14,8 @@
         <in>editconfig.h</in>
         <in>getinput.c</in>
         <in>getinput.h</in>
-        <in>ini.c</in>
-        <in>ini.h</in>
+        <in>ioapi.c</in>
+        <in>ioapi.h</in>
         <in>login.c</in>
         <in>login.h</in>
         <in>main.c</in>
@@ -26,19 +26,24 @@
         <in>mylocale.h</in>
         <in>mysql.c</in>
         <in>mysql.h</in>
+        <in>myunzip.c</in>
+        <in>myunzip.h</in>
         <in>session.c</in>
         <in>session.h</in>
         <in>socket.c</in>
         <in>socket.h</in>
         <in>test.c</in>
         <in>test.h</in>
+        <in>untar.c</in>
+        <in>untar.h</in>
+        <in>unzip.c</in>
+        <in>unzip.h</in>
         <in>utils.c</in>
         <in>utils.h</in>
         <in>xml.c</in>
         <in>xml.h</in>
       </df>
       <in>config.h</in>
-      <in>slink</in>
     </df>
     <itemPath>ezinstall.xml</itemPath>
   </logicalFolder>

@@ -90,7 +90,7 @@ void CreateChangeDir(char *dirname, STRING **list, int dir_rename) {
 
 int DownloadExtractArchiveFile(STRING **list) {
   int rc;
-  char *command;
+//  char *command;
   char *filename;
 
   if (is_upload()) {
@@ -102,16 +102,16 @@ int DownloadExtractArchiveFile(STRING **list) {
     filename = basename(globaldata.gd_inidata->web_archive);
   }
 
-  command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
+  //command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
 
   HandleSemaphoreText(_("Uncompressing archive...<br />"), list, 1);
 
-  if (execute(command)) {
+  if (Unzip(filename, list) == 0) {
     if (globaldata.gd_loglevel > LOG_NONE)
       WriteLog(_("archive files extracted"));
     unlink(filename);
   }
-  free(command);
+  //free(command);
           
   return 1;
 }

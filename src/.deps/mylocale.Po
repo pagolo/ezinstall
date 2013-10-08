@@ -40,7 +40,7 @@ mylocale.o: mylocale.c main.h ../config.h conditions.h \
  /usr/include/bits/semaphore.h /usr/include/fcntl.h \
  /usr/include/bits/fcntl.h /usr/include/libgen.h utils.h socket.h login.h \
  session.h configure.h mylocale.h getinput.h mysql.h editconfig.h test.h \
- xml.h md5.h /usr/include/sys/param.h \
+ xml.h md5.h myunzip.h /usr/include/sys/param.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.7/include-fixed/limits.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix2_lim.h \
@@ -246,6 +246,8 @@ test.h:
 xml.h:
 
 md5.h:
+
+myunzip.h:
 
 /usr/include/sys/param.h:
 

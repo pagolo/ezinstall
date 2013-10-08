@@ -197,5 +197,6 @@ void ChDirRoot(void);
 #include "test.h"
 #include "xml.h"
 #include "md5.h"
-
+#include "myunzip.h"
+#include "untar.h"
 #endif
