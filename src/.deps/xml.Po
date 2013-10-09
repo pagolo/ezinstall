@@ -40,8 +40,14 @@ xml.o: xml.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/bits/semaphore.h /usr/include/fcntl.h \
  /usr/include/bits/fcntl.h /usr/include/libgen.h utils.h socket.h login.h \
  session.h configure.h mylocale.h getinput.h mysql.h editconfig.h test.h \
- xml.h md5.h myunzip.h untar.h /usr/include/bzlib.h /usr/include/zlib.h \
- /usr/include/zconf.h /usr/include/libxml2/libxml/xmlmemory.h \
+ xml.h md5.h myunzip.h untar.h /usr/include/sys/wait.h \
+ /usr/include/signal.h /usr/include/bits/signum.h \
+ /usr/include/bits/siginfo.h /usr/include/bits/sigaction.h \
+ /usr/include/bits/sigcontext.h /usr/include/bits/sigstack.h \
+ /usr/include/sys/ucontext.h /usr/include/bits/sigthread.h \
+ /usr/include/sys/resource.h /usr/include/bits/resource.h \
+ /usr/include/bzlib.h /usr/include/zlib.h /usr/include/zconf.h \
+ /usr/include/libxml2/libxml/xmlmemory.h \
  /usr/include/libxml2/libxml/xmlversion.h \
  /usr/include/libxml2/libxml/xmlexports.h \
  /usr/include/libxml2/libxml/threads.h \
@@ -263,6 +269,28 @@ md5.h:
 myunzip.h:
 
 untar.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/signal.h:
+
+/usr/include/bits/signum.h:
+
+/usr/include/bits/siginfo.h:
+
+/usr/include/bits/sigaction.h:
+
+/usr/include/bits/sigcontext.h:
+
+/usr/include/bits/sigstack.h:
+
+/usr/include/sys/ucontext.h:
+
+/usr/include/bits/sigthread.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/bits/resource.h:
 
 /usr/include/bzlib.h:
 

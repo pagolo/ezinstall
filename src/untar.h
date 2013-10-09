@@ -2,6 +2,7 @@
 #define __UNTAR_H
 
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
 #define BZ_IMPORT
 #include "bzlib.h"
