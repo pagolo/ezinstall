@@ -149,7 +149,7 @@ int inf(FILE *source, int dest, STRING **list)
         strm.next_in = in;
         progress += strm.avail_in; // *** increment progress
         {
-          int i = 0;
+          static int i = 0;
           char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100) / totalsize);
           HandleSemaphoreText(s, list, !i++ ? 1 : 0);
           if (s) free(s);

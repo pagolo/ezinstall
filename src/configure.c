@@ -102,6 +102,7 @@ int init(int action) {
     logged = 1;
   }
   else {
+    //logged = 1;
     logged = GetInputUserData(&username, &pass);
     if (logged) logged = AreDataOk(username, pass, globaldata.gd_userdata->username, globaldata.gd_userdata->password);
   }
