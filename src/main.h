@@ -122,12 +122,19 @@ enum {
   _ARRAY
 };
 
+enum { // per il campo zip_format
+  PKZIP,
+  GZ_TAR,
+  Z_TAR,
+  BZ2_TAR
+};
+
 typedef struct IniData {
    int  flags;          // flags, vedi sopra
    int  data_mode;      // config data mode (_VARIABLES,_DEFINES,_ARRAY)
    char *directory;     // nome cartella di default
    char *web_archive;   // archivio da scaricare via http
-   char *unzip;         // formato archivio
+   int  zip_format;         // formato archivio
    FSOBJ *filesys_list; // lista di cartelle o file da creare
    CHMOD *perm_list;    // lista delle cartelle su cui cambiare i permessi
    CHMOD *perm_list_rec;// lista delle cartelle su cui cambiare i permessi ricorsivamente

@@ -45,6 +45,8 @@ AC_CHECK_LIB([xml2], [main])
 AC_CHECK_LIB([pthread], [main])
 # FIXME: Replace `main' with a function in `-lz':
 AC_CHECK_LIB([z], [main])
+# FIXME: Replace `main' with a function in `-lbz2':
+AC_CHECK_LIB([bz2], [main])
 
 AC_CHECK_HEADERS([fcntl.h limits.h memory.h netdb.h netinet/in.h stdlib.h string.h sys/param.h sys/socket.h unistd.h])
 xml2_config=''

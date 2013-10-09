@@ -40,7 +40,8 @@ md5.o: md5.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/bits/semaphore.h /usr/include/fcntl.h \
  /usr/include/bits/fcntl.h /usr/include/libgen.h utils.h socket.h login.h \
  session.h configure.h mylocale.h getinput.h mysql.h editconfig.h test.h \
- xml.h md5.h myunzip.h
+ xml.h md5.h myunzip.h untar.h /usr/include/bzlib.h /usr/include/zlib.h \
+ /usr/include/zconf.h
 
 main.h:
 
@@ -243,3 +244,11 @@ xml.h:
 md5.h:
 
 myunzip.h:
+
+untar.h:
+
+/usr/include/bzlib.h:
+
+/usr/include/zlib.h:
+
+/usr/include/zconf.h:

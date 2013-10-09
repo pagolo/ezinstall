@@ -88,30 +88,30 @@ parseMainConfig(void) {
   return;
 }
 
-char *setUnzip(char *filename, char *mode) {
-  char buffer[32];
+int setUnzip(char *filename, char *mode) {
   if (strcasecmp(mode, "auto") == 0) {
     char *ptr = strrchr(filename, '.');
     if (ptr && strcasecmp(ptr, ".zip") == 0)
-      sprintf(buffer, "%s", "unzip");
+      return PKZIP;
     else if (ptr && (strcasecmp(ptr, ".tgz") == 0 || strcasecmp(ptr, ".gz") == 0))
-      sprintf(buffer, "%s", "tar -xzf");
+      return GZ_TAR;
     else if (ptr && (strcasecmp(ptr, ".bz2") == 0))
-      sprintf(buffer, "%s", "tar --bzip2 -xf");
+      return BZ2_TAR;
     else if (ptr && (strcasecmp(ptr, ".Z") == 0))
-      sprintf(buffer, "%s", "tar -xZf");
+      return Z_TAR;
     else Error(_("Unknown format of archive file"));
   } else {
     // accepted values: auto, zip, gzip, bzip
     if (strcasecmp(mode, "zip") == 0)
-      sprintf(buffer, "%s", "unzip");
+      return PKZIP;
     else if (strcasecmp(mode, "gzip") == 0)
-      sprintf(buffer, "%s", "tar -xzf");
+      return GZ_TAR;
     else if (strcasecmp(mode, "bzip") == 0)
-      sprintf(buffer, "%s", "tar --bzip2 -xf");
+      return BZ2_TAR;
     else Error(_("Unknown format of archive file"));
   }
-  return strdup(buffer);
+  // never
+  return -1;
 }
 
 void addChmod(char *file, char *mode, INIDATA *inidata, int recourse, int createfolder, char *extensions_string) {
@@ -324,7 +324,7 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
           inidata->web_archive = append_cstring(path, (char *) key);
         }
       }
-      inidata->unzip = setUnzip((char *) key, attrib ? (char *) attrib : "auto");
+      inidata->zip_format = setUnzip((char *) key, attrib ? (char *) attrib : "auto");
       xmlFree(key);
       if (attrib) xmlFree(attrib);
     }

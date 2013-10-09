@@ -106,10 +106,18 @@ int DownloadExtractArchiveFile(STRING **list) {
 
   HandleSemaphoreText(_("Uncompressing archive...<br />"), list, 1);
 
-  if (Unzip(filename, list) == 0) {
-    if (globaldata.gd_loglevel > LOG_NONE)
-      WriteLog(_("archive files extracted"));
-    unlink(filename);
+  if (globaldata.gd_inidata->zip_format == PKZIP) {
+    if (Unzip(filename, list) == 0) {
+      if (globaldata.gd_loglevel > LOG_NONE)
+        WriteLog(_("archive files extracted"));
+      unlink(filename);
+    }
+  } else {
+    if (Untar(filename, list) == 0) {
+      if (globaldata.gd_loglevel > LOG_NONE)
+        WriteLog(_("archive files extracted"));
+      unlink(filename);
+    }
   }
   //free(command);
           

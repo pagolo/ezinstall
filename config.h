@@ -34,6 +34,9 @@
 /* Define if your <locale.h> file defines LC_MESSAGES. */
 #define HAVE_LC_MESSAGES 1
 
+/* Define to 1 if you have the `bz2' library (-lbz2). */
+#define HAVE_LIBBZ2 1
+
 /* Define to 1 if you have the `mysqlclient' library (-lmysqlclient). */
 #define HAVE_LIBMYSQLCLIENT 1
 

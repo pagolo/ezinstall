@@ -71,10 +71,10 @@ int my_read
    return 0; /*not reached*/
 }
 
-int inf_bz(FILE *source, int dest) {
+int inf_bz(FILE *source, int dest, STRING **list) {
   static bz_stream stream;
   int  len = 1600, totalsize, progress = 0;
-  int  bzerror = 0;
+  int  bzerror = 0, i = 0;
   struct stat filestat;
       
   if (source == NULL || dest < 0) return -1;
@@ -87,7 +87,9 @@ int inf_bz(FILE *source, int dest) {
    BZ2_bzDecompressInit(&stream, 0, 0);
 
   while (len = my_read(&stream, source, len, &progress, &bzerror)) {
-            printf("\rExtracting (%d%%)...", (progress * 100) / totalsize); //*** show progression 
+    char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100) / totalsize);
+    HandleSemaphoreText(s, list, !i++ ? 1 : 0);
+    if (s) free(s);
     write(dest,outbuff,(BZ_MAX_UNUSED*2)-stream.avail_out);
   }
   BZ2_bzDecompressEnd (&stream);
@@ -105,7 +107,7 @@ int inf_bz(FILE *source, int dest) {
    invalid or incomplete, Z_VERSION_ERROR if the version of zlib.h and
    the version of the library linked do not match, or Z_ERRNO if there
    is an error reading or writing the files. */
-int inf(FILE *source, int dest)
+int inf(FILE *source, int dest, STRING **list)
 {
     int ret;
     unsigned have;
@@ -146,8 +148,12 @@ int inf(FILE *source, int dest)
             break;
         strm.next_in = in;
         progress += strm.avail_in; // *** increment progress
-        printf("\rExtracting (%d%%)...", (progress * 100) / totalsize); //*** show progression
-        fflush(stdout);
+        {
+          int i = 0;
+          char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100) / totalsize);
+          HandleSemaphoreText(s, list, !i++ ? 1 : 0);
+          if (s) free(s);
+        }
 
         /* run inflate() on input until output buffer not full */
         do {
@@ -189,17 +195,17 @@ int inf(FILE *source, int dest)
 
 int     _fd[2];
 
-void Expand(char *filename) {
-  int (*tar_inflate) (FILE *source, int dest);
+void Expand(char *filename, STRING **list) {
+  int (*tar_inflate) (FILE *source, int dest, STRING **list);
   int ret;
-  if (strstr(filename,".bz2"))  // da correggere
+  if (globaldata.gd_inidata->zip_format == BZ2_TAR)
     tar_inflate = &inf_bz;
   else
     tar_inflate = &inf;
-  ret = (*tar_inflate)(fopen(filename, "rb"), _fd[1]);
+  ret = (*tar_inflate)(fopen(filename, "rb"), _fd[1], list);
   close(_fd[1]);
-  puts("");
-  if (ret) puts("error");
+  //puts("");
+  if (ret) DaemonError("error", list);
   exit(0); 
 }
 
@@ -222,7 +228,7 @@ void ReadBuffer(int fd, char *buffer, int size) {
   }
 }
 
-void Untar(char *filename) {
+int Untar(char *filename, STRING **list) {
   int fd;
   long int len = 0, work, mod;
   char *buf;
@@ -236,7 +242,7 @@ void Untar(char *filename) {
   if (childpid == 0) {
     /* Child process closes up input side of pipe */
     close(_fd[0]);
-    Expand(filename);
+    Expand(filename, list);
   }
   
   close(_fd[1]);
@@ -259,6 +265,7 @@ void Untar(char *filename) {
   }
   close(fd);
   waitpid(childpid, NULL, 0);
+  return 0;
 }
 /* tar ends */
 /*

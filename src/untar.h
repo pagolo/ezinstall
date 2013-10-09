@@ -1,3 +1,6 @@
+#ifndef __UNTAR_H
+#define __UNTAR_H
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #define BZ_IMPORT
@@ -39,4 +42,6 @@ struct raw_tar {
 
 /* tar ends */
 
-void Untar(char *filename);
+int Untar(char *filename, STRING **list);
+
+#endif

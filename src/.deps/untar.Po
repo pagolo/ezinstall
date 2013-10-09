@@ -1,4 +1,4 @@
-myunzip.o: myunzip.c main.h ../config.h conditions.h /usr/include/stdio.h \
+untar.o: untar.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
  /usr/include/gnu/stubs-64.h \
@@ -41,10 +41,7 @@ myunzip.o: myunzip.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/bits/fcntl.h /usr/include/libgen.h utils.h socket.h login.h \
  session.h configure.h mylocale.h getinput.h mysql.h editconfig.h test.h \
  xml.h md5.h myunzip.h untar.h /usr/include/bzlib.h /usr/include/zlib.h \
- /usr/include/zconf.h /usr/include/errno.h /usr/include/bits/errno.h \
- /usr/include/linux/errno.h /usr/include/asm/errno.h \
- /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /usr/include/utime.h /usr/include/sys/time.h unzip.h ioapi.h
+ /usr/include/zconf.h
 
 main.h:
 
@@ -255,23 +252,3 @@ untar.h:
 /usr/include/zlib.h:
 
 /usr/include/zconf.h:
-
-/usr/include/errno.h:
-
-/usr/include/bits/errno.h:
-
-/usr/include/linux/errno.h:
-
-/usr/include/asm/errno.h:
-
-/usr/include/asm-generic/errno.h:
-
-/usr/include/asm-generic/errno-base.h:
-
-/usr/include/utime.h:
-
-/usr/include/sys/time.h:
-
-unzip.h:
-
-ioapi.h:

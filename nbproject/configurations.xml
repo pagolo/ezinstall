@@ -79,6 +79,7 @@
             </incDir>
             <preprocessorList>
               <Elem>HAVE_CONFIG_H</Elem>
+              <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
             </preprocessorList>
           </cTool>
         </makeTool>
@@ -89,117 +90,76 @@
       </item>
       <item path="src/configure.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/configure.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/editconfig.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/editconfig.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/getinput.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/getinput.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ioapi.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/ioapi.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/login.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/login.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/md5.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/md5.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/mylocale.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/mylocale.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/mysql.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/mysql.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/myunzip.c" ex="false" tool="0" flavor2="0">
-        <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
-        </cTool>
       </item>
       <item path="src/myunzip.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/session.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/session.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/socket.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/socket.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/test.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/test.h" ex="false" tool="3" flavor2="0">
@@ -210,27 +170,18 @@
       </item>
       <item path="src/unzip.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/unzip.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/utils.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/xml.c" ex="false" tool="0" flavor2="2">
         <cTool>
-          <preprocessorList>
-            <Elem>MYLOCALEDIR="/home/paolo/share/locale"</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/xml.h" ex="false" tool="3" flavor2="0">

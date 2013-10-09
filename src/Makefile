@@ -69,8 +69,8 @@ am_ezinstall_OBJECTS = main.$(OBJEXT) configure.$(OBJEXT) \
 	editconfig.$(OBJEXT) getinput.$(OBJEXT) ioapi.$(OBJEXT) \
 	login.$(OBJEXT) md5.$(OBJEXT) mylocale.$(OBJEXT) \
 	mysql.$(OBJEXT) myunzip.$(OBJEXT) session.$(OBJEXT) \
-	socket.$(OBJEXT) test.$(OBJEXT) unzip.$(OBJEXT) \
-	utils.$(OBJEXT) xml.$(OBJEXT)
+	socket.$(OBJEXT) test.$(OBJEXT) untar.$(OBJEXT) \
+	unzip.$(OBJEXT) utils.$(OBJEXT) xml.$(OBJEXT)
 ezinstall_OBJECTS = $(am_ezinstall_OBJECTS)
 ezinstall_DEPENDENCIES =
 ezinstall_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(ezinstall_LDFLAGS) \
@@ -138,7 +138,7 @@ INTLTOOL__v_MERGE_ = $(INTLTOOL__v_MERGE_$(AM_DEFAULT_VERBOSITY))
 INTLTOOL__v_MERGE_0 = @echo "  ITMRG " $@;
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -lz -lpthread -lxml2 -lmysqlclient 
+LIBS = -lbz2 -lz -lpthread -lxml2 -lmysqlclient 
 LTLIBOBJS = 
 MAINT = #
 MAKEINFO = ${SHELL} /home/paolo/ezinstall-remote/missing --run makeinfo
@@ -234,12 +234,15 @@ ezinstall_SOURCES = \
 	mysql.c     \
 	mysql.h     \
 	myunzip.c     \
+	myunzip.h     \
 	session.c      \
 	session.h      \
 	socket.c     \
 	socket.h     \
 	test.c     \
 	test.h     \
+	untar.c    \
+	untar.h    \
 	unzip.c     \
 	unzip.h     \
 	utils.c     \
@@ -347,6 +350,7 @@ include ./$(DEPDIR)/myunzip.Po
 include ./$(DEPDIR)/session.Po
 include ./$(DEPDIR)/socket.Po
 include ./$(DEPDIR)/test.Po
+include ./$(DEPDIR)/untar.Po
 include ./$(DEPDIR)/unzip.Po
 include ./$(DEPDIR)/utils.Po
 include ./$(DEPDIR)/xml.Po
