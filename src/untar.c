@@ -1,29 +1,17 @@
-/* ========================================================================== */
-/*                                                                            */
-/*   Filename.c                                                               */
-/*   (c) 2001 Author                                                          */
-/*                                                                            */
-/*   Description                                                              */
-/*                                                                            */
-/* ========================================================================== */
-
 #include "main.h"
 #include "untar.h"
 
-/* bzip follows */
-char inbuff[BZ_MAX_UNUSED];
-char outbuff[BZ_MAX_UNUSED*2];
-
-static Bool myfeof ( FILE* f )
+Bool myfeof ( FILE* f )
 {
    Int32 c = fgetc ( f );
    if (c == EOF) return True;
    ungetc ( c, f );
    return False;
 }
-
-int my_read 
-           ( bz_stream *stream, 
+int myread 
+           ( bz_stream *stream,
+             char *inbuff,
+             char *outbuff, 
              FILE* infile,
              int len,
              int *progress,
@@ -31,7 +19,6 @@ int my_read
               )
 {
    Int32   n, ret;
-
    BZ_SETERR(BZ_OK);
    stream->avail_out = BZ_MAX_UNUSED*2;
    stream->next_out = outbuff;
@@ -67,12 +54,14 @@ int my_read
          { BZ_SETERR(BZ_OK); return len; };
       
    }
-
    return 0; /*not reached*/
 }
 
-int inf_bz(FILE *source, int dest, STRING **list) {
-  static bz_stream stream;
+int inf_bz(FILE *source, int dest, STRING **list)
+{
+  char inbuff[BZ_MAX_UNUSED];
+  char outbuff[BZ_MAX_UNUSED*2];
+  bz_stream stream;
   int  len = 1600, totalsize, progress = 0;
   int  bzerror = 0, i = 0;
   struct stat filestat;
@@ -86,7 +75,7 @@ int inf_bz(FILE *source, int dest, STRING **list) {
    stream.opaque   = NULL;
    BZ2_bzDecompressInit(&stream, 0, 0);
 
-  while (len = my_read(&stream, source, len, &progress, &bzerror)) {
+  while (len = myread(&stream, inbuff, outbuff, source, len, &progress, &bzerror)) {
     char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100) / totalsize);
     HandleSemaphoreText(s, list, !i++ ? 1 : 0);
     if (s) free(s);
@@ -96,17 +85,7 @@ int inf_bz(FILE *source, int dest, STRING **list) {
   fclose(source);
   return bzerror;  
 }
-/* bzip ends */
 
-/* gzip follows... */
-// Mark Adler function follows... (lines marked with *** have been added)
-
-/* Decompress from file source to file dest until stream ends or EOF.
-   inf() returns Z_OK on success, Z_MEM_ERROR if memory could not be
-   allocated for processing, Z_DATA_ERROR if the deflate data is
-   invalid or incomplete, Z_VERSION_ERROR if the version of zlib.h and
-   the version of the library linked do not match, or Z_ERRNO if there
-   is an error reading or writing the files. */
 int inf(FILE *source, int dest, STRING **list)
 {
     int ret;
@@ -191,7 +170,6 @@ int inf(FILE *source, int dest, STRING **list)
     fclose(source);
     return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
 }
-/* gzip ends */
 
 int     _fd[2];
 
@@ -210,8 +188,6 @@ void Expand(char *filename, STRING **list) {
 }
 
 /* tar follows */
-  struct raw_tar tar;
-  pid_t   childpid;
 
 void ReadBuffer(int fd, char *buffer, int size) {
   static int check_zero;
@@ -230,7 +206,9 @@ void ReadBuffer(int fd, char *buffer, int size) {
 
 int Untar(char *filename, STRING **list) {
   int fd;
+  struct raw_tar tar;
   long int len = 0, work, mod;
+  pid_t   childpid;
   char *buf;
 
   pipe(_fd);
@@ -267,14 +245,3 @@ int Untar(char *filename, STRING **list) {
   waitpid(childpid, NULL, 0);
   return 0;
 }
-/* tar ends */
-/*
-int main(int argc, char **argv) {
-
-  if (argc < 2) exit(5);
-  
-  Untar(argv[1]);
-  
-  return 0;
-}
-*/

@@ -113,7 +113,7 @@ int DownloadExtractArchiveFile(STRING **list) {
       unlink(filename);
     }
   } else {
-    if (Unzip(filename, list) == 0) { // correct is Untar()
+    if (Untar(filename, list) == 0) {
       if (globaldata.gd_loglevel > LOG_NONE)
         WriteLog(_("archive files extracted"));
       unlink(filename);
