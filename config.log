@@ -27,6 +27,7 @@ uname -v = #1 SMP PREEMPT Fri May 31 20:17:40 UTC 2013 (3961086)
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
+PATH: /usr/bin
 PATH: /home/paolo/bin
 PATH: /usr/local/bin
 PATH: /usr/bin
@@ -705,7 +706,7 @@ configure:6381: $? = 0
 configure:6381: result: yes
 configure:6381: checking for stricmp
 configure:6381: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-/tmp/ccgm9CUn.o: In function `main':
+/tmp/ccgGyIFW.o: In function `main':
 /home/paolo/ezinstall-remote/conftest.c:83: undefined reference to `stricmp'
 collect2: error: ld returned 1 exit status
 configure:6381: $? = 1
@@ -818,7 +819,7 @@ configure:6381: $? = 0
 configure:6381: result: yes
 configure:6381: checking for strnicmp
 configure:6381: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-/tmp/ccWNJNa7.o: In function `main':
+/tmp/ccOVvMsP.o: In function `main':
 /home/paolo/ezinstall-remote/conftest.c:87: undefined reference to `strnicmp'
 collect2: error: ld returned 1 exit status
 configure:6381: $? = 1
