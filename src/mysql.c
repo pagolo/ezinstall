@@ -79,63 +79,70 @@ void MySqlForm(void) {
   printf("</table>\n</form>");
 }
 
-void ExecuteSqlFile(STRING **list) {
-  char buffer[256];
-  int rc;
+void ExecuteSqlFile(MYSQL *mysql, char *filename, STRING **list) {
   FILE *fh;
-  int pipe[3];
-  int pid;
-  char *args[] = {
-    "mysql",
-    mysprintf("-h%s", globaldata.gd_mysql->host),
-    mysprintf("-u%s", globaldata.gd_mysql->username),
-    mysprintf("-p%s", globaldata.gd_mysql->password),
-    mysprintf("%s", globaldata.gd_mysql->db_name),
-    NULL
-  };
+  char *buf;
+  struct stat filestat;
+  int totalsize, status;
+  MYSQL_RES *result;
 
-  ChDirRoot();
-  rc = chdir(getfieldbyname("folder"));
-  if (rc == -1) DaemonError(_("Can't chdir to project folder"), list);
-
-  {
-    STRING *script = globaldata.gd_mysql->db_files;
-    for (; script != NULL; script = script->next) {
-      fh = fopen(script->string, "r");
-      if (!(fh)) DaemonError(_("can't find sql file"), list);
-
-      pid = popenRWE(pipe, args[0], args);
-      if (pid == -1) DaemonError(_("can't execute mysql client..."), list);
-      
-      FILE *in = fdopen(pipe[0], "w");
-      FILE *err = fdopen(pipe[2], "r");
-      while (fgets(buffer, 256, fh)) fputs(buffer, in);
-      fclose(fh);
-      fclose(in);
-      if (fgets(buffer, 256, err)) {
-        fclose(err);
-        pcloseRWE(pid, pipe);
-        DaemonError(buffer, list);
-      }
-      fclose(err);
-      pcloseRWE(pid, pipe);
-    }
+  fh = fopen(filename, "r");
+  if (!fh) {
+    mysql_close(mysql);
+    DaemonError(_("Can't open .sql file"), list);
   }
-  if (args[1]) free(args[1]);
-  if (args[2]) free(args[2]);
-  if (args[3]) free(args[3]);
-  if (args[4]) free(args[4]);
+  if (fstat(fileno(fh), &filestat) < 0) {
+    mysql_close(mysql);
+    DaemonError(_("Can't stat .sql file"), list); // *** stat() file
+  }
+  totalsize = filestat.st_size; // *** get size of file
+  buf = calloc(1, totalsize + 1);
+  if (!buf) {
+    mysql_close(mysql);
+    DaemonError(_("Can't alloc memory"), list);
+  }
+  fread(buf, 1, totalsize, fh);
+  fclose(fh);
+
+  status = mysql_query(mysql, buf);
+  if (status) {
+    mysql_close(mysql);
+    DaemonError(_("Can't execute statements"), list);
+  }
+  /* process each statement result */
+  do {
+    /* did current statement return data? */
+    result = mysql_store_result(mysql);
+    if (result) {
+      /* yes; process rows and free the result set */
+      //process_result_set(mysql, result);
+      //printf("row count = %d\n", result->row_count);
+      mysql_free_result(result);
+    } else /* no result set or error */ {
+      if (mysql_field_count(mysql) == 0) {
+      } else /* some error occurred */ {
+        mysql_close(mysql);
+        DaemonError(_("Can't retrieve result set"), list);
+      }
+    }
+    /* more results? -1 = no, >0 = error, 0 = yes (keep looping) */
+    if ((status = mysql_next_result(mysql)) > 0) {
+      mysql_close(mysql);
+      DaemonError(_("Can't execute statement"), list);
+    }
+  } while (status == 0);
 }
 
 void CreateDbTables(STRING **list) {
   MYSQL *conn;
   char *query;
+  STRING *ptr;
 
   // cercare/creare il database
   conn = mysql_init(NULL);
   if (!(conn)) DaemonError(_("error initiating MySQL"), list);
 
-  if (mysql_real_connect(conn, globaldata.gd_mysql->host, globaldata.gd_mysql->username, globaldata.gd_mysql->password, NULL, 0, NULL, 0) == NULL) {
+  if (mysql_real_connect(conn, globaldata.gd_mysql->host, globaldata.gd_mysql->username, globaldata.gd_mysql->password, NULL, 0, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
     mysql_close(conn);
     DaemonError(_("error connecting to MySQL"), list);
   }
@@ -156,11 +163,24 @@ void CreateDbTables(STRING **list) {
     HandleSemaphoreText(s, list, 1);
     if (s) free(s);
   }
-  mysql_close(conn);
+
+  ChDirRoot();
+  char *folder = getfieldbyname("folder");
+  if (!folder) {
+    mysql_close(conn);
+    DaemonError(_("No project folder name"), list);
+  }
+  int rc = chdir(folder);
+  if (rc == -1) {
+    mysql_close(conn);
+    DaemonError(_("Can't chdir to project folder"), list);
+  }
 
   if (globaldata.gd_mysql->db_files) {
     HandleSemaphoreText(_("creating database tables..."), list, 1);
-    ExecuteSqlFile(list);
+    for (ptr = globaldata.gd_mysql->db_files; ptr; ptr = ptr->next)
+      ExecuteSqlFile(conn, ptr->string, list);
     HandleSemaphoreText(_("database tables have been created"), list, 0);
   }
+  mysql_close(conn);
 }
