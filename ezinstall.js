@@ -7,6 +7,8 @@ String.prototype.startsWith = function(str)
 String.prototype.endsWith = function(str) 
 {return (this.match(str+"$")==str)}
 
+var textlen = 0;
+
 function createXMLHttpRequest() {
   try { return new XMLHttpRequest(); } catch (e) { }
   try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { }
@@ -26,9 +28,10 @@ function do_ajax(arg1, arg2, url) {
   var div = document.getElementById("from_semaphore");
   var cont = document.getElementById("continue");
   var text = http_request.responseText;
-  if (text != '*') {
-    if (text && text != '') {
+  if (text !== '*') {
+    if (text && text.length >= textlen) {
       div.innerHTML = text;
+      textlen = text.length;
       cont.disabled = true;
     }
     setTimeout(function(){do_ajax(arg1, arg2, url)},750);
