@@ -60,9 +60,23 @@ void MySqlForm(void) {
     printf("<tr><td colspan='2'>%s<hr>&nbsp;</td></tr>\n", _("Please insert a new name or choose an existing database..."));
     printf("<tr><td style='text-align:right; width:33%%;'>%s</td>\n<td><select name='dbases' onChange='if (this.value!=\"\") database.value=this.value'>\n<option value=''>%s</option>\n", _("select existing db"), _("database"));
     while ((row = mysql_fetch_row(res_set)) != NULL) {
+      int retval = 0;
       if (strcmp(row[0], "information_schema") == 0 || strcmp(row[0], "performance_schema") == 0)
         continue;
-      printf("<option value='%s'>%s</option>\n", row[0], row[0]);
+      char *freeme = mysprintf("SELECT COUNT(*) FROM information_schema.TABLES WHERE table_schema = '%s';", row[0]);
+      if (freeme) {
+        if (!(mysql_query(conn, freeme))) {
+          MYSQL_RES *result = mysql_store_result(conn);
+          if (result) {
+            MYSQL_ROW rowdata = mysql_fetch_row(result);
+            if (rowdata)
+              retval = atoi(rowdata[0]);
+          }
+          mysql_free_result(result);
+        }
+        free(freeme);
+      }
+      printf("<option value='%s'>%s (%d)</option>\n", row[0], row[0], retval);
     }
     printf("</select>\n</td></tr>");
   }
