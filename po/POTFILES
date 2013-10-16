@@ -2,12 +2,16 @@
 	../src/configure.c \
 	../src/editconfig.c \
 	../src/getinput.c \
+	../src/ioapi.c \
 	../src/login.c \
 	../src/md5.c \
 	../src/mylocale.c \
 	../src/mysql.c \
+	../src/myunzip.c \
 	../src/session.c  \
 	../src/socket.c \
 	../src/test.c \
+	../src/untar.c \
+	../src/unzip.c \
 	../src/utils.c \
 	../src/xml.c

@@ -113,7 +113,7 @@ void ExecuteSqlFile(MYSQL *mysql, char *filename, STRING **list) {
   buf = calloc(1, totalsize + 1);
   if (!buf) {
     mysql_close(mysql);
-    DaemonError(_("Can't alloc memory"), list);
+    DaemonError(_("Can't allocate memory"), list);
   }
   fread(buf, 1, totalsize, fh);
   fclose(fh);
@@ -191,10 +191,10 @@ void CreateDbTables(STRING **list) {
   }
 
   if (globaldata.gd_mysql->db_files) {
-    HandleSemaphoreText(_("creating database tables..."), list, 1);
+    HandleSemaphoreText(_("creating database tables, please wait..."), list, 1);
     for (ptr = globaldata.gd_mysql->db_files; ptr; ptr = ptr->next)
       ExecuteSqlFile(conn, ptr->string, list);
-    HandleSemaphoreText(_("database tables have been created"), list, 0);
+    HandleSemaphoreText(_("database tables have been created"), list, 1);
   }
   mysql_close(conn);
 }
