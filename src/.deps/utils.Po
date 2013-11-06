@@ -47,7 +47,10 @@ utils.o: utils.c main.h ../config.h conditions.h /usr/include/stdio.h \
  /usr/include/bits/sigstack.h /usr/include/sys/ucontext.h \
  /usr/include/bits/sigthread.h /usr/include/sys/resource.h \
  /usr/include/bits/resource.h /usr/include/bzlib.h /usr/include/zlib.h \
- /usr/include/zconf.h /usr/include/assert.h /usr/include/sys/param.h \
+ /usr/include/zconf.h /usr/include/assert.h /usr/include/errno.h \
+ /usr/include/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/asm/errno.h /usr/include/asm-generic/errno.h \
+ /usr/include/asm-generic/errno-base.h /usr/include/sys/param.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.7/include-fixed/limits.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix2_lim.h \
@@ -289,6 +292,18 @@ untar.h:
 /usr/include/zconf.h:
 
 /usr/include/assert.h:
+
+/usr/include/errno.h:
+
+/usr/include/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/asm/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
 
 /usr/include/sys/param.h:
 

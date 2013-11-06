@@ -16,6 +16,7 @@ int freestringlist(STRING *list);
 char * append_cstring (char *rc, const char *appendable);
 char *mysprintf(const char *format, ...);
 int execute(char *s);
+int file_exists(char * filename);
 
 //------------------ LOG FILE
 void WriteLog (char *msg);

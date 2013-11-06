@@ -2,6 +2,7 @@
 #include "main.h"
 #include <assert.h>
 #include <dirent.h>
+#include <errno.h>
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -47,6 +48,12 @@ char * append_cstring(char *rc, const char *appendable) {
   } else strcpy(result, appendable);
 
   return result;
+}
+
+int file_exists(char * filename) {
+  static struct stat buf;
+  if (stat(filename, &buf) == -1 && errno == ENOENT) return 0;
+  return 1;
 }
 
 char *mysprintf(const char *format, ...) {

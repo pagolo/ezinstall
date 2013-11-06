@@ -41,6 +41,13 @@ struct raw_tar {
   char  align[255];
 };
 
+struct filelink {
+  char  realfile[100];
+  char  linkfile[100];
+  int   symbolic;
+  struct filelink *next;
+};
+
 /* tar ends */
 
 int Untar(char *filename, STRING **list);

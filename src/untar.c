@@ -1,5 +1,6 @@
 #include "main.h"
 #include "untar.h"
+#include <errno.h>
 
 Bool myfeof(FILE* f) {
   Int32 c = fgetc(f);
@@ -214,6 +215,48 @@ void ReadBuffer(int fd, char *buffer, int size) {
   }
 }
 
+void AddLink(struct filelink **linklist, char *realfile, char *linkfile, int symbolic) {
+  struct filelink *temp;
+  struct filelink *link = malloc(sizeof(struct filelink));
+  if (!link) return; // no memory???
+  strncpy(link->linkfile, linkfile, 99);
+  strncpy(link->realfile, realfile, 99);
+  link->symbolic = symbolic;
+  link->next = NULL;
+  if (*linklist) {
+    for (temp = *linklist; temp->next; temp = temp->next);
+    temp->next = link;
+    return;
+  }
+  *linklist = link;
+}
+
+int LinkFileExists(char *filename, char *linkpath, char **linkedfile) {
+  struct stat statbuf;
+  char dirbuf[PATH_MAX];
+  char *cwd = NULL, *ptr = NULL;
+  int success = 0;
+  
+  if (*filename == '/')
+    return (file_exists(filename));
+  
+  ptr = strrchr(linkpath, '/');
+  if (ptr) {
+    *ptr = '\0';
+    //memset(dirbuf, '\0', PATH_MAX); // clean memory buffer
+    cwd = getcwd(dirbuf, PATH_MAX);
+    if (chdir(linkpath) != 0)
+      return 0; // cant change dir
+    *linkedfile = mysprintf("%s/%s", linkpath, filename);
+    *ptr = '/';
+  }
+  if (stat(filename, &statbuf) == 0)
+    success = 1;
+  if (cwd)
+    chdir(cwd);
+  return success;
+}
+
 int Untar(char *filename, STRING **list) {
   int _fd[2];
   int fd;
@@ -221,6 +264,7 @@ int Untar(char *filename, STRING **list) {
   long int len = 0, work, mod;
   pid_t childpid;
   char *buf = NULL;
+  struct filelink *linklist = NULL, *nextlink = NULL;
 
   _fd[0] = _fd[1] = -1;
   pipe(_fd);
@@ -250,20 +294,47 @@ int Untar(char *filename, STRING **list) {
       buf = calloc(1, work + 1);
       ReadBuffer(fd, buf, work);
     }
+    mode_t mode = (mode_t)strtol(tar.mode, NULL, 8);
     switch (tar.type[0]) {
-      case '5': // directory
-        mkdir(tar.name, 0755);
+      case '5': // directory @TODO: check for error
+        mkdir(tar.name, mode);
+        break;
+      case '1':
+      case '2':
+      /*{
+        char *linkedfile;
+        if (!(LinkFileExists(tar.linked, tar.name, &linkedfile))) {
+          AddLink(&linklist, linkedfile, tar.name, (tar.type[0] == '2'));
+          if (linkedfile) free(linkedfile);
+          break;
+        }
+      }*/
+        if (tar.type[0] == '1')
+          link(tar.linked, tar.name);
+        else
+          symlink(tar.linked, tar.name);
         break;
       case '0': // real file
+      case '\0':
         {
+          struct filelink *mylink;
           FILE *fh = fopen(tar.name, "w");
           if (fh) {
+            fchmod(fileno(fh), mode);
             if (buf) {
               fwrite(buf, len, 1, fh);
               free(buf);
               buf = NULL;
             }
             fclose(fh);
+          }
+          for (mylink = linklist; mylink; mylink = mylink->next) {
+            if (strcmp(tar.name, mylink->realfile) == 0) {
+              if (mylink->symbolic)
+                symlink(mylink->realfile, mylink->linkfile);
+              else
+                link(mylink->realfile, mylink->linkfile);
+            }
           }
         }
         break;
@@ -275,6 +346,11 @@ int Untar(char *filename, STRING **list) {
     }
   }
   close(fd);
+  // free linklist
+  for ( ; linklist; linklist = nextlink) {
+    nextlink = linklist->next;
+    free(linklist);
+  }
   waitpid(childpid, NULL, 0);
   return 0;
 }
