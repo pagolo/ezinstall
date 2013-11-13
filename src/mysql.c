@@ -95,7 +95,7 @@ void MySqlForm(void) {
 
 void ExecuteSqlFile(MYSQL *mysql, char *filename, STRING **list) {
   FILE *fh;
-  char *buf;
+  char *buf, *ptr;
   struct stat filestat;
   int totalsize, status;
   MYSQL_RES *result;
@@ -107,16 +107,28 @@ void ExecuteSqlFile(MYSQL *mysql, char *filename, STRING **list) {
   }
   if (fstat(fileno(fh), &filestat) < 0) {
     mysql_close(mysql);
+    fclose(fh);
     DaemonError(_("Can't stat .sql file"), list); // *** stat() file
   }
   totalsize = filestat.st_size; // *** get size of file
   buf = calloc(1, totalsize + 1);
   if (!buf) {
     mysql_close(mysql);
+    fclose(fh);
     DaemonError(_("Can't allocate memory"), list);
   }
   fread(buf, 1, totalsize, fh);
   fclose(fh);
+
+  // clear -- comments  
+  for (ptr = buf; *ptr != '\0'; ptr++) {
+    if (ptr > buf) {
+      if (ptr[-1] == '\n' && ptr[0] == '-') {
+        while (*ptr != '\r' && *ptr != '\n')
+          *ptr++ = ' ';
+      } 
+    }
+  }
 
   status = mysql_query(mysql, buf);
   if (status) {
@@ -162,7 +174,7 @@ void CreateDbTables(STRING **list) {
   }
   if (mysql_select_db(conn, globaldata.gd_mysql->db_name) != 0) {
     // database doesn't exist? create it
-    query = mysprintf("CREATE DATABASE `%s`", globaldata.gd_mysql->db_name);
+    query = mysprintf("CREATE DATABASE `%s`;", globaldata.gd_mysql->db_name);
     if (mysql_query(conn, query) != 0) {
       mysql_close(conn);
       DaemonError(_("can't create new database, please go back and select an existing db"), list);
@@ -172,6 +184,10 @@ void CreateDbTables(STRING **list) {
       if (s) free(s);
     }
     free(query);
+    if (mysql_select_db(conn, globaldata.gd_mysql->db_name) != 0) {
+      mysql_close(conn);
+      DaemonError(_("Can't select newly created database"), list);
+    }
   } else {
     char *s = mysprintf(_("Database '%s' was found<br />"), globaldata.gd_mysql->db_name);
     HandleSemaphoreText(s, list, 1);

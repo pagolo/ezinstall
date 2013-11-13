@@ -133,6 +133,7 @@ typedef struct IniData {
    int  flags;          // flags, vedi sopra
    int  data_mode;      // config data mode (_VARIABLES,_DEFINES,_ARRAY)
    char *directory;     // nome cartella di default
+   char *dir_msg;       // messaggio da mostrare accanto al bottone di testo della cartella
    char *web_archive;   // archivio da scaricare via http
    int  zip_format;         // formato archivio
    FSOBJ *filesys_list; // lista di cartelle o file da creare

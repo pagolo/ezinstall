@@ -174,7 +174,7 @@ void ShowCreateDirPage(void) {
           globaldata.gd_inidata->web_archive,
           getfieldbyname("overwrite"),
           getfieldbyname("upload"),
-          _("Please edit the destination web folder name"),
+          globaldata.gd_inidata->dir_msg? globaldata.gd_inidata->dir_msg : _("Please edit the destination web folder name"),
           ":",
           "",
           globaldata.gd_inidata->directory,
@@ -239,8 +239,14 @@ void NextStep(int step) {
 }
 
 void LaunchScript(void) {
+  char *folder = getfieldbyname("folder");
+  if (folder) {
+    int len = strlen(folder);
+    if (len > 0 && folder[len - 1] == '/')
+      folder[len - 1] = '\0';
+  }
   printf("<script language='javascript'>window.location=\"/%s/%s\";</script>\n",
-          getfieldbyname("folder"),
+          folder,
           globaldata.gd_inidata->script2start);
 }
 
@@ -532,11 +538,17 @@ void Daemonize(void) {
       break;
     case CREATE_FOLDER:
     case RENAME_FOLDER:
-      if (globaldata.gd_action == CREATE_FOLDER) {
-        CreateChangeDir(getfieldbyname("folder"), &list, __CREATE);
-        DownloadExtractArchiveFile(&list);
-      } else {
-        CreateChangeDir(getfieldbyname("folder"), &list, __RENAME);
+      {
+        char *mainfolder = getfieldbyname("folder");
+        if (globaldata.gd_action == CREATE_FOLDER) {
+          if (strcmp("./", mainfolder) && strcmp(".", mainfolder))
+            CreateChangeDir(mainfolder, &list, __CREATE);
+          else
+            ChDirRoot();
+          DownloadExtractArchiveFile(&list);
+        } else {
+          CreateChangeDir(mainfolder, &list, __RENAME);
+        }
       }
       CreateFileSystemObject(&list);
       ChangePermissionsRecurse(&list);

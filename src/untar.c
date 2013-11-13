@@ -20,7 +20,7 @@ int myread
         ) {
   Int32 n, ret;
   BZ_SETERR(BZ_OK);
-  stream->avail_out = BZ_MAX_UNUSED * 2;
+  stream->avail_out = BZ_MAX_UNUSED;
   stream->next_out = outbuff;
 
   while (True) {
@@ -70,9 +70,9 @@ int myread
 
 int inf_bz(FILE *source, int dest, STRING **list) {
   char inbuff[BZ_MAX_UNUSED];
-  char outbuff[BZ_MAX_UNUSED * 2];
+  char outbuff[BZ_MAX_UNUSED];
   bz_stream stream;
-  int len = 1600, totalsize, progress = 0;
+  int len = BZ_MAX_UNUSED, totalsize, progress = 0;
   int bzerror = 0, i = 0;
   struct stat filestat;
 
@@ -86,10 +86,10 @@ int inf_bz(FILE *source, int dest, STRING **list) {
   BZ2_bzDecompressInit(&stream, 0, 0);
 
   while ((len = myread(&stream, inbuff, outbuff, source, len, &progress, &bzerror)) > 0) {
-    char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100) / totalsize);
+    char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100ul) / totalsize);
     HandleSemaphoreText(s, list, !i++ ? 1 : 0);
     if (s) free(s);
-    write(dest, outbuff, (BZ_MAX_UNUSED * 2) - stream.avail_out);
+    write(dest, outbuff, BZ_MAX_UNUSED - stream.avail_out);
   }
   BZ2_bzDecompressEnd(&stream);
   fclose(source);
@@ -132,13 +132,15 @@ int inf(FILE *source, int dest, STRING **list) {
       fclose(source);
       return Z_ERRNO;
     }
-    if (strm.avail_in == 0)
+    if (strm.avail_in == 0) {
+      //WriteLog("READ=0");
       break;
+    }
     strm.next_in = in;
     progress += strm.avail_in; // *** increment progress
     {
       static int i = 0;
-      char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100) / totalsize);
+      char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100ul) / totalsize);
       HandleSemaphoreText(s, list, !i++ ? 1 : 0);
       if (s) free(s);
     }
@@ -151,10 +153,12 @@ int inf(FILE *source, int dest, STRING **list) {
       //***removed assertion
       //assert(ret != Z_STREAM_ERROR);  /* state not clobbered */
       switch (ret) {
-          //*** added case Z_STREAM_ERROR
+        //*** added case Z_STREAM_ERROR
         case Z_STREAM_ERROR:
+          (void) inflateEnd(&strm);
           fclose(source);
-          abort();
+          return ret;
+          //abort();
         case Z_NEED_DICT:
           ret = Z_DATA_ERROR; /* and fall through */
         case Z_DATA_ERROR:
@@ -177,6 +181,7 @@ int inf(FILE *source, int dest, STRING **list) {
   /* clean up and return */
   (void) inflateEnd(&strm);
   fclose(source);
+  //WriteLog("Uncompress end");
   return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
 }
 
@@ -188,10 +193,9 @@ void Expand(char *filename, STRING **list, int fd, int zip_format) {
   else
     tar_inflate = &inf;
   ret = (*tar_inflate)(fopen(filename, "rb"), fd, list);
+  if (ret && !(zip_format == BZ2_TAR && (ret == BZ_STREAM_END || ret == BZ_SEQUENCE_ERROR)))
+    DaemonError("generic error", list);
   close(fd);
-  //puts("");
-  if (ret && !(zip_format == BZ2_TAR && ret == BZ_STREAM_END))
-    DaemonError("error", list);
   exit(0);
 }
 
@@ -208,25 +212,32 @@ void ReadBuffer(int fd, char *buffer, int size) {
     exit(100);
   } // error
   if (charsno < size) { // incomplete buffer, recurse...
-
     nanosleep((struct timespec[]) {
       {0, 500000}}, NULL);
     ReadBuffer(fd, &buffer[charsno], size - charsno);
   }
 }
 
+void ResetNextData(char **nextname, long int *nextlink) {
+  free(*nextname);
+  *nextname = NULL;
+  *nextlink = 0;
+}
+
 int Untar(char *filename, STRING **list) {
   int _fd[2];
   int fd;
   struct raw_tar tar;
-  long int len = 0, work, mod;
+  long int len = 0, work, mod, nextlink = 0;
   pid_t childpid;
   char *buf = NULL;
+  char *nextname = NULL;
 
   _fd[0] = _fd[1] = -1;
   pipe(_fd);
 
   if ((childpid = fork()) == -1) {
+    // @TODO remove perror()
     perror("fork");
     exit(1);
   }
@@ -254,19 +265,33 @@ int Untar(char *filename, STRING **list) {
     mode_t mode = (mode_t)strtol(tar.mode, NULL, 8);
     switch (tar.type[0]) {
       case '5': // directory @TODO: check for error
-        mkdir(tar.name, mode);
+        if (mkdir((nextname && !nextlink) ? nextname : tar.name, mode) < 0) {
+          exit(100);
+        }
+        if (nextname) ResetNextData(&nextname, &nextlink);
         break;
       case '1':
+        link(tar.linked, (nextname && nextlink) ? nextname : tar.name);
+        if (nextname) ResetNextData(&nextname, &nextlink);
+        break;
       case '2':
-        if (tar.type[0] == '1')
-          link(tar.linked, tar.name);
-        else
-          symlink(tar.linked, tar.name);
+        symlink(tar.linked, (nextname && nextlink) ? nextname : tar.name);
+        if (nextname) ResetNextData(&nextname, &nextlink);
+        break;
+      case 'K':
+        nextlink = 1;
+      case 'L':
+        if (!buf) break;
+        nextname = calloc(len + 1, 1);
+        if (!nextname) {
+          exit(100);
+        }
+        strncpy(nextname, buf, len);
         break;
       case '0': // real file
       case '\0':
         {
-          FILE *fh = fopen(tar.name, "w");
+          FILE *fh = fopen((nextname && !nextlink) ? nextname : tar.name, "w");
           if (fh) {
             fchmod(fileno(fh), mode);
             if (buf) {
@@ -277,6 +302,7 @@ int Untar(char *filename, STRING **list) {
             fclose(fh);
           }
         }
+        if (nextname) ResetNextData(&nextname, &nextlink);
         break;
       // @TODO handle other types...
     }
@@ -286,6 +312,11 @@ int Untar(char *filename, STRING **list) {
     }
   }
   close(fd);
-  waitpid(childpid, NULL, 0);
+  int status;
+  waitpid(childpid, &status, 0);
+  if (status == 0)
+    HandleSemaphoreText(_("Files have been extracted"), list, 1);
+  else
+    exit(10);
   return 0;
 }
