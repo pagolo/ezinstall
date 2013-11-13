@@ -723,7 +723,7 @@ int main(int argc, char **argv) {
 
   // do ajax script
   if (globaldata.gd_semaphore && globaldata.gd_semaphore->sem_keep)
-    printf("<script type=\"text/javascript\">do_ajax('client',%d,'%s')</script>\n",
+    printf("<script type=\"text/javascript\">do_ajax('client',%d,'%s',new Date().getTime())</script>\n",
           globaldata.gd_semaphore->sem_key,
           getenv("SCRIPT_NAME"));
 
