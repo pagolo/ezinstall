@@ -2,98 +2,46 @@
 #include "untar.h"
 #include <errno.h>
 
-Bool myfeof(FILE* f) {
-  Int32 c = fgetc(f);
-  if (c == EOF) return True;
-  ungetc(c, f);
-  return False;
-}
-
-int myread
-(bz_stream *stream,
-        char *inbuff,
-        char *outbuff,
-        FILE* infile,
-        int len,
-        int *progress,
-        int *bzerror
-        ) {
-  Int32 n, ret;
-  BZ_SETERR(BZ_OK);
-  stream->avail_out = BZ_MAX_UNUSED;
-  stream->next_out = outbuff;
-
-  while (True) {
-
-    if (ferror(infile)) {
-      BZ_SETERR(BZ_IO_ERROR);
-      return 0;
-    };
-
-    if (stream->avail_in == 0 && !myfeof(infile)) {
-      n = fread(inbuff, sizeof (unsigned char),
-              BZ_MAX_UNUSED, infile);
-      if (ferror(infile)) {
-        BZ_SETERR(BZ_IO_ERROR);
-        return 0;
-      };
-      stream->avail_in = n;
-      *progress += n;
-      stream->next_in = inbuff;
-    }
-
-    ret = BZ2_bzDecompress(stream);
-
-    if (ret != BZ_OK && ret != BZ_STREAM_END) {
-      BZ_SETERR(ret);
-      return 0;
-    };
-
-    if (ret == BZ_OK && myfeof(infile) &&
-            stream->avail_in == 0 && stream->avail_out > 0) {
-      BZ_SETERR(BZ_UNEXPECTED_EOF);
-      return 0;
-    };
-
-    if (ret == BZ_STREAM_END) {
-      BZ_SETERR(BZ_STREAM_END);
-      return len - stream->avail_out;
-    };
-    if (stream->avail_out == 0) {
-      BZ_SETERR(BZ_OK);
-      return len;
-    };
-
-  }
-  return 0; /*not reached*/
-}
-
-int inf_bz(FILE *source, int dest, STRING **list) {
-  char inbuff[BZ_MAX_UNUSED];
-  char outbuff[BZ_MAX_UNUSED];
-  bz_stream stream;
-  int len = BZ_MAX_UNUSED, totalsize, progress = 0;
-  int bzerror = 0, i = 0;
+int inf_bz(FILE *f, int dest, STRING **list) {
+  BZFILE* b;
+  int nBuf;
+  char buf[5000];
+  int bzerror;
+  int totalsize;
   struct stat filestat;
 
-  if (source == NULL || dest < 0) return -1;
-  if (fstat(fileno(source), &filestat) < 0) return -1; // *** stat() file
+  if (fstat(fileno(f), &filestat) < 0) return -1; // *** stat() file
   totalsize = filestat.st_size; // *** get size of file
 
-  stream.bzalloc = NULL;
-  stream.bzfree = NULL;
-  stream.opaque = NULL;
-  BZ2_bzDecompressInit(&stream, 0, 0);
-
-  while ((len = myread(&stream, inbuff, outbuff, source, len, &progress, &bzerror)) > 0) {
-    char *s = mysprintf(_("Extracting (%d%%)"), (progress * 100ul) / totalsize);
-    HandleSemaphoreText(s, list, !i++ ? 1 : 0);
-    if (s) free(s);
-    write(dest, outbuff, BZ_MAX_UNUSED - stream.avail_out);
+  if (!f) {
+    return BZ_IO_ERROR;
   }
-  BZ2_bzDecompressEnd(&stream);
-  fclose(source);
-  return bzerror;
+  b = BZ2_bzReadOpen(&bzerror, f, 0, 0, NULL, 0);
+  if (bzerror != BZ_OK) {
+    BZ2_bzReadClose(&bzerror, b);
+    return bzerror;
+  }
+
+  bzerror = BZ_OK;
+  while (bzerror == BZ_OK) {
+    nBuf = BZ2_bzRead(&bzerror, b, buf, 5000);
+    if (bzerror == BZ_OK || bzerror == BZ_STREAM_END) {
+      write(dest, buf, nBuf);
+      {
+        static int i = 0;
+        char *s = mysprintf(_("Extracting (%d%%)"), (ftell(f) * 100ul) / totalsize);
+        HandleSemaphoreText(s, list, !i++ ? 1 : 0);
+        if (s) free(s);
+      }
+    }
+  }
+  if (bzerror != BZ_STREAM_END) {
+    BZ2_bzReadClose(&bzerror, b);
+    return bzerror;
+  } else {
+    BZ2_bzReadClose(&bzerror, b);
+  }
+  return BZ_OK;
 }
 
 int inf(FILE *source, int dest, STRING **list) {

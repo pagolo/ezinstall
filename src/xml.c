@@ -60,6 +60,7 @@ parseMainConfig(void) {
     if ((!xmlStrcmp(cur->name, (const xmlChar *) "main"))) {
       appendstring(&stringlist, "language");
       appendstring(&stringlist, "locale_path");
+      appendstring(&stringlist, "static_path");
       appendstring(&stringlist, "loglevel");
       parseSection(doc, cur, stringlist, cur->name);
       freestringlist(stringlist);
@@ -97,8 +98,8 @@ int setUnzip(char *filename, char *mode) {
       return GZ_TAR;
     else if (ptr && (strcasecmp(ptr, ".bz2") == 0))
       return BZ2_TAR;
-    else if (ptr && (strcasecmp(ptr, ".Z") == 0))
-      return Z_TAR;
+//    else if (ptr && (strcasecmp(ptr, ".Z") == 0))
+//      return Z_TAR;
     else Error(_("Unknown format of archive file"));
   } else {
     // accepted values: auto, zip, gzip, bzip
@@ -441,6 +442,14 @@ int WriteGlobalConfig(void) {
     rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
     if (rc < 0) goto finish;
   }
+  // the static files path
+//  if (globaldata.gd_static_path && *(globaldata.gd_static_path)) {
+    rc = xmlTextWriterWriteElement(writer, BAD_CAST "static_path", BAD_CAST getfieldbyname("StaticData"));
+    if (rc < 0) goto finish;
+    // newline
+    rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+    if (rc < 0) goto finish;
+  //}
   // the loglevel
   rc = xmlTextWriterWriteElement(writer, BAD_CAST "loglevel", BAD_CAST getfieldbyname("LogLevel"));
   if (rc < 0) goto finish;

@@ -287,9 +287,10 @@ ezinstalldoc_DATA = \
 	INSTALL\
 	NEWS
 
-ezinstallcssdir = ${prefix}/public_html
+ezinstallcssdir = ${prefix}/public_html/ezinstall
 ezinstallcss_DATA = ezinstall.css\
-                    ezinstall.js
+                    ezinstall.js\
+                    ezinstall_throbber.gif
 
 ezinstallcfgdir = ${prefix}/public_html/cgi-bin
 ezinstallcfg_DATA = ezinstall.xml

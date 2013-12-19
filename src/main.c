@@ -3,14 +3,14 @@
 #include <libxml/parser.h>
 #include <errno.h>
 
-#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"/ezinstall.css\" type=\"text/css\"/>\n<script type=\"text/javascript\" src=\"/ezinstall.js\"></script>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>&nbsp;<br />\n"
+#define HTM_HEADER "Content-type: text/html\r\n\r\n<html>\n<head>\n<title>Easy Installer Tool</title>\n<link rel=\"stylesheet\" href=\"%s/ezinstall.css\" type=\"text/css\"/>\n<script type=\"text/javascript\" src=\"%s/ezinstall.js\"></script>\n</head>\n<body>\n<h1>Easy Installer Tool</h1>\n<div class='rule'><hr /></div>&nbsp;<br />\n"
 #define HTM_HEADER_CLIENT "Content-type: text/html\r\n\r\n"
 #define HTM_FOOTER "</body></html>\n"
 
 GLOBAL globaldata;
 
 void Error(char *msg) {
-  if (!(globaldata.gd_header_sent)) printf(HTM_HEADER);
+  if (!(globaldata.gd_header_sent)) printf(HTM_HEADER, globaldata.gd_static_path, globaldata.gd_static_path);
   printf("<br /><div class='error_title'>%s</div>: ", _("ERROR"));
   printf("%s<br />", msg);
   if (globaldata.gd_loglevel > LOG_NONE) WriteLog(msg);
@@ -245,7 +245,8 @@ void LaunchScript(void) {
     if (len > 0 && folder[len - 1] == '/')
       folder[len - 1] = '\0';
   }
-  printf("<script language='javascript'>window.location=\"/%s/%s\";</script>\n",
+  printf(_("Please wait..."));
+  printf("<div class='throbber'>&nbsp;</div><script language='javascript'>window.location=\"/%s/%s\";</script>\n",
           folder,
           globaldata.gd_inidata->script2start);
 }
@@ -355,7 +356,7 @@ char *config_string =
         "</fieldset><br />&nbsp;<br />\n"
         "<fieldset>\n"
         "<legend>%s</legend>\n"
-        "&nbsp;<br />%s %s<br />&nbsp;\n"
+        "&nbsp;<br />%s %s %s<br />&nbsp;\n"
         "</fieldset><br />&nbsp;<br />\n"
         "<fieldset>\n"
         "<legend>%s</legend>\n"
@@ -410,6 +411,10 @@ char *InsertLogLevels(void) {
   return result;
 }
 
+char *InsertStaticDataPath(void) {
+  char *result = mysprintf("<small>%s</small>\n<input type='text' name=\"StaticData\" value='%s' />\n", _("Static data path"), globaldata.gd_static_path);
+  return result;
+}
 void ConfigForm(void) {
 
   printf(
@@ -432,9 +437,10 @@ void ConfigForm(void) {
           "",
           _("password (repeat)"),
           "",
-          _("Localization & Log"),
+          _("Localization & Log & Static Data Path"),
           InsertLanguages(),
           InsertLogLevels(),
+          InsertStaticDataPath(),
           _("MySQL"),
           _("username"),
           globaldata.gd_mysql->username,
@@ -591,7 +597,11 @@ int main(int argc, char **argv) {
   if (action == SEMAPHORE_CLIENT)
     semaphore_client_main(argc, argv);
 
-  printf(HTM_HEADER);
+  if (globaldata.gd_static_path && *globaldata.gd_static_path) {
+    if (globaldata.gd_static_path[strlen(globaldata.gd_static_path)-1] == '/')
+      globaldata.gd_static_path[strlen(globaldata.gd_static_path)-1] = '\0';
+  }
+  printf(HTM_HEADER, globaldata.gd_static_path, globaldata.gd_static_path);
   globaldata.gd_header_sent = 1;
 
   if (!(logged)) {

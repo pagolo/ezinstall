@@ -29,7 +29,7 @@ function do_ajax(arg1, arg2, url, timestamp) {
   var cont = document.getElementById("continue");
   var text = http_request.responseText;
   if (text !== '*') {
-    if (text && text.length >= textlen) {
+    if (text && text.length >= textlen - 10) {
       div.innerHTML = text;
       textlen = text.length;
       cont.disabled = true;

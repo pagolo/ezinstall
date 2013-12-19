@@ -11,6 +11,8 @@ void setMainConfig(char *section, char *name, char *value) {
       globaldata.gd_locale_code = strdup(value);
     } else if (strcasecmp(name, "locale_path") == 0 && value && *value) {
       globaldata.gd_locale_path = strdup(value);
+    } else if (strcasecmp(name, "static_path") == 0 && value && *value) {
+      globaldata.gd_static_path = strdup(value);
     } else if (strcasecmp(name, "loglevel") == 0 && value && *value) {
       globaldata.gd_loglevel = atoi(value);
     }

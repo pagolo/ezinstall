@@ -63,3 +63,10 @@ h1 {
   text-align: left;
   height: 40px;
 }
+.throbber {
+  background: transparent url(/ezinstall/ezinstall_throbber.gif) no-repeat 0px -18px;
+  float: left; /* LTR */
+  height: 15px;
+  margin: 2px;
+  width: 15px;
+}
