@@ -36,8 +36,8 @@ libdir = ${exec_prefix}/lib64
 DATADIRNAME = share
 itlocaledir = $(prefix)/$(DATADIRNAME)/locale
 subdir = po
-install_sh = ${SHELL} /home/paolo/ezinstall-remote/install-sh
-# Automake >= 1.8 provides /usr/bin/mkdir -p.
+install_sh = ${SHELL} /home/paolo/Src/ezinstall-remote/install-sh
+# Automake >= 1.8 provides $(MKDIR_P).
 # Until it can be supposed, use the safe fallback:
 mkdir_p = $(install_sh) -d
 

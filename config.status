@@ -437,7 +437,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/paolo/ezinstall-remote'
+ac_pwd='/home/paolo/Src/ezinstall-remote'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/usr/bin/mkdir -p'
@@ -685,7 +685,6 @@ S["INTLTOOL_V_MERGE_OPTIONS"]="$(intltool__v_merge_options_$(V))"
 S["INTLTOOL__v_MERGE_0"]="@echo \"  ITMRG \" $@;"
 S["INTLTOOL__v_MERGE_"]="$(INTLTOOL__v_MERGE_$(AM_DEFAULT_VERBOSITY))"
 S["INTLTOOL_V_MERGE"]="$(INTLTOOL__v_MERGE_$(V))"
-S["AM_DEFAULT_VERBOSITY"]="1"
 S["INTLTOOL_EXTRACT"]="/usr/bin/intltool-extract"
 S["INTLTOOL_MERGE"]="/usr/bin/intltool-merge"
 S["INTLTOOL_UPDATE"]="/usr/bin/intltool-update"
@@ -715,22 +714,26 @@ S["CC"]="gcc"
 S["MAINT"]="#"
 S["MAINTAINER_MODE_FALSE"]=""
 S["MAINTAINER_MODE_TRUE"]="#"
+S["AM_BACKSLASH"]="\\"
+S["AM_DEFAULT_VERBOSITY"]="1"
+S["AM_DEFAULT_V"]="$(AM_DEFAULT_VERBOSITY)"
+S["AM_V"]="$(V)"
 S["am__untar"]="$${TAR-tar} xf -"
 S["am__tar"]="$${TAR-tar} chof - \"$$tardir\""
 S["AMTAR"]="$${TAR-tar}"
 S["am__leading_dot"]="."
 S["SET_MAKE"]=""
 S["AWK"]="gawk"
-S["mkdir_p"]="/usr/bin/mkdir -p"
+S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/usr/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]=""
-S["install_sh"]="${SHELL} /home/paolo/ezinstall-remote/install-sh"
-S["MAKEINFO"]="${SHELL} /home/paolo/ezinstall-remote/missing --run makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/paolo/ezinstall-remote/missing --run autoheader"
-S["AUTOMAKE"]="${SHELL} /home/paolo/ezinstall-remote/missing --run automake-1.12"
-S["AUTOCONF"]="${SHELL} /home/paolo/ezinstall-remote/missing --run autoconf"
-S["ACLOCAL"]="${SHELL} /home/paolo/ezinstall-remote/missing --run aclocal-1.12"
+S["install_sh"]="${SHELL} /home/paolo/Src/ezinstall-remote/install-sh"
+S["MAKEINFO"]="makeinfo"
+S["AUTOHEADER"]="autoheader"
+S["AUTOMAKE"]="automake-1.13"
+S["AUTOCONF"]="autoconf"
+S["ACLOCAL"]="aclocal-1.13"
 S["VERSION"]="0.0.25"
 S["PACKAGE"]="ezinstall"
 S["CYGPATH_W"]="echo"
@@ -1201,7 +1204,7 @@ $as_echo "$as_me: executing $ac_file commands" >&6;}
 
   case $ac_file$ac_mode in
     "depfiles":C) test x"$AMDEP_TRUE" != x"" || {
-  # Autoconf 2.62 quotes --file arguments for eval, but not when files
+  # Older Autoconf quotes --file arguments for eval, but not when files
   # are listed without --file.  Let's play safe and only enable the eval
   # if we detect the quoting.
   case $CONFIG_FILES in
@@ -1252,7 +1255,7 @@ $as_echo X"$mf" |
     DEPDIR=`sed -n 's/^DEPDIR = //p' < "$mf"`
     test -z "$DEPDIR" && continue
     am__include=`sed -n 's/^am__include = //p' < "$mf"`
-    test -z "am__include" && continue
+    test -z "$am__include" && continue
     am__quote=`sed -n 's/^am__quote = //p' < "$mf"`
     # Find all dependency output files, they are included files with
     # $(DEPDIR) in their names.  We invoke sed twice because it is the
