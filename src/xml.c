@@ -293,7 +293,7 @@ int parseFinishNode(xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
-  xmlChar *key, *attrib, *message;
+  xmlChar *key, *attrib, *message, *subdir;
   cur = cur->xmlChildrenNode;
   INIDATA *inidata;
 
@@ -306,8 +306,10 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       attrib = xmlGetProp(cur, (xmlChar *) "create");
       message = xmlGetProp(cur, (xmlChar *) "message");
+      subdir = xmlGetProp(cur, (xmlChar *) "subdir");
       inidata->directory = strdup((char *) key);
       inidata->dir_msg = message ? strdup((char *)message) : NULL;
+      inidata->archive_dir = subdir ? strdup((char *)subdir) : NULL;
       if (xmlStrcmp(attrib, (xmlChar *) "yes") == 0) {
         inidata->flags |= _CREATEDIR;
       }

@@ -176,10 +176,11 @@ int Untar(char *filename, STRING **list) {
   int _fd[2];
   int fd;
   struct raw_tar tar;
-  long int len = 0, work, mod, nextlink = 0;
+  long int len = 0, work, mod, nextlink = 0, do_save = (globaldata.gd_inidata->archive_dir && *(globaldata.gd_inidata->archive_dir))? 0 : 1;
   pid_t childpid;
   char *buf = NULL;
   char *nextname = NULL;
+  char *subdir = NULL;
 
   _fd[0] = _fd[1] = -1;
   pipe(_fd);
@@ -199,6 +200,7 @@ int Untar(char *filename, STRING **list) {
   fd = _fd[0];
 
   for (;;) {
+    char *work_name = NULL;
     ReadBuffer(fd, (char *) &tar, sizeof (tar));
     if (!tar.name[0]) break;
     len = strtol(tar.size, NULL, 8);
@@ -213,17 +215,24 @@ int Untar(char *filename, STRING **list) {
     mode_t mode = (mode_t)strtol(tar.mode, NULL, 8);
     switch (tar.type[0]) {
       case '5': // directory @TODO: check for error
-        if (mkdir((nextname && !nextlink) ? nextname : tar.name, mode) < 0) {
-          exit(100);
+        work_name = (nextname && !nextlink) ? nextname : tar.name;
+        if (do_save) {
+          work_name = &work_name[strlen(subdir) + 1];
+          if (mkdir(work_name, mode) < 0) {
+            exit(100);
+          }
+        } else if (strcmp(basename(work_name), globaldata.gd_inidata->archive_dir) == 0) {
+          subdir = strdup(work_name);
+          do_save = 1;
         }
         if (nextname) ResetNextData(&nextname, &nextlink);
         break;
       case '1':
-        link(tar.linked, (nextname && nextlink) ? nextname : tar.name);
+        //if (do_save) link(tar.linked, (nextname && nextlink) ? my_nextname : tar.name);
         if (nextname) ResetNextData(&nextname, &nextlink);
         break;
       case '2':
-        symlink(tar.linked, (nextname && nextlink) ? nextname : tar.name);
+        //if (do_save) symlink(tar.linked, (nextname && nextlink) ? my_nextname : tar.name);
         if (nextname) ResetNextData(&nextname, &nextlink);
         break;
       case 'K':
@@ -238,17 +247,21 @@ int Untar(char *filename, STRING **list) {
         break;
       case '0': // real file
       case '\0':
-        {
-          FILE *fh = fopen((nextname && !nextlink) ? nextname : tar.name, "w");
+        if (do_save) {
+          work_name = (nextname && !nextlink) ? nextname : tar.name;
+          if (subdir) work_name = &work_name[strlen(subdir) + 1];
+          FILE *fh = fopen(work_name, "w");
           if (fh) {
             fchmod(fileno(fh), mode);
             if (buf) {
               fwrite(buf, len, 1, fh);
-              free(buf);
-              buf = NULL;
             }
             fclose(fh);
           }
+        }
+        if (buf) {
+          free(buf);
+          buf = NULL;
         }
         if (nextname) ResetNextData(&nextname, &nextlink);
         break;
