@@ -167,9 +167,28 @@ void ReadBuffer(int fd, char *buffer, int size) {
 }
 
 void ResetNextData(char **nextname, long int *nextlink) {
-  free(*nextname);
+  if (*nextname) free(*nextname);
   *nextname = NULL;
   *nextlink = 0;
+}
+
+void CreateFolderIfNotExists(char *path, mode_t mode) {
+  char *folder = strdup(path);
+  char *ptr = strrchr(folder, '/');
+  if (ptr) {
+    struct stat sb;
+    *ptr = '\0';
+    if (!(stat(folder, &sb) == 0 && S_ISDIR(sb.st_mode)))
+    {
+      if (mkdir(folder, mode) < 0) {
+        CreateFolderIfNotExists(folder, 0755);
+        if (mkdir(folder, mode) < 0) {
+          exit(100);
+        }
+      }
+    }
+  }
+  free(folder);
 }
 
 int Untar(char *filename, STRING **list) {
@@ -200,7 +219,9 @@ int Untar(char *filename, STRING **list) {
   fd = _fd[0];
 
   for (;;) {
-    char *work_name = NULL;
+    char *work_name;
+    //char type;
+    work_name = NULL;
     ReadBuffer(fd, (char *) &tar, sizeof (tar));
     if (!tar.name[0]) break;
     len = strtol(tar.size, NULL, 8);
@@ -213,27 +234,39 @@ int Untar(char *filename, STRING **list) {
       ReadBuffer(fd, buf, work);
     }
     mode_t mode = (mode_t)strtol(tar.mode, NULL, 8);
+    //type = (len == 0) ? '5' : tar.type[0];
     switch (tar.type[0]) {
       case '5': // directory @TODO: check for error
         work_name = (nextname && !nextlink) ? nextname : tar.name;
         if (do_save) {
-          work_name = &work_name[strlen(subdir) + 1];
-          if (mkdir(work_name, mode) < 0) {
-            exit(100);
-          }
+          if (subdir) work_name = &work_name[strlen(subdir) + 1];
+          CreateFolderIfNotExists(work_name, mode);
         } else if (strcmp(basename(work_name), globaldata.gd_inidata->archive_dir) == 0) {
           subdir = strdup(work_name);
           do_save = 1;
         }
-        if (nextname) ResetNextData(&nextname, &nextlink);
+        ResetNextData(&nextname, &nextlink);
         break;
       case '1':
-        //if (do_save) link(tar.linked, (nextname && nextlink) ? my_nextname : tar.name);
-        if (nextname) ResetNextData(&nextname, &nextlink);
-        break;
       case '2':
-        //if (do_save) symlink(tar.linked, (nextname && nextlink) ? my_nextname : tar.name);
-        if (nextname) ResetNextData(&nextname, &nextlink);
+        work_name = (nextname && nextlink) ? nextname : tar.name;
+        if (!do_save && globaldata.gd_inidata->archive_dir) {
+          char *ptr = strstr(work_name, globaldata.gd_inidata->archive_dir);
+          if (ptr) {
+            char *z = strchr(ptr, '/');
+            if (z) *z = '\0';
+            subdir = strdup(work_name);
+            if (z) *z = '/';
+            do_save = 1;
+          }
+        }
+        if (do_save) {
+          if (subdir) work_name = &work_name[strlen(subdir) + 1];
+          CreateFolderIfNotExists(work_name, 0755);
+          if (tar.type[0] == '1') link(tar.linked, work_name);
+          else symlink(tar.linked, work_name);                    
+        }          
+        ResetNextData(&nextname, &nextlink);
         break;
       case 'K':
         nextlink = 1;
@@ -247,9 +280,25 @@ int Untar(char *filename, STRING **list) {
         break;
       case '0': // real file
       case '\0':
-        if (do_save) {
-          work_name = (nextname && !nextlink) ? nextname : tar.name;
-          if (subdir) work_name = &work_name[strlen(subdir) + 1];
+        work_name = (nextname && !nextlink) ? nextname : tar.name;
+        if (!do_save && globaldata.gd_inidata->archive_dir) {
+          char *ptr = strstr(work_name, globaldata.gd_inidata->archive_dir);
+          if (ptr) {
+            char *z = strchr(ptr, '/');
+            if (z) *z = '\0';
+            subdir = strdup(work_name);
+            if (z) *z = '/';
+            do_save = 1;
+          }
+        }
+        int is_normal = (do_save && (subdir == NULL || strncmp(work_name, subdir, strlen(subdir)) == 0));
+        if (is_normal || FileIsSQL(work_name)) {
+          if (is_normal) {
+            if (subdir) work_name = &work_name[strlen(subdir) + 1];
+            CreateFolderIfNotExists(work_name, 0755);
+          } else {
+            work_name = basename(work_name);
+          }
           FILE *fh = fopen(work_name, "w");
           if (fh) {
             fchmod(fileno(fh), mode);
@@ -263,7 +312,7 @@ int Untar(char *filename, STRING **list) {
           free(buf);
           buf = NULL;
         }
-        if (nextname) ResetNextData(&nextname, &nextlink);
+        ResetNextData(&nextname, &nextlink);
         break;
       // @TODO handle other types...
     }
@@ -273,6 +322,7 @@ int Untar(char *filename, STRING **list) {
     }
   }
   close(fd);
+  if (subdir) free(subdir);
   int status;
   waitpid(childpid, &status, 0);
   if (status == 0)

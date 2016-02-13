@@ -4,5 +4,6 @@
 int MySqlTest(void);
 void MySqlForm(void);
 void CreateDbTables(STRING **);
+int FileIsSQL(char *path);
 
 #endif

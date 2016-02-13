@@ -214,3 +214,13 @@ void CreateDbTables(STRING **list) {
   }
   mysql_close(conn);
 }
+
+int FileIsSQL(char *path) {
+  STRING *ptr;
+  if (globaldata.gd_mysql->db_files) {
+    for (ptr = globaldata.gd_mysql->db_files; ptr; ptr = ptr->next)
+      if (strcmp(basename(path), ptr->string) == 0)
+        return 1;
+  }
+  return 0;
+}
