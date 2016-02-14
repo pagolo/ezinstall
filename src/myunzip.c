@@ -88,9 +88,8 @@ int makedir(const char *newdir, STRING **list) {
   return 1;
 }
 
-int do_extract_currentfile(uf, popt_extract_without_path, password, list)
+int do_extract_currentfile(uf, password, list)
 unzFile uf;
-const int* popt_extract_without_path;
 const char* password;
 STRING **list;
 {
@@ -101,6 +100,11 @@ STRING **list;
   FILE *fout = NULL;
   void* buf;
   uInt size_buf;
+  static int do_save = 0;
+  static char *subdir = NULL;
+  
+  if (globaldata.gd_inidata->archive_dir == NULL && do_save == 0)
+    do_save = 1;
 
   unz_file_info64 file_info;
   //    uLong ratio=0;
@@ -123,29 +127,33 @@ STRING **list;
     p++;
   }
 
-  if ((*filename_withoutpath) == '\0') {
-    if ((*popt_extract_without_path) == 0) {
-      mymkdir(filename_inzip);
+  if ((*filename_withoutpath) == '\0') { // is folder
+    if (do_save) {
+      mymkdir(subdir? &filename_inzip[strlen(subdir) + 1] : filename_inzip);
+    } else if (strcasecmp(basename(filename_inzip), globaldata.gd_inidata->archive_dir) == 0) {
+      subdir = strdup(filename_inzip);
+      do_save = 1;
     }
-  } else {
+  } else {  // is real file
     const char* write_filename;
-    int skip = 0;
 
-    if ((*popt_extract_without_path) == 0)
-      write_filename = filename_inzip;
-    else
-      write_filename = filename_withoutpath;
+    if (do_save == 0) {  // skip file
+      free(buf);
+      return err;
+    }
+    
+    write_filename = subdir? &filename_inzip[strlen(subdir) + 1] : filename_inzip;
 
     err = unzOpenCurrentFilePassword(uf, password);
     if (err != UNZ_OK) {
       DaemonError(mysprintf(_("error %d with zipfile in unzOpenCurrentFilePassword"), err), list);
     }
 
-    if ((skip == 0) && (err == UNZ_OK)) {
+    if (err == UNZ_OK) {
       fout = fopen64(write_filename, "wb");
 
       /* some zipfile don't contain directory alone before file */
-      if ((fout == NULL) && ((*popt_extract_without_path) == 0) &&
+      if ((fout == NULL) &&
               (filename_withoutpath != (char*) filename_inzip)) {
         char c = *(filename_withoutpath - 1);
         *(filename_withoutpath - 1) = '\0';
@@ -193,7 +201,7 @@ STRING **list;
   return err;
 }
 
-int do_extract(unzFile uf, int opt_extract_without_path, const char *password, STRING **list) {
+int do_extract(unzFile uf, const char *password, STRING **list) {
   uLong i;
   unz_global_info64 gi;
   int err;
@@ -204,7 +212,7 @@ int do_extract(unzFile uf, int opt_extract_without_path, const char *password, S
     DaemonError(mysprintf(_("error %d with zipfile in unzGetGlobalInfo"), err), list);
 
   for (i = 0; i < gi.number_entry; i++) {
-    if (do_extract_currentfile(uf, &opt_extract_without_path,
+    if (do_extract_currentfile(uf,
             password, list) != UNZ_OK)
       break;
 
@@ -245,7 +253,7 @@ int Unzip(const char *zipfilename, STRING **list) {
     HandleSemaphoreText(s, list, 1);
     if (s) free(s);
   }
-  ret_value = do_extract(uf, 0, password, list);
+  ret_value = do_extract(uf, password, list);
   unzClose(uf);
 
   return ret_value ? -1 : 0;
