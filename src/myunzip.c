@@ -136,13 +136,17 @@ STRING **list;
     }
   } else {  // is real file
     const char* write_filename;
-
-    if (do_save == 0) {  // skip file
+    int sql;
+    
+    sql = FileIsSQL(filename_inzip);
+    
+    if ((do_save == 0 && sql == 0) || (subdir && strncmp(filename_inzip, subdir, strlen(subdir)))) {  // skip file
       free(buf);
       return err;
     }
-    
-    write_filename = subdir? &filename_inzip[strlen(subdir) + 1] : filename_inzip;
+
+    if (sql) write_filename = basename(filename_inzip);   
+    else write_filename = subdir? &filename_inzip[strlen(subdir) + 1] : filename_inzip;
 
     err = unzOpenCurrentFilePassword(uf, password);
     if (err != UNZ_OK) {
