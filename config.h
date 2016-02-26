@@ -16,6 +16,9 @@
 /* Define to 1 if you have the <fcntl.h> header file. */
 #define HAVE_FCNTL_H 1
 
+/* Define to 1 if you have the `fopen64' function. */
+#define HAVE_FOPEN64 1
+
 /* Define to 1 if you have the `getcwd' function. */
 #define HAVE_GETCWD 1
 
@@ -39,6 +42,9 @@
 
 /* Define to 1 if you have the `curl' library (-lcurl). */
 #define HAVE_LIBCURL 1
+
+/* Define to 1 if you have the `intl' library (-lintl). */
+/* #undef HAVE_LIBINTL */
 
 /* Define to 1 if you have the `mysqlclient' library (-lmysqlclient). */
 #define HAVE_LIBMYSQLCLIENT 1
@@ -173,6 +179,9 @@
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "0.0.25"
+
+/* Check if union semun doesn't exist */
+#define SEMUN_UNDEFINED 1
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1

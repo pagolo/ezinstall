@@ -51,7 +51,7 @@ mysql.o: mysql.c /usr/include/stdc-predef.h main.h ../config.h \
  /usr/include/zconf.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed/limits.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed/syslimits.h \
- /usr/include/limits.h /usr/include/bits/posix2_lim.h \
+ /usr/include/limits.h /usr/include/bits/posix2_lim.h ioapi.h \
  /usr/include/mysql/mysql.h /usr/include/mysql/mysql_version.h \
  /usr/include/mysql/mysql_com.h /usr/include/mysql/mysql_time.h \
  /usr/include/mysql/my_list.h /usr/include/mysql/typelib.h \
@@ -306,6 +306,8 @@ untar.h:
 /usr/include/limits.h:
 
 /usr/include/bits/posix2_lim.h:
+
+ioapi.h:
 
 /usr/include/mysql/mysql.h:
 

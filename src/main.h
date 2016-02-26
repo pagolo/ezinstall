@@ -152,13 +152,15 @@ enum {
    LOG_NONE,
    LOG_1
 };
-
+#ifdef SEMUN_UNDEFINED
 typedef union semun {
 int val; /* used for SETVAL only */
 struct semid_ds *buf; /* for IPC_STAT and IPC_SET */
 ushort *array; /* used for GETALL and SETALL */
 } semun_t;
-
+#else
+#define semun_t union semun
+#endif
 typedef struct MySemaphore {
   key_t sem_key; // chiave del semaforo
 //  sem_t *sem_sem; // struttura del semaforo
@@ -209,4 +211,5 @@ void ChDirRoot(void);
 #include "md5.h"
 #include "myunzip.h"
 #include "untar.h"
+#include "ioapi.h"
 #endif

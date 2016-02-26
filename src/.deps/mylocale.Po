@@ -51,7 +51,7 @@ mylocale.o: mylocale.c /usr/include/stdc-predef.h main.h ../config.h \
  /usr/include/zconf.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed/limits.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed/syslimits.h \
- /usr/include/limits.h /usr/include/bits/posix2_lim.h \
+ /usr/include/limits.h /usr/include/bits/posix2_lim.h ioapi.h \
  /usr/include/sys/param.h /usr/include/bits/param.h \
  /usr/include/linux/param.h /usr/include/asm/param.h \
  /usr/include/asm-generic/param.h
@@ -305,6 +305,8 @@ untar.h:
 /usr/include/limits.h:
 
 /usr/include/bits/posix2_lim.h:
+
+ioapi.h:
 
 /usr/include/sys/param.h:
 

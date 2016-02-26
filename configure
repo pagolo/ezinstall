@@ -5641,7 +5641,7 @@ fi
 # hunt through several directories trying to find the libraries
 if test "x$MYSQL_LIBS" = "x"; then
 	old_LDFLAGS="$LDFLAGS"
-	for try in /usr/lib /usr/lib/mysql /usr/local/lib /usr/local/mysql/lib /usr/local/lib/mysql ; do
+	for try in /usr/lib /usr/lib/mysql /usr/lib64/mysql /usr/local/lib /usr/local/mysql/lib /usr/local/lib/mysql ; do
 		LDFLAGS="$old_LDFLAGS -L$try"
 		unset ac_cv_lib_mysqlclient_mysql_init
 		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for mysql_init in -lmysqlclient" >&5
@@ -5932,6 +5932,46 @@ if test "x$ac_cv_lib_curl_main" = xyes; then :
 _ACEOF
 
   LIBS="-lcurl $LIBS"
+
+fi
+
+# FIXME: Replace `main' with a function in `-lintl':
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lintl" >&5
+$as_echo_n "checking for main in -lintl... " >&6; }
+if ${ac_cv_lib_intl_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lintl  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_intl_main=yes
+else
+  ac_cv_lib_intl_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_intl_main" >&5
+$as_echo "$ac_cv_lib_intl_main" >&6; }
+if test "x$ac_cv_lib_intl_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBINTL 1
+_ACEOF
+
+  LIBS="-lintl $LIBS"
 
 fi
 
@@ -6469,7 +6509,7 @@ fi
 fi
 done
 
-for ac_func in getcwd gethostbyaddr gethostbyname memset memmem mkdir socket strcasecmp stricmp strchr strdup strerror strncasecmp strnicmp strrchr strstr strtol
+for ac_func in getcwd gethostbyaddr gethostbyname memset memmem mkdir socket strcasecmp stricmp strchr strdup strerror strncasecmp strnicmp strrchr strstr strtol fopen64
 do :
   as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
 ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
@@ -6480,6 +6520,34 @@ _ACEOF
 
 fi
 done
+
+
+# XOPEN mandates that union semun NOT be defined(!)
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for for union semun" >&5
+$as_echo_n "checking for for union semun... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+int
+main ()
+{
+
+union semun arg;arg.val=0;return 0;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+
+else
+  $as_echo "#define SEMUN_UNDEFINED 1" >>confdefs.h
+
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
 
 
 EXEEXT=".cgi"

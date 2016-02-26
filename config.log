@@ -368,130 +368,163 @@ configure:5899: checking for main in -lcurl
 configure:5918: gcc -o conftest -g -O2   conftest.c -lcurl  -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 configure:5918: $? = 0
 configure:5927: result: yes
-configure:5944: checking for sys/types.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5944: checking for sys/stat.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5944: checking for stdlib.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5944: checking for string.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5944: checking for memory.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5944: checking for strings.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5944: checking for inttypes.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5944: checking for stdint.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5944: checking for unistd.h
-configure:5944: gcc -c -g -O2  conftest.c >&5
-configure:5944: $? = 0
-configure:5944: result: yes
-configure:5959: checking fcntl.h usability
-configure:5959: gcc -c -g -O2  conftest.c >&5
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking fcntl.h presence
-configure:5959: gcc -E  conftest.c
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking for fcntl.h
-configure:5959: result: yes
-configure:5959: checking limits.h usability
-configure:5959: gcc -c -g -O2  conftest.c >&5
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking limits.h presence
-configure:5959: gcc -E  conftest.c
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking for limits.h
-configure:5959: result: yes
-configure:5959: checking for memory.h
-configure:5959: result: yes
-configure:5959: checking netdb.h usability
-configure:5959: gcc -c -g -O2  conftest.c >&5
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking netdb.h presence
-configure:5959: gcc -E  conftest.c
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking for netdb.h
-configure:5959: result: yes
-configure:5959: checking netinet/in.h usability
-configure:5959: gcc -c -g -O2  conftest.c >&5
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking netinet/in.h presence
-configure:5959: gcc -E  conftest.c
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking for netinet/in.h
-configure:5959: result: yes
-configure:5959: checking for stdlib.h
-configure:5959: result: yes
-configure:5959: checking for string.h
-configure:5959: result: yes
-configure:5959: checking sys/param.h usability
-configure:5959: gcc -c -g -O2  conftest.c >&5
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking sys/param.h presence
-configure:5959: gcc -E  conftest.c
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking for sys/param.h
-configure:5959: result: yes
-configure:5959: checking sys/socket.h usability
-configure:5959: gcc -c -g -O2  conftest.c >&5
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking sys/socket.h presence
-configure:5959: gcc -E  conftest.c
-configure:5959: $? = 0
-configure:5959: result: yes
-configure:5959: checking for sys/socket.h
-configure:5959: result: yes
-configure:5959: checking for unistd.h
-configure:5959: result: yes
-configure:5974: checking for xml2-config
-configure:5990: found /usr/bin/xml2-config
-configure:6001: result: xml2-config
-configure:6025: checking for an ANSI C-conforming const
-configure:6091: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
-configure:6091: $? = 0
-configure:6098: result: yes
-configure:6106: checking for stdbool.h that conforms to C99
-configure:6173: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
-configure:6173: $? = 0
-configure:6180: result: yes
-configure:6182: checking for _Bool
-configure:6182: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
-configure:6182: $? = 0
-configure:6182: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:5939: checking for main in -lintl
+configure:5958: gcc -o conftest -g -O2   conftest.c -lintl  -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+/usr/lib64/gcc/x86_64-suse-linux/4.8/../../../../x86_64-suse-linux/bin/ld: cannot find -lintl
+collect2: error: ld returned 1 exit status
+configure:5958: $? = 1
+configure: failed program was:
+| /* confdefs.h */
+| #define PACKAGE_NAME "ezinstall"
+| #define PACKAGE_TARNAME "ezinstall"
+| #define PACKAGE_VERSION "0.0.25"
+| #define PACKAGE_STRING "ezinstall 0.0.25"
+| #define PACKAGE_BUGREPORT ""
+| #define PACKAGE_URL ""
+| #define PACKAGE "ezinstall"
+| #define VERSION "0.0.25"
+| #define STDC_HEADERS 1
+| #define HAVE_LIBMYSQLCLIENT 1
+| #define HAVE_LIBXML2 1
+| #define HAVE_LIBPTHREAD 1
+| #define HAVE_LIBZ 1
+| #define HAVE_LIBBZ2 1
+| #define HAVE_LIBCURL 1
+| /* end confdefs.h.  */
+| 
+| 
+| int
+| main ()
+| {
+| return main ();
+|   ;
+|   return 0;
+| }
+configure:5967: result: no
+configure:5984: checking for sys/types.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5984: checking for sys/stat.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5984: checking for stdlib.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5984: checking for string.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5984: checking for memory.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5984: checking for strings.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5984: checking for inttypes.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5984: checking for stdint.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5984: checking for unistd.h
+configure:5984: gcc -c -g -O2  conftest.c >&5
+configure:5984: $? = 0
+configure:5984: result: yes
+configure:5999: checking fcntl.h usability
+configure:5999: gcc -c -g -O2  conftest.c >&5
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking fcntl.h presence
+configure:5999: gcc -E  conftest.c
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking for fcntl.h
+configure:5999: result: yes
+configure:5999: checking limits.h usability
+configure:5999: gcc -c -g -O2  conftest.c >&5
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking limits.h presence
+configure:5999: gcc -E  conftest.c
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking for limits.h
+configure:5999: result: yes
+configure:5999: checking for memory.h
+configure:5999: result: yes
+configure:5999: checking netdb.h usability
+configure:5999: gcc -c -g -O2  conftest.c >&5
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking netdb.h presence
+configure:5999: gcc -E  conftest.c
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking for netdb.h
+configure:5999: result: yes
+configure:5999: checking netinet/in.h usability
+configure:5999: gcc -c -g -O2  conftest.c >&5
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking netinet/in.h presence
+configure:5999: gcc -E  conftest.c
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking for netinet/in.h
+configure:5999: result: yes
+configure:5999: checking for stdlib.h
+configure:5999: result: yes
+configure:5999: checking for string.h
+configure:5999: result: yes
+configure:5999: checking sys/param.h usability
+configure:5999: gcc -c -g -O2  conftest.c >&5
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking sys/param.h presence
+configure:5999: gcc -E  conftest.c
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking for sys/param.h
+configure:5999: result: yes
+configure:5999: checking sys/socket.h usability
+configure:5999: gcc -c -g -O2  conftest.c >&5
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking sys/socket.h presence
+configure:5999: gcc -E  conftest.c
+configure:5999: $? = 0
+configure:5999: result: yes
+configure:5999: checking for sys/socket.h
+configure:5999: result: yes
+configure:5999: checking for unistd.h
+configure:5999: result: yes
+configure:6014: checking for xml2-config
+configure:6030: found /usr/bin/xml2-config
+configure:6041: result: xml2-config
+configure:6065: checking for an ANSI C-conforming const
+configure:6131: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:6131: $? = 0
+configure:6138: result: yes
+configure:6146: checking for stdbool.h that conforms to C99
+configure:6213: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:6213: $? = 0
+configure:6220: result: yes
+configure:6222: checking for _Bool
+configure:6222: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:6222: $? = 0
+configure:6222: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:73:20: error: expected expression before ')' token
  if (sizeof ((_Bool)))
                     ^
-configure:6182: $? = 1
+configure:6222: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "ezinstall"
@@ -570,16 +603,16 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:6182: result: yes
-configure:6199: checking for mode_t
-configure:6199: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
-configure:6199: $? = 0
-configure:6199: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:6222: result: yes
+configure:6239: checking for mode_t
+configure:6239: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:6239: $? = 0
+configure:6239: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:75:21: error: expected expression before ')' token
  if (sizeof ((mode_t)))
                      ^
-configure:6199: $? = 1
+configure:6239: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "ezinstall"
@@ -660,76 +693,76 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:6199: result: yes
-configure:6210: checking whether struct tm is in sys/time.h or time.h
-configure:6230: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
-configure:6230: $? = 0
-configure:6237: result: time.h
-configure:6247: checking whether lstat correctly handles trailing slash
-configure:6273: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6273: $? = 0
-configure:6273: ./conftest
-configure:6273: $? = 0
-configure:6290: result: yes
-configure:6309: checking whether lstat accepts an empty string
-configure:6329: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6329: $? = 0
-configure:6329: ./conftest
-configure:6329: $? = 0
-configure:6339: result: no
-configure:6355: checking whether lstat correctly handles trailing slash
-configure:6398: result: yes
-configure:6419: checking for strftime
-configure:6419: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6239: result: yes
+configure:6250: checking whether struct tm is in sys/time.h or time.h
+configure:6270: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:6270: $? = 0
+configure:6277: result: time.h
+configure:6287: checking whether lstat correctly handles trailing slash
+configure:6313: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6313: $? = 0
+configure:6313: ./conftest
+configure:6313: $? = 0
+configure:6330: result: yes
+configure:6349: checking whether lstat accepts an empty string
+configure:6369: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6369: $? = 0
+configure:6369: ./conftest
+configure:6369: $? = 0
+configure:6379: result: no
+configure:6395: checking whether lstat correctly handles trailing slash
+configure:6438: result: yes
+configure:6459: checking for strftime
+configure:6459: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 conftest.c:64:6: warning: conflicting types for built-in function 'strftime' [enabled by default]
  char strftime ();
       ^
-configure:6419: $? = 0
-configure:6419: result: yes
-configure:6475: checking for getcwd
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for gethostbyaddr
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for gethostbyname
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for memset
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6459: $? = 0
+configure:6459: result: yes
+configure:6515: checking for getcwd
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for gethostbyaddr
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for gethostbyname
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for memset
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 conftest.c:68:6: warning: conflicting types for built-in function 'memset' [enabled by default]
  char memset ();
       ^
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for memmem
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for mkdir
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for socket
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for strcasecmp
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for memmem
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for mkdir
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for socket
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for strcasecmp
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 conftest.c:72:6: warning: conflicting types for built-in function 'strcasecmp' [enabled by default]
  char strcasecmp ();
       ^
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for stricmp
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-/tmp/ccdRjdqj.o: In function `main':
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for stricmp
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+/tmp/ccfdjDpA.o: In function `main':
 /home/paolo/Src/ezinstall-remote/conftest.c:84: undefined reference to `stricmp'
 collect2: error: ld returned 1 exit status
-configure:6475: $? = 1
+configure:6515: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "ezinstall"
@@ -818,38 +851,38 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:6475: result: no
-configure:6475: checking for strchr
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: result: no
+configure:6515: checking for strchr
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 conftest.c:73:6: warning: conflicting types for built-in function 'strchr' [enabled by default]
  char strchr ();
       ^
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for strdup
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for strdup
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 conftest.c:74:6: warning: conflicting types for built-in function 'strdup' [enabled by default]
  char strdup ();
       ^
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for strerror
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for strncasecmp
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for strerror
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for strncasecmp
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 conftest.c:76:6: warning: conflicting types for built-in function 'strncasecmp' [enabled by default]
  char strncasecmp ();
       ^
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for strnicmp
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-/tmp/cc02iTYR.o: In function `main':
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for strnicmp
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+/tmp/ccA3CyP8.o: In function `main':
 /home/paolo/Src/ezinstall-remote/conftest.c:88: undefined reference to `strnicmp'
 collect2: error: ld returned 1 exit status
-configure:6475: $? = 1
+configure:6515: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "ezinstall"
@@ -942,117 +975,197 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:6475: result: no
-configure:6475: checking for strrchr
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: result: no
+configure:6515: checking for strrchr
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 conftest.c:77:6: warning: conflicting types for built-in function 'strrchr' [enabled by default]
  char strrchr ();
       ^
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for strstr
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for strstr
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
 conftest.c:78:6: warning: conflicting types for built-in function 'strstr' [enabled by default]
  char strstr ();
       ^
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6475: checking for strtol
-configure:6475: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:6475: $? = 0
-configure:6475: result: yes
-configure:6492: checking whether NLS is requested
-configure:6501: result: yes
-configure:6519: checking for intltool >= 0.35.0
-configure:6521: result: 0.50.2 found
-configure:6529: checking for intltool-update
-configure:6547: found /usr/bin/intltool-update
-configure:6559: result: /usr/bin/intltool-update
-configure:6569: checking for intltool-merge
-configure:6587: found /usr/bin/intltool-merge
-configure:6599: result: /usr/bin/intltool-merge
-configure:6609: checking for intltool-extract
-configure:6627: found /usr/bin/intltool-extract
-configure:6639: result: /usr/bin/intltool-extract
-configure:6793: checking for xgettext
-configure:6811: found /usr/bin/xgettext
-configure:6823: result: /usr/bin/xgettext
-configure:6833: checking for msgmerge
-configure:6851: found /usr/bin/msgmerge
-configure:6863: result: /usr/bin/msgmerge
-configure:6873: checking for msgfmt
-configure:6891: found /usr/bin/msgfmt
-configure:6903: result: /usr/bin/msgfmt
-configure:6913: checking for gmsgfmt
-configure:6944: result: /usr/bin/msgfmt
-configure:6964: checking for perl
-configure:6982: found /usr/bin/perl
-configure:6994: result: /usr/bin/perl
-configure:7005: checking for perl >= 5.8.1
-configure:7012: result: 5.20.1
-configure:7016: checking for XML::Parser
-configure:7019: result: ok
-configure:7044: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:7044: $? = 0
-configure:7082: checking locale.h usability
-configure:7082: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
-configure:7082: $? = 0
-configure:7082: result: yes
-configure:7082: checking locale.h presence
-configure:7082: gcc -E  -I/usr/include/libxml2 conftest.c
-configure:7082: $? = 0
-configure:7082: result: yes
-configure:7082: checking for locale.h
-configure:7082: result: yes
-configure:7093: checking for LC_MESSAGES
-configure:7109: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:7109: $? = 0
-configure:7117: result: yes
-configure:7134: checking libintl.h usability
-configure:7134: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
-configure:7134: $? = 0
-configure:7134: result: yes
-configure:7134: checking libintl.h presence
-configure:7134: gcc -E  -I/usr/include/libxml2 conftest.c
-configure:7134: $? = 0
-configure:7134: result: yes
-configure:7134: checking for libintl.h
-configure:7134: result: yes
-configure:7142: checking for ngettext in libc
-configure:7160: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:7160: $? = 0
-configure:7169: result: yes
-configure:7173: checking for dgettext in libc
-configure:7191: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:7191: $? = 0
-configure:7200: result: yes
-configure:7207: checking for bind_textdomain_codeset
-configure:7207: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-configure:7207: $? = 0
-configure:7207: result: yes
-configure:7483: checking for msgfmt
-configure:7510: result: /usr/bin/msgfmt
-configure:7521: checking for dcgettext
-configure:7521: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient   >&5
-conftest.c:85:6: warning: conflicting types for built-in function 'dcgettext' [enabled by default]
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for strtol
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6515: checking for fopen64
+configure:6515: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:6515: $? = 0
+configure:6515: result: yes
+configure:6527: checking for for union semun
+configure:6543: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+conftest.c: In function 'main':
+conftest.c:65:13: error: storage size of 'arg' isn't known
+ union semun arg;arg.val=0;return 0;
+             ^
+configure:6543: $? = 1
+configure: failed program was:
+| /* confdefs.h */
+| #define PACKAGE_NAME "ezinstall"
+| #define PACKAGE_TARNAME "ezinstall"
+| #define PACKAGE_VERSION "0.0.25"
+| #define PACKAGE_STRING "ezinstall 0.0.25"
+| #define PACKAGE_BUGREPORT ""
+| #define PACKAGE_URL ""
+| #define PACKAGE "ezinstall"
+| #define VERSION "0.0.25"
+| #define STDC_HEADERS 1
+| #define HAVE_LIBMYSQLCLIENT 1
+| #define HAVE_LIBXML2 1
+| #define HAVE_LIBPTHREAD 1
+| #define HAVE_LIBZ 1
+| #define HAVE_LIBBZ2 1
+| #define HAVE_LIBCURL 1
+| #define HAVE_SYS_TYPES_H 1
+| #define HAVE_SYS_STAT_H 1
+| #define HAVE_STDLIB_H 1
+| #define HAVE_STRING_H 1
+| #define HAVE_MEMORY_H 1
+| #define HAVE_STRINGS_H 1
+| #define HAVE_INTTYPES_H 1
+| #define HAVE_STDINT_H 1
+| #define HAVE_UNISTD_H 1
+| #define HAVE_FCNTL_H 1
+| #define HAVE_LIMITS_H 1
+| #define HAVE_MEMORY_H 1
+| #define HAVE_NETDB_H 1
+| #define HAVE_NETINET_IN_H 1
+| #define HAVE_STDLIB_H 1
+| #define HAVE_STRING_H 1
+| #define HAVE_SYS_PARAM_H 1
+| #define HAVE_SYS_SOCKET_H 1
+| #define HAVE_UNISTD_H 1
+| #define HAVE__BOOL 1
+| #define HAVE_STDBOOL_H 1
+| #define LSTAT_FOLLOWS_SLASHED_SYMLINK 1
+| #define LSTAT_FOLLOWS_SLASHED_SYMLINK 1
+| #define HAVE_STRFTIME 1
+| #define HAVE_GETCWD 1
+| #define HAVE_GETHOSTBYADDR 1
+| #define HAVE_GETHOSTBYNAME 1
+| #define HAVE_MEMSET 1
+| #define HAVE_MEMMEM 1
+| #define HAVE_MKDIR 1
+| #define HAVE_SOCKET 1
+| #define HAVE_STRCASECMP 1
+| #define HAVE_STRCHR 1
+| #define HAVE_STRDUP 1
+| #define HAVE_STRERROR 1
+| #define HAVE_STRNCASECMP 1
+| #define HAVE_STRRCHR 1
+| #define HAVE_STRSTR 1
+| #define HAVE_STRTOL 1
+| #define HAVE_FOPEN64 1
+| /* end confdefs.h.  */
+| #include <sys/types.h>
+| #include <sys/ipc.h>
+| #include <sys/sem.h>
+| int
+| main ()
+| {
+| 
+| union semun arg;arg.val=0;return 0;
+|   ;
+|   return 0;
+| }
+configure:6560: checking whether NLS is requested
+configure:6569: result: yes
+configure:6587: checking for intltool >= 0.35.0
+configure:6589: result: 0.50.2 found
+configure:6597: checking for intltool-update
+configure:6615: found /usr/bin/intltool-update
+configure:6627: result: /usr/bin/intltool-update
+configure:6637: checking for intltool-merge
+configure:6655: found /usr/bin/intltool-merge
+configure:6667: result: /usr/bin/intltool-merge
+configure:6677: checking for intltool-extract
+configure:6695: found /usr/bin/intltool-extract
+configure:6707: result: /usr/bin/intltool-extract
+configure:6861: checking for xgettext
+configure:6879: found /usr/bin/xgettext
+configure:6891: result: /usr/bin/xgettext
+configure:6901: checking for msgmerge
+configure:6919: found /usr/bin/msgmerge
+configure:6931: result: /usr/bin/msgmerge
+configure:6941: checking for msgfmt
+configure:6959: found /usr/bin/msgfmt
+configure:6971: result: /usr/bin/msgfmt
+configure:6981: checking for gmsgfmt
+configure:7012: result: /usr/bin/msgfmt
+configure:7032: checking for perl
+configure:7050: found /usr/bin/perl
+configure:7062: result: /usr/bin/perl
+configure:7073: checking for perl >= 5.8.1
+configure:7080: result: 5.20.1
+configure:7084: checking for XML::Parser
+configure:7087: result: ok
+configure:7112: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:7112: $? = 0
+configure:7150: checking locale.h usability
+configure:7150: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:7150: $? = 0
+configure:7150: result: yes
+configure:7150: checking locale.h presence
+configure:7150: gcc -E  -I/usr/include/libxml2 conftest.c
+configure:7150: $? = 0
+configure:7150: result: yes
+configure:7150: checking for locale.h
+configure:7150: result: yes
+configure:7161: checking for LC_MESSAGES
+configure:7177: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:7177: $? = 0
+configure:7185: result: yes
+configure:7202: checking libintl.h usability
+configure:7202: gcc -c -g -O2  -I/usr/include/libxml2 conftest.c >&5
+configure:7202: $? = 0
+configure:7202: result: yes
+configure:7202: checking libintl.h presence
+configure:7202: gcc -E  -I/usr/include/libxml2 conftest.c
+configure:7202: $? = 0
+configure:7202: result: yes
+configure:7202: checking for libintl.h
+configure:7202: result: yes
+configure:7210: checking for ngettext in libc
+configure:7228: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:7228: $? = 0
+configure:7237: result: yes
+configure:7241: checking for dgettext in libc
+configure:7259: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:7259: $? = 0
+configure:7268: result: yes
+configure:7275: checking for bind_textdomain_codeset
+configure:7275: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
+configure:7275: $? = 0
+configure:7275: result: yes
+configure:7551: checking for msgfmt
+configure:7578: result: /usr/bin/msgfmt
+configure:7589: checking for dcgettext
+configure:7589: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient   >&5
+conftest.c:87:6: warning: conflicting types for built-in function 'dcgettext' [enabled by default]
  char dcgettext ();
       ^
-configure:7521: $? = 0
-configure:7521: result: yes
-configure:7531: checking if msgfmt accepts -c
-configure:7546: $MSGFMT -c -o /dev/null conftest.foo
+configure:7589: $? = 0
+configure:7589: result: yes
+configure:7599: checking if msgfmt accepts -c
+configure:7614: $MSGFMT -c -o /dev/null conftest.foo
 conftest.foo:3: warning: header field 'Language' missing in header
-configure:7549: $? = 0
-configure:7551: result: yes
-configure:7561: checking for gmsgfmt
-configure:7592: result: /usr/bin/msgfmt
-configure:7602: checking for xgettext
-configure:7629: result: /usr/bin/xgettext
-configure:7648: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient   >&5
-configure:7648: $? = 0
-configure:7898: checking that generated files are newer than configure
-configure:7904: result: done
-configure:7943: creating ./config.status
+configure:7617: $? = 0
+configure:7619: result: yes
+configure:7629: checking for gmsgfmt
+configure:7660: result: /usr/bin/msgfmt
+configure:7670: checking for xgettext
+configure:7697: result: /usr/bin/xgettext
+configure:7716: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient   >&5
+configure:7716: $? = 0
+configure:7966: checking that generated files are newer than configure
+configure:7972: result: done
+configure:8011: creating ./config.status
 
 ## ---------------------- ##
 ## Running config.status. ##
@@ -1069,13 +1182,13 @@ generated by GNU Autoconf 2.69.  Invocation command line was
 
 on suse
 
-config.status:971: creating Makefile
-config.status:971: creating src/Makefile
-config.status:971: creating po/Makefile.in
-config.status:971: creating config.h
-config.status:1200: executing depfiles commands
-config.status:1200: executing default-1 commands
-config.status:1200: executing po/stamp-it commands
+config.status:973: creating Makefile
+config.status:973: creating src/Makefile
+config.status:973: creating po/Makefile.in
+config.status:973: creating config.h
+config.status:1202: executing depfiles commands
+config.status:1202: executing default-1 commands
+config.status:1202: executing po/stamp-it commands
 
 ## ---------------- ##
 ## Cache variables. ##
@@ -1103,6 +1216,7 @@ ac_cv_env_target_alias_set=
 ac_cv_env_target_alias_value=
 ac_cv_func_bind_textdomain_codeset=yes
 ac_cv_func_dcgettext=yes
+ac_cv_func_fopen64=yes
 ac_cv_func_getcwd=yes
 ac_cv_func_gethostbyaddr=yes
 ac_cv_func_gethostbyname=yes
@@ -1144,6 +1258,7 @@ ac_cv_header_sys_types_h=yes
 ac_cv_header_unistd_h=yes
 ac_cv_lib_bz2_main=yes
 ac_cv_lib_curl_main=yes
+ac_cv_lib_intl_main=no
 ac_cv_lib_mysqlclient_main=yes
 ac_cv_lib_mysqlclient_mysql_init=yes
 ac_cv_lib_pthread_main=yes
@@ -1387,6 +1502,8 @@ xml2_config='xml2-config'
 #define HAVE_STRRCHR 1
 #define HAVE_STRSTR 1
 #define HAVE_STRTOL 1
+#define HAVE_FOPEN64 1
+#define SEMUN_UNDEFINED 1
 #define GETTEXT_PACKAGE "ezinstall"
 #define HAVE_LOCALE_H 1
 #define HAVE_LC_MESSAGES 1

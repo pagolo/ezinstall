@@ -51,7 +51,7 @@ xml.o: xml.c /usr/include/stdc-predef.h main.h ../config.h conditions.h \
  /usr/include/zconf.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed/limits.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed/syslimits.h \
- /usr/include/limits.h /usr/include/bits/posix2_lim.h \
+ /usr/include/limits.h /usr/include/bits/posix2_lim.h ioapi.h \
  /usr/include/libxml2/libxml/xmlmemory.h \
  /usr/include/libxml2/libxml/xmlversion.h \
  /usr/include/libxml2/libxml/xmlexports.h \
@@ -320,6 +320,8 @@ untar.h:
 /usr/include/limits.h:
 
 /usr/include/bits/posix2_lim.h:
+
+ioapi.h:
 
 /usr/include/libxml2/libxml/xmlmemory.h:
 

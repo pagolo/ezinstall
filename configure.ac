@@ -22,7 +22,7 @@ AC_CHECK_LIB(mysqlclient, mysql_init,
 # hunt through several directories trying to find the libraries
 if test "x$MYSQL_LIBS" = "x"; then
 	old_LDFLAGS="$LDFLAGS"
-	for try in /usr/lib /usr/lib/mysql /usr/local/lib /usr/local/mysql/lib /usr/local/lib/mysql ; do
+	for try in /usr/lib /usr/lib/mysql /usr/lib64/mysql /usr/local/lib /usr/local/mysql/lib /usr/local/lib/mysql ; do
 		LDFLAGS="$old_LDFLAGS -L$try"
 		unset ac_cv_lib_mysqlclient_mysql_init
 		AC_CHECK_LIB(mysqlclient, mysql_init,
@@ -49,6 +49,8 @@ AC_CHECK_LIB([z], [main])
 AC_CHECK_LIB([bz2], [main])
 # FIXME: Replace `main' with a function in `-lcurl':
 AC_CHECK_LIB([curl], [main])
+# FIXME: Replace `main' with a function in `-lintl':
+AC_CHECK_LIB([intl], [main])
 
 AC_CHECK_HEADERS([fcntl.h limits.h memory.h netdb.h netinet/in.h stdlib.h string.h sys/param.h sys/socket.h unistd.h])
 xml2_config=''
@@ -76,7 +78,15 @@ AC_STRUCT_TM
 AC_FUNC_LSTAT
 AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 AC_FUNC_STRFTIME
-AC_CHECK_FUNCS([getcwd gethostbyaddr gethostbyname memset memmem mkdir socket strcasecmp stricmp strchr strdup strerror strncasecmp strnicmp strrchr strstr strtol])
+AC_CHECK_FUNCS([getcwd gethostbyaddr gethostbyname memset memmem mkdir socket strcasecmp stricmp strchr strdup strerror strncasecmp strnicmp strrchr strstr strtol fopen64])
+
+# XOPEN mandates that union semun NOT be defined(!)
+AH_TEMPLATE([SEMUN_UNDEFINED],[Check if union semun doesn't exist])
+AC_COMPILE_CHECK(for union semun,[#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>],[
+union semun arg;arg.val=0;return 0;],,AC_DEFINE(SEMUN_UNDEFINED))
+
 
 EXEEXT=".cgi"
 
