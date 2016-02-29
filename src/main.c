@@ -254,16 +254,22 @@ void LaunchScript(void) {
 char *upload_string =
         "<form method='POST' action=\"%s?%d\" enctype=\"multipart/form-data\">\n"
         "<input type='hidden' name='upload' value=\"1\">\n"
+        "<input type='hidden' name='inifile' value=\"\">\n"
         "<table id='upload_table'>\n<tr><td class='upload_cell'>\n"
         "%s</td>\n"
-        "<td><input type='file' name='ini' size='40'></td></tr>\n"
+        "<td><input type='file' id='ini' name='ini' size='40' /></td></tr>\n"
         "<tr><td class='upload_cell'>%s</td>\n"
-        "<td><input type='file' name='zip' size='40'></td></tr>\n"
+        "<td><input type='file' id='zip' name='zip' disabled='disabled' size='40'></td></tr>\n"
         "<tr><td class='upload_cell'>%s</td>\n"
         "<td><input type='checkbox' name='overwrite' checked='checked'></td></tr>\n"
+        "<tr><td colspan='2'><div id=\"progress_bar\"><div id=\"percent\" class=\"percent\">0%</div></div></td></tr>\n"
         "<tr><td colspan='2' class='submit_row'><hr />\n"
-        "<input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td></tr>\n"
-        "</table></form>\n";
+        "<input id='submit' type='submit' value=\"%s\" style='display:none' name='B1'>"
+        "<input id='reset' type='reset' value=\"%s\" style='display:none' name='B2'>"
+        "<input id='continue' type='submit' value='%s' disabled='disabled' name='B3'>"
+        "</td></tr>\n"
+        "</table></form>\n"
+        "<script type=\"text/javascript\">InitAjax('%s');</script>\n";
 
 void UploadForm(void) {
   printf(upload_string, getenv("SCRIPT_NAME"),
@@ -272,7 +278,10 @@ void UploadForm(void) {
           _("archive file"),
           _("overwrite file"),
           _("Submit"),
-          _("Clear"));
+          _("Clear"),
+          _("Continue"),
+          getenv("SCRIPT_NAME")
+          );
 }
 
 char *download_string =
@@ -574,6 +583,11 @@ void Daemonize(void) {
   exit(0);
 }
 
+int ajax_config_upload_main(int argc, char **argv) {
+  printf("%s%s", HTM_HEADER_CLIENT, get_ini_upload(1));
+  exit(0);  
+}
+
 int main(int argc, char **argv) {
   int action, logged, rc;
   char *ld;
@@ -594,8 +608,16 @@ int main(int argc, char **argv) {
   bindtextdomain(PACKAGE, ld && *ld ? absolute_path : MYLOCALEDIR);
   textdomain(PACKAGE);
 
-  if (action == SEMAPHORE_CLIENT)
-    semaphore_client_main(argc, argv);
+  if (action >= SEMAPHORE_CLIENT) {
+    if (!(logged)) {
+      printf("%s%s", HTM_HEADER_CLIENT, _("Access forbidden"));
+      exit(5);
+    }
+    if (action == SEMAPHORE_CLIENT)
+      semaphore_client_main(argc, argv);
+    if (action == AJAX_CONFIG_UPLOAD)
+      ajax_config_upload_main(argc, argv);
+  }
 
   if (globaldata.gd_static_path && *globaldata.gd_static_path) {
     if (globaldata.gd_static_path[strlen(globaldata.gd_static_path)-1] == '/')
@@ -623,7 +645,7 @@ int main(int argc, char **argv) {
     }
       break;
     case UPLOAD_CONFIG:
-      if (!(globaldata.gd_inifile = get_ini_upload()))
+      if (!(globaldata.gd_inifile = get_ini_upload(0)))
         Error(_("can't access configuration file"));
       rc = read_xml_file(action);
       if (rc == 0) Error(error_read);

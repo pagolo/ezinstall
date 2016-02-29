@@ -187,11 +187,16 @@ char *get_ini_name(int argc, char **argv) {
   return NULL;
 }
 
-char *get_ini_upload(void) {
+char *get_ini_upload(int ajax) {
   static char template[] = "ezinXXXXXX";
 //  char *mark = TEMP_MARK;
   int len = 0, fd = NO_FILE;
-  char *buffer = getbinarybyname("ini", &len);
+  char *buffer;
+  
+  if (ajax)
+    buffer = ReadInput(&len, "POST");
+  else
+    buffer = getbinarybyname("ini", &len);
 
   if (!buffer) return NULL;
 

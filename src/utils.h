@@ -22,7 +22,7 @@ int file_exists(char * filename);
 void WriteLog (char *msg);
 
 //------------------ UPLOAD/DOWNLOAD UTILITIES
-char *get_ini_upload(void);
+char *get_ini_upload(int);
 int get_zip_upload(void);
 char *get_ini_name(int argc, char **argv);
 int graburl(char *url,int permissions, int expand, int tempname);

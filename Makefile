@@ -349,7 +349,7 @@ ezinstalldoc_DATA = \
 	INSTALL\
 	NEWS
 
-ezinstallcssdir = ${prefix}/public_html
+ezinstallcssdir = ${prefix}/public_html/ezinstall
 ezinstallcss_DATA = ezinstall.css\
                     ezinstall.js
 
