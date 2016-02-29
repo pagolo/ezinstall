@@ -8,6 +8,7 @@ String.prototype.endsWith = function(str)
 {return (this.match(str+"$")==str)}
 
 var textlen = 0;
+var file_sent = "file sent";
 
 function createXMLHttpRequest() {
   try { return new XMLHttpRequest(); } catch (e) { }
@@ -57,20 +58,14 @@ function do_ajax_upload_ini(url, text) {
   inifile[0].value = resp;
   ini.disabled = true;
   zip.disabled = false;
+  document.getElementById('ini_sent').innerHTML = file_sent;
   document.getElementById('zip').addEventListener('change', handleZIPFile, false);
-  alert('initialization file sent');
   return true;
 }
 
 /****
  * File handling, thanks to Eric Bidelman http://www.html5rocks.com/
  ****/
-  var reader;
-  var progress; // = document.querySelector('.percent');
-
-  function abortRead() {
-    reader.abort();
-  }
 
   function errorHandler(evt) {
     switch(evt.target.error.code) {
@@ -86,51 +81,57 @@ function do_ajax_upload_ini(url, text) {
         alert('An error occurred reading this file.');
     };
   }
-
-  function updateProgress(evt) {
-    // evt is an ProgressEvent.
-    if (evt.lengthComputable) {
-      var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
-      // Increase the progress bar length.
-      if (percentLoaded < 100) {
-        progress.style.width = percentLoaded + '%';
-        progress.textContent = percentLoaded + '%';
-      }
-    }
-  }
- 
+function customLoop(i) {
+    console.log(i);
+    i++;
+    if (i<=2) {setTimeout(function(){customLoop(i);},100);}
+}
 function handleZIPFile(evt) {
-    var f = evt.target.files[0]; // file object
+    var file = evt.target.files[0]; // file object
     /*
-    var ext =  f.name.split('.').pop().toLowerCase();
+    var ext =  file.name.split('.').pop().toLowerCase();
       if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' ) {
         alert('zip/gzip/bzip2 files only');
         return false;
       }
     */
     // Reset progress indicator on new file selection.
-    progress = document.querySelector('.percent');
+    var progress = document.querySelector('.percent');
     progress.style.width = '0%';
     progress.textContent = '0%';
+    document.getElementById('progress_bar').className = 'loading';
 
-    reader = new FileReader();
-    reader.onerror = errorHandler;
-    reader.onprogress = updateProgress;
-    reader.onabort = function(e) {
-      alert('File read cancelled');
-    };
-    reader.onloadstart = function(e) {
-      document.getElementById('progress_bar').className = 'loading';
-    };
-    reader.onload = function(e) {
-      // Ensure that the progress bar displays 100% at the end.
-      progress.style.width = '100%';
-      progress.textContent = '100%';
-      setTimeout("document.getElementById('progress_bar').className='';", 2000);
+    var start, stop;
+    var blob;
+    var reader;
+
+    // If we use onloadend, we need to check the readyState.
+    for (start = 0; start < file.size; start += 512) {
+      reader = new FileReader();
+      reader.onerror = errorHandler;
+      stop = start + 511;
+      if (file.size - 1 <= stop) stop = file.size -1;
+      reader.onload = function(evt) {
+        if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+          alert(start+"!");
+          //alert(evt.target.result);
+        }
+      };
+      blob = file.slice(start, stop + 1);
+      reader.readAsBinaryString(blob);
+      var percentLoaded = Math.round((stop / file.size) * 100);
+      if (percentLoaded > 100) percentLoaded = 100;
+      progress.style.width = percentLoaded + '%';
+      progress.textContent = percentLoaded + '%';
     }
-
-    // Read in the image file as a binary string.
-    reader.readAsBinaryString(f);
+    var zipfile = document.getElementsByName('zipfile');
+    var ini = document.getElementById('ini');
+    var zip = document.getElementById('zip');
+    zipfile[0].value = file.name;
+    alert(file.name);
+    zip.disabled = true;
+    document.getElementById('continue').disabled = false;
+    document.getElementById('zip_sent').innerHTML = file_sent;
 }
 
 function handleXMLFile(evt) {
@@ -140,15 +141,17 @@ function handleXMLFile(evt) {
         alert('xml files only');
         return false;
       }
-      var reader2 = new FileReader();
-      reader2.onload = function(e) {
+      var reader = new FileReader();
+      reader.onerror = errorHandler;
+      reader.onload = function(e) {
         do_ajax_upload_ini(evt.target.url, e.target.result);
       };
-      reader2.readAsText(f);
+      reader.readAsText(f);
       return true;
 }
 
-function InitAjax(url) {
+function InitAjax(url, file_sent_text) {
+  file_sent = file_sent_text;
   document.getElementById('ini').url=url;
   document.getElementById('zip').url=url;
   document.getElementById('ini').addEventListener('change', handleXMLFile, false);

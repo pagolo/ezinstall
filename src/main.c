@@ -255,21 +255,24 @@ char *upload_string =
         "<form method='POST' action=\"%s?%d\" enctype=\"multipart/form-data\">\n"
         "<input type='hidden' name='upload' value=\"1\">\n"
         "<input type='hidden' name='inifile' value=\"\">\n"
+        "<input type='hidden' name='zipfile' value=\"\">\n"
         "<table id='upload_table'>\n<tr><td class='upload_cell'>\n"
         "%s</td>\n"
-        "<td><input type='file' id='ini' name='ini' size='40' /></td></tr>\n"
+        "<td><input type='file' id='ini' name='ini' size='40' /></td>\n"
+        "<td id='ini_sent'></td></tr>\n"
         "<tr><td class='upload_cell'>%s</td>\n"
-        "<td><input type='file' id='zip' name='zip' disabled='disabled' size='40'></td></tr>\n"
+        "<td><input type='file' id='zip' name='zip' disabled='disabled' size='40'></td>\n"
+        "<td id='zip_sent'></td></tr>\n"
         "<tr><td class='upload_cell'>%s</td>\n"
-        "<td><input type='checkbox' name='overwrite' checked='checked'></td></tr>\n"
-        "<tr><td colspan='2'><div id=\"progress_bar\"><div id=\"percent\" class=\"percent\">0%</div></div></td></tr>\n"
-        "<tr><td colspan='2' class='submit_row'><hr />\n"
+        "<td><input type='checkbox' name='overwrite' checked='checked'></td><td></td></tr>\n"
+        "<tr><td colspan='3'><div id=\"progress_bar\"><div id=\"percent\" class=\"percent\">0%</div></div></td></tr>\n"
+        "<tr><td colspan='3' class='submit_row'><hr />\n"
         "<input id='submit' type='submit' value=\"%s\" style='display:none' name='B1'>"
         "<input id='reset' type='reset' value=\"%s\" style='display:none' name='B2'>"
         "<input id='continue' type='submit' value='%s' disabled='disabled' name='B3'>"
         "</td></tr>\n"
         "</table></form>\n"
-        "<script type=\"text/javascript\">InitAjax('%s');</script>\n";
+        "<script type=\"text/javascript\">InitAjax('%s','%s');</script>\n";
 
 void UploadForm(void) {
   printf(upload_string, getenv("SCRIPT_NAME"),
@@ -280,7 +283,8 @@ void UploadForm(void) {
           _("Submit"),
           _("Clear"),
           _("Continue"),
-          getenv("SCRIPT_NAME")
+          getenv("SCRIPT_NAME"),
+          _("File sent...")
           );
 }
 
@@ -645,8 +649,10 @@ int main(int argc, char **argv) {
     }
       break;
     case UPLOAD_CONFIG:
-      if (!(globaldata.gd_inifile = get_ini_upload(0)))
-        Error(_("can't access configuration file"));
+      globaldata.gd_inifile = getfieldbyname("inifile");
+      if (!(globaldata.gd_inifile) || !(globaldata.gd_inifile[0]))
+        if (!(globaldata.gd_inifile = get_ini_upload(0)))
+          Error(_("can't access configuration file"));
       rc = read_xml_file(action);
       if (rc == 0) Error(error_read);
       get_zip_upload();

@@ -22,6 +22,14 @@ h1 {
   font-weight: bold;
   float: left;
 }
+#ini_sent {
+  text-align: left;
+  font-size: 80%;
+}
+#zip_sent {
+  text-align: left;
+  font-size: 80%;
+}
 #login_table {
   width: 504px;
   border-style: solid;
