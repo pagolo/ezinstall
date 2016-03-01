@@ -42,6 +42,41 @@ function do_ajax(arg1, arg2, url, timestamp) {
   }
 }
 
+function do_ajax_upload_zip(url, filename, binary) {
+  var http_request = createXMLHttpRequest();
+  if (!http_request) {
+    alert('Javascript error: no XMLHTTP instance');
+    return false;
+  }
+  var progress = document.querySelector('.percent');
+  progress.style.width = '0%';
+  progress.textContent = '0%';
+  document.getElementById('progress_bar').className = 'loading';
+
+  var start, stop;
+      alert(filename);
+
+    for (start = 0; start < binary.length; start += 512) {
+      stop = start + 511;
+      if (binary.length - 1 <= stop) stop = binary.length - 1;
+      var part = binary.substr(start, stop + 1);
+      //http_request.open("POST", url+"?202", false);
+      //http_request.setRequestHeader("Content-type", "text/xml");
+      //http_request.send(text);
+      var percentLoaded = Math.round((stop / binary.length) * 100);
+      if (percentLoaded > 100) percentLoaded = 100;
+      progress.style.width = percentLoaded + '%';
+      progress.textContent = percentLoaded + '%';
+    }
+    var zipfile = document.getElementsByName('zipfile');
+    var ini = document.getElementById('ini');
+    var zip = document.getElementById('zip');
+    zipfile[0].value = filename;
+    zip.disabled = true;
+    document.getElementById('continue').disabled = false;
+    document.getElementById('zip_sent').innerHTML = file_sent;
+}
+
 function do_ajax_upload_ini(url, text) {
   var http_request = createXMLHttpRequest();
   if (!http_request) {
@@ -81,20 +116,17 @@ function do_ajax_upload_ini(url, text) {
         alert('An error occurred reading this file.');
     };
   }
-function customLoop(i) {
-    console.log(i);
-    i++;
-    if (i<=2) {setTimeout(function(){customLoop(i);},100);}
-}
+
+/*
 function handleZIPFile(evt) {
     var file = evt.target.files[0]; // file object
-    /*
+
     var ext =  file.name.split('.').pop().toLowerCase();
       if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' ) {
         alert('zip/gzip/bzip2 files only');
         return false;
       }
-    */
+
     // Reset progress indicator on new file selection.
     var progress = document.querySelector('.percent');
     progress.style.width = '0%';
@@ -133,6 +165,26 @@ function handleZIPFile(evt) {
     document.getElementById('continue').disabled = false;
     document.getElementById('zip_sent').innerHTML = file_sent;
 }
+*/
+function handleZIPFile(evt) {
+    var f = evt.target.files[0]; // file object
+      // Only process compressed archives.
+    /*
+    var ext =  f.name.split('.').pop().toLowerCase();
+      if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' ) {
+        alert('zip/gzip/bzip2 files only');
+        return false;
+      }
+    */
+      var reader = new FileReader();
+      reader.onerror = errorHandler;
+      reader.onload = function(e) {
+        do_ajax_upload_zip(evt.target.url, f.name, e.target.result);
+      };
+      reader.readAsBinaryString(f);
+      return true;
+}
+
 
 function handleXMLFile(evt) {
     var f = evt.target.files[0]; // file object
@@ -153,6 +205,6 @@ function handleXMLFile(evt) {
 function InitAjax(url, file_sent_text) {
   file_sent = file_sent_text;
   document.getElementById('ini').url=url;
-  document.getElementById('zip').url=url;
+  document.getElementById('zip').url = url;
   document.getElementById('ini').addEventListener('change', handleXMLFile, false);
 }
