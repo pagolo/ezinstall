@@ -220,29 +220,25 @@ char *win_basename(char *path) {
   return path;
 }
 
-int get_zip_upload(int ajax) {
+char *get_zip_upload(int ajax) {
   mode_t u_mask;
   int len = 0, fd = NO_FILE, overwrite;
   char *overwrite_str;
   char *filename;
-//  char *buffer = ajax? ReadInput(&len, "POST") : getbinarybyname("zip", &len);
-
+  char *buffer = getbinarybyname("zip", &len);
 
   overwrite_str = getfieldbyname("overwrite");
   overwrite = (overwrite_str && strcasecmp(overwrite_str, "on") == 0) ? 1 : 0;
-  //return overwrite;
-  char *buffer = getbinarybyname("zip", &len);
 
-  if (!buffer)
-return 0;//    Error(_("error receiving archive file..."));
+  if (!buffer) return(_("error receiving archive file..."));
 
   // controllare il nome del file
   if (strcasecmp(win_basename(getfieldbyname("zip")), basename(globaldata.gd_inidata->web_archive)) != 0)
-    Error(_("archive filename does not match with configuration data..."));
+    return(_("archive filename does not match with configuration data..."));
 
   // controllare se il file esiste
   if (access(globaldata.gd_inidata->web_archive, F_OK) == 0 && overwrite == 0)
-    Error(_("archive already exists! Please use the checkbox to overwrite it"));
+    return(_("archive already exists! Please use the checkbox to overwrite it"));
 
   filename = globaldata.gd_inidata->web_archive;
 
@@ -250,14 +246,14 @@ return 0;//    Error(_("error receiving archive file..."));
   fd = open(filename, O_CREAT | O_RDWR, 0644);
   umask(u_mask);
   if (fd == NO_FILE)
-    Error(_("can't create archive file, check user and permissions."));
+    return(_("can't create archive file, check user and permissions."));
   write(fd, buffer, len);
   close(fd);
 
   if (globaldata.gd_loglevel > LOG_NONE)
     WriteLog(_("upload successfull"));
 
-  return 1;
+  return "ok";
 }
 
 int graburl(char *url, int permissions, int expand, int tempname) {

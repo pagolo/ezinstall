@@ -23,7 +23,7 @@ void WriteLog (char *msg);
 
 //------------------ UPLOAD/DOWNLOAD UTILITIES
 char *get_ini_upload(int);
-int get_zip_upload(int);
+char *get_zip_upload(int);
 char *get_ini_name(int argc, char **argv);
 int graburl(char *url,int permissions, int expand, int tempname);
 int graburl_list(char *url,int permissions, int expand, int tempname, STRING **list);

@@ -42,7 +42,11 @@ function do_ajax(arg1, arg2, url, timestamp) {
   }
 }
 
-function do_ajax_upload_zip(url, filename, binary) {
+/***********************************
+ * Ajax files upload               *
+ * *********************************/
+
+function do_ajax_upload_zip(url, filename) {
   var http_request = createXMLHttpRequest();
   if (!http_request) {
     alert('Javascript error: no XMLHTTP instance');
@@ -52,47 +56,33 @@ function do_ajax_upload_zip(url, filename, binary) {
   progress.style.width = '0%';
   progress.textContent = '0%';
   document.getElementById('progress_bar').className = 'loading';
-      //alert(document.getElementById('upload_form'));
 
-var data = new FormData(document.getElementById('upload_form')); //document.getElementById('zip').getFormData();
+  var data = new FormData(document.getElementById('upload_form')); //document.getElementById('zip').getFormData();
+  http_request.upload.addEventListener('progress', function(e){
+    var percentLoaded = Math.round((e.loaded/e.total) * 100);
+    if (percentLoaded > 100) percentLoaded = 100;
+    progress.style.width = percentLoaded + '%';
+    progress.textContent = percentLoaded + '%';
+  }, false);
+  http_request.onreadystatechange = function() {
+    if (http_request.readyState != 4) return;
+    if (http_request.status == 200 && http_request.responseText == 'ok') {
+      var zipfile = document.getElementsByName('zipfile');
+      var ini = document.getElementById('ini');
+      var zip = document.getElementById('zip');
+      zipfile[0].value = filename;
+      zip.disabled = true;
+      document.getElementById('continue').disabled = false;
+      document.getElementById('zip_sent').innerHTML = file_sent;
+      progress.style.width = '100%';
+      progress.textContent = '100%';
+    } else {
+      alert(http_request.status == 200 ? http_request.responseText : 'Server error code: ' + http_request.status);
+    }      
+  };
 
-      alert(filename);
-/*
-  var start, stop;
-    for (start = 0; start < binary.length; start += 512) {
-      stop = start + 511;
-      if (binary.length - 1 <= stop) stop = binary.length - 1;
-      var part = binary.substr(start, stop + 1);
-      //http_request.open("POST", url+"?202", false);
-      //http_request.setRequestHeader("Content-type", "text/xml");
-      //http_request.send(text);
-      var percentLoaded = Math.round((stop / binary.length) * 100);
-      if (percentLoaded > 100) percentLoaded = 100;
-      progress.style.width = percentLoaded + '%';
-      progress.textContent = percentLoaded + '%';
-    }
-*/
-    http_request.upload.addEventListener('progress', function(e){
-      var percentLoaded = Math.round((e.loaded/e.total) * 100);
-      if (percentLoaded > 100) percentLoaded = 100;
-      progress.style.width = percentLoaded + '%';
-      progress.textContent = percentLoaded + '%';
-      if (e.loaded >= e.total) {
-        var zipfile = document.getElementsByName('zipfile');
-        var ini = document.getElementById('ini');
-        var zip = document.getElementById('zip');
-        zipfile[0].value = filename;
-        zip.disabled = true;
-        document.getElementById('continue').disabled = false;
-        document.getElementById('zip_sent').innerHTML = file_sent;
-      }
-    }, false);
-
-      http_request.open("POST", url+"?202");
-      //http_request.setRequestHeader("Content-type", "application/octet-stream");
-      http_request.send(data);
-//  var resp = http_request.responseText;
-//alert(resp);
+  http_request.open("POST", url+"?202");
+  http_request.send(data);
 }
 
 function do_ajax_upload_ini(url, text) {
@@ -117,7 +107,7 @@ function do_ajax_upload_ini(url, text) {
 }
 
 /****
- * File handling, thanks to Eric Bidelman http://www.html5rocks.com/
+ * File error handling, thanks to Eric Bidelman http://www.html5rocks.com/
  ****/
 
   function errorHandler(evt) {
@@ -135,72 +125,16 @@ function do_ajax_upload_ini(url, text) {
     };
   }
 
-/*
 function handleZIPFile(evt) {
-    var file = evt.target.files[0]; // file object
-
-    var ext =  file.name.split('.').pop().toLowerCase();
-      if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' ) {
-        alert('zip/gzip/bzip2 files only');
-        return false;
-      }
-
-    // Reset progress indicator on new file selection.
-    var progress = document.querySelector('.percent');
-    progress.style.width = '0%';
-    progress.textContent = '0%';
-    document.getElementById('progress_bar').className = 'loading';
-
-    var start, stop;
-    var blob;
-    var reader;
-
-    // If we use onloadend, we need to check the readyState.
-    for (start = 0; start < file.size; start += 512) {
-      reader = new FileReader();
-      reader.onerror = errorHandler;
-      stop = start + 511;
-      if (file.size - 1 <= stop) stop = file.size -1;
-      reader.onload = function(evt) {
-        if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-          alert(start+"!");
-          //alert(evt.target.result);
-        }
-      };
-      blob = file.slice(start, stop + 1);
-      reader.readAsBinaryString(blob);
-      var percentLoaded = Math.round((stop / file.size) * 100);
-      if (percentLoaded > 100) percentLoaded = 100;
-      progress.style.width = percentLoaded + '%';
-      progress.textContent = percentLoaded + '%';
-    }
-    var zipfile = document.getElementsByName('zipfile');
-    var ini = document.getElementById('ini');
-    var zip = document.getElementById('zip');
-    zipfile[0].value = file.name;
-    alert(file.name);
-    zip.disabled = true;
-    document.getElementById('continue').disabled = false;
-    document.getElementById('zip_sent').innerHTML = file_sent;
-}
-*/
-function handleZIPFile(evt) {
-    var f = evt.target.files[0]; // file object
-      // Only process compressed archives.
-    /*
-    var ext =  f.name.split('.').pop().toLowerCase();
-      if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' ) {
-        alert('zip/gzip/bzip2 files only');
-        return false;
-      }
-    */
-      //var reader = new FileReader();
-      //reader.onerror = errorHandler;
-      //reader.onload = function(e) {
-        do_ajax_upload_zip(evt.target.url, f.name, null /* e.target.result*/);
-      //};
-      //reader.readAsBinaryString(f);
-      return true;
+  var f = evt.target.files[0]; // file object
+  // Only process compressed archives.
+  var ext =  f.name.split('.').pop().toLowerCase();
+  if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' ) {
+    alert('zip/gzip/bzip2 files only');
+    return false;
+  }
+  do_ajax_upload_zip(evt.target.url, f.name);
+  return true;
 }
 
 

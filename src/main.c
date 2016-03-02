@@ -593,9 +593,10 @@ int ajax_config_upload_main(int argc, char **argv) {
 }
 
 int ajax_archive_upload_main(int argc, char **argv) {
-//  printf("%s%d", HTM_HEADER_CLIENT, get_zip_upload(1));
-printf("%s", HTM_HEADER_CLIENT);
-get_zip_upload(1);
+  globaldata.gd_inifile = getfieldbyname("inifile");
+  read_xml_file(UPLOAD_CONFIG); // @TODO: gestire gli errori in modo ajax compatibile
+  chdir(getenv("DOCUMENT_ROOT"));
+  printf("%s%s", HTM_HEADER_CLIENT, get_zip_upload(1));
   exit(0);  
 }
 
@@ -664,7 +665,14 @@ int main(int argc, char **argv) {
           Error(_("can't access configuration file"));
       rc = read_xml_file(action);
       if (rc == 0) Error(error_read);
-      get_zip_upload(0);
+      {
+        char *zipfile = getfieldbyname("zipfile");
+        if (!(zipfile && *zipfile)) {
+          char *result = get_zip_upload(0);
+          if (strcmp("ok", result) != 0)
+            Error(result);
+        }
+      }
     case DOWNLOAD_CONFIG:
       if (action == DOWNLOAD_CONFIG) {
         if (!(globaldata.gd_iniaddress = get_ini_name(argc, argv)))
