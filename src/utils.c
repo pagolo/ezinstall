@@ -220,17 +220,21 @@ char *win_basename(char *path) {
   return path;
 }
 
-int get_zip_upload(void) {
+int get_zip_upload(int ajax) {
   mode_t u_mask;
   int len = 0, fd = NO_FILE, overwrite;
   char *overwrite_str;
-  char *buffer = getbinarybyname("zip", &len);
+  char *filename;
+//  char *buffer = ajax? ReadInput(&len, "POST") : getbinarybyname("zip", &len);
+
 
   overwrite_str = getfieldbyname("overwrite");
   overwrite = (overwrite_str && strcasecmp(overwrite_str, "on") == 0) ? 1 : 0;
+  //return overwrite;
+  char *buffer = getbinarybyname("zip", &len);
 
   if (!buffer)
-    Error(_("error receiving archive file..."));
+return 0;//    Error(_("error receiving archive file..."));
 
   // controllare il nome del file
   if (strcasecmp(win_basename(getfieldbyname("zip")), basename(globaldata.gd_inidata->web_archive)) != 0)
@@ -240,8 +244,10 @@ int get_zip_upload(void) {
   if (access(globaldata.gd_inidata->web_archive, F_OK) == 0 && overwrite == 0)
     Error(_("archive already exists! Please use the checkbox to overwrite it"));
 
+  filename = globaldata.gd_inidata->web_archive;
+
   u_mask = umask(0);
-  fd = open(globaldata.gd_inidata->web_archive, O_CREAT | O_RDWR, 0644);
+  fd = open(filename, O_CREAT | O_RDWR, 0644);
   umask(u_mask);
   if (fd == NO_FILE)
     Error(_("can't create archive file, check user and permissions."));

@@ -219,6 +219,20 @@ void sanitize_xss(char *string) {
     }
   }
 }
+// @TODO: correggere bug strncasecmp
+char *getbinarybyname(char *name, int *len) {
+  FIELD *inp;
+  int mylen = strlen(name);
+  char *rc = NULL;
+  for (inp = ParseInput(); inp; inp = inp->next) {
+    if (strncasecmp(inp->name, name, mylen) == 0 && inp->buffer) {
+      rc = inp->buffer;
+      *len = inp->bufferlen;
+      break;
+    }
+  }
+  return rc;
+}
 
 char *getfieldbyname_sanitize(char *name, int do_sanitize) {
   FIELD *inp;
@@ -236,21 +250,6 @@ char *getfieldbyname_sanitize(char *name, int do_sanitize) {
 
 char *getfieldbyname(char *name) {
   return getfieldbyname_sanitize(name, 1);
-}
-
-char *getbinarybyname(char *name, int *len) {
-  FIELD *inp;
-  int mylen = strlen(name);
-  char *rc = NULL;
-
-  for (inp = ParseInput(); inp; inp = inp->next) {
-    if (strncasecmp(inp->name, name, mylen) == 0) {
-      rc = inp->buffer;
-      *len = inp->bufferlen;
-      break;
-    }
-  }
-  return rc;
 }
 
 

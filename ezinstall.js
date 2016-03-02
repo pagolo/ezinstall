@@ -52,10 +52,13 @@ function do_ajax_upload_zip(url, filename, binary) {
   progress.style.width = '0%';
   progress.textContent = '0%';
   document.getElementById('progress_bar').className = 'loading';
+      //alert(document.getElementById('upload_form'));
 
-  var start, stop;
+var data = new FormData(document.getElementById('upload_form')); //document.getElementById('zip').getFormData();
+
       alert(filename);
-
+/*
+  var start, stop;
     for (start = 0; start < binary.length; start += 512) {
       stop = start + 511;
       if (binary.length - 1 <= stop) stop = binary.length - 1;
@@ -68,13 +71,28 @@ function do_ajax_upload_zip(url, filename, binary) {
       progress.style.width = percentLoaded + '%';
       progress.textContent = percentLoaded + '%';
     }
-    var zipfile = document.getElementsByName('zipfile');
-    var ini = document.getElementById('ini');
-    var zip = document.getElementById('zip');
-    zipfile[0].value = filename;
-    zip.disabled = true;
-    document.getElementById('continue').disabled = false;
-    document.getElementById('zip_sent').innerHTML = file_sent;
+*/
+    http_request.upload.addEventListener('progress', function(e){
+      var percentLoaded = Math.round((e.loaded/e.total) * 100);
+      if (percentLoaded > 100) percentLoaded = 100;
+      progress.style.width = percentLoaded + '%';
+      progress.textContent = percentLoaded + '%';
+      if (e.loaded >= e.total) {
+        var zipfile = document.getElementsByName('zipfile');
+        var ini = document.getElementById('ini');
+        var zip = document.getElementById('zip');
+        zipfile[0].value = filename;
+        zip.disabled = true;
+        document.getElementById('continue').disabled = false;
+        document.getElementById('zip_sent').innerHTML = file_sent;
+      }
+    }, false);
+
+      http_request.open("POST", url+"?202");
+      //http_request.setRequestHeader("Content-type", "application/octet-stream");
+      http_request.send(data);
+//  var resp = http_request.responseText;
+//alert(resp);
 }
 
 function do_ajax_upload_ini(url, text) {
@@ -176,12 +194,12 @@ function handleZIPFile(evt) {
         return false;
       }
     */
-      var reader = new FileReader();
-      reader.onerror = errorHandler;
-      reader.onload = function(e) {
-        do_ajax_upload_zip(evt.target.url, f.name, e.target.result);
-      };
-      reader.readAsBinaryString(f);
+      //var reader = new FileReader();
+      //reader.onerror = errorHandler;
+      //reader.onload = function(e) {
+        do_ajax_upload_zip(evt.target.url, f.name, null /* e.target.result*/);
+      //};
+      //reader.readAsBinaryString(f);
       return true;
 }
 

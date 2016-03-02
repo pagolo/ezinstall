@@ -252,7 +252,7 @@ void LaunchScript(void) {
 }
 
 char *upload_string =
-        "<form method='POST' action=\"%s?%d\" enctype=\"multipart/form-data\">\n"
+        "<form id=\"upload_form\" method='POST' action=\"%s?%d\" enctype=\"multipart/form-data\">\n"
         "<input type='hidden' name='upload' value=\"1\">\n"
         "<input type='hidden' name='inifile' value=\"\">\n"
         "<input type='hidden' name='zipfile' value=\"\">\n"
@@ -592,6 +592,13 @@ int ajax_config_upload_main(int argc, char **argv) {
   exit(0);  
 }
 
+int ajax_archive_upload_main(int argc, char **argv) {
+//  printf("%s%d", HTM_HEADER_CLIENT, get_zip_upload(1));
+printf("%s", HTM_HEADER_CLIENT);
+get_zip_upload(1);
+  exit(0);  
+}
+
 int main(int argc, char **argv) {
   int action, logged, rc;
   char *ld;
@@ -621,6 +628,8 @@ int main(int argc, char **argv) {
       semaphore_client_main(argc, argv);
     if (action == AJAX_CONFIG_UPLOAD)
       ajax_config_upload_main(argc, argv);
+    if (action == AJAX_ARCHIVE_UPLOAD)
+      ajax_archive_upload_main(argc, argv);
   }
 
   if (globaldata.gd_static_path && *globaldata.gd_static_path) {
@@ -655,7 +664,7 @@ int main(int argc, char **argv) {
           Error(_("can't access configuration file"));
       rc = read_xml_file(action);
       if (rc == 0) Error(error_read);
-      get_zip_upload();
+      get_zip_upload(0);
     case DOWNLOAD_CONFIG:
       if (action == DOWNLOAD_CONFIG) {
         if (!(globaldata.gd_iniaddress = get_ini_name(argc, argv)))
