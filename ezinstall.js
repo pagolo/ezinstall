@@ -35,7 +35,10 @@ function do_ajax(arg1, arg2, url, timestamp) {
       textlen = text.length;
       cont.disabled = true;
     }
-    setTimeout(function(){do_ajax(arg1, arg2, url, new Date().getTime())},750);
+    if (text.indexOf('end of ajax generated html') == -1)
+      setTimeout(function(){do_ajax(arg1, arg2, url, new Date().getTime())},750);
+    else
+      cont.disabled = false;
   }
   else {
     cont.disabled = false;

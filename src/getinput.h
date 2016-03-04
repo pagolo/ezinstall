@@ -21,5 +21,6 @@ typedef struct StringField {
 char *getfieldbyname(char *name);
 char *getbinarybyname(char *name, int *len);
 char *getfieldbyname_sanitize(char *name, int do_sanitize);
+char *ReadInput(int *len, const char *method);
 
 #endif

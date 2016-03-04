@@ -7,6 +7,8 @@
 #define HTM_HEADER_CLIENT "Content-type: text/html\r\n\r\n"
 #define HTM_FOOTER "</body></html>\n"
 
+//#define DEBUG
+
 GLOBAL globaldata;
 
 void Error(char *msg) {
@@ -419,6 +421,9 @@ char *InsertLogLevels(void) {
   old = result;
   result = mysprintf("%s<option %s value=\"1\">%s</option>\n", old, (globaldata.gd_loglevel == 1) ? "selected=\"selected\"" : "", _("Level 1"));
   free(old);
+  old = result;
+  result = mysprintf("%s<option %s value=\"2\">%s</option>\n", old, (globaldata.gd_loglevel == 2) ? "selected=\"selected\"" : "", _("Level 2"));
+  free(old);
 
   result = append_cstring(result, "</select>\n");
   return result;
@@ -503,11 +508,16 @@ int semaphore_client_main(int argc, char **argv) {
   printf(HTM_HEADER_CLIENT);
 
   semid = semget(key, 1, 0);
+#ifdef DEBUG
+  if (globaldata.gd_loglevel > LOG_1) WriteLog(mysprintf("semget=%d",semid));
+#endif
   if(semid == -1)
     {
       //printf(_("client:unable to execute semaphore"));
     //printf("%s<br />", strerror(errno));
     printf("*");
+    if (globaldata.gd_loglevel > LOG_1) WriteLog(_("- client: unable to execute semaphore"));
+    else sleep(1);
       exit(-1);
     }
   shmid = shmget(key,SHARED_MEM_SIZE,0666);
@@ -521,7 +531,11 @@ int semaphore_client_main(int argc, char **argv) {
   globaldata.gd_header_sent = 1;
   semv_wait(semid);
   printf(text);
-  if (strstr(text, SEMAPHORE_END)) strcpy(text, "*");
+  if (strstr(text, SEMAPHORE_END)) {
+    strcpy(text, "*");
+    if (globaldata.gd_loglevel > LOG_1) WriteLog("- SEMAPHORE_END");
+    else sleep(1);
+  }
   semv_post(semid);
   //    semctl(semid, 0, IPC_RMID, arg);
   //shmctl(shmid, IPC_RMID, 0);
@@ -580,8 +594,18 @@ void Daemonize(void) {
       break;
   }
   
+#ifdef DEBUG
+union semun arg;
+int sem_id = semget(globaldata.gd_semaphore->sem_key, 1, 0666 | IPC_CREAT);
+WriteLog(mysprintf("semid_test=%d"));
+semctl(sem_id, 0, IPC_RMID, arg);
+sem_id = semget(globaldata.gd_semaphore->sem_key, 1, 0666 | IPC_CREAT);
+WriteLog(mysprintf("semid_test2=%d"));
+semctl(sem_id, 0, IPC_RMID, arg);
+#endif
   EndSemaphoreText();
   while (globaldata.gd_semaphore->sem_buffer[0] != '*') sleep(1);
+  //semv_wait(globaldata.gd_semaphore->sem_id);
   EndSemaphore();
   freestringlist(list);
   exit(0);

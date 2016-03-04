@@ -362,7 +362,7 @@ void ChangePermissions(STRING **list) {
 }
 
 void StartSemaphore(void) {
-  semun_t arg;
+  static semun_t arg;
   time_t mytime = time(NULL);
   char *mypath = mysprintf("%s/%s", globaldata.gd_start_path, globaldata.gd_config_root ? CONFIG_NAME_ROOT : CONFIG_NAME);
   if (!mypath)
@@ -383,6 +383,7 @@ void StartSemaphore(void) {
 
   arg.val = 1;
   semctl(globaldata.gd_semaphore->sem_id,0,SETVAL,arg);
+  if (globaldata.gd_loglevel > LOG_1) WriteLog(mysprintf("- Starting semaphore %d", globaldata.gd_semaphore->sem_id));
 }
 static struct sembuf sb;
 void semv_wait(int semid) {
@@ -444,10 +445,12 @@ void EndSemaphore(void) {
   union semun arg;
   if (!globaldata.gd_semaphore)
     return;
-  if (globaldata.gd_semaphore->sem_id)
+  if (globaldata.gd_semaphore->sem_id > -1)
     semctl(globaldata.gd_semaphore->sem_id, 0, IPC_RMID, arg);
   if (globaldata.gd_semaphore->sem_buffer)
     shmctl(globaldata.gd_semaphore->sem_buffer_id, IPC_RMID, 0);
+  if (globaldata.gd_loglevel > LOG_1)
+    WriteLog(mysprintf("- Ending semaphore %d", globaldata.gd_semaphore->sem_id));
   free(globaldata.gd_semaphore);
   globaldata.gd_semaphore = NULL;
 }

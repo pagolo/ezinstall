@@ -154,7 +154,7 @@ int parsePermissionsNode(xmlDocPtr doc, xmlNodePtr cur) {
   INIDATA *inidata = globaldata.gd_inidata;
 
   while (cur != NULL) {
-    if ((!xmlStrcmp(cur->name, (xmlChar *) "chmod")) || (!xmlStrcmp(cur->name, (xmlChar *) "chmod-recurse"))) {
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "chmod")) || (!xmlStrcmp(cur->name, (xmlChar *) "chmod-recourse"))) {
       file = xmlGetProp(cur, (xmlChar *) "fsobject");
       mode = xmlGetProp(cur, (xmlChar *) "mode");
       createfolder = xmlGetProp(cur, (xmlChar *) "createfolder");
@@ -544,7 +544,8 @@ int WriteGlobalConfig(void) {
   remove(config_name);
   fd = open(config_name, O_CREAT | O_RDWR | O_TRUNC, 0600);
   if (fd == NO_FILE) goto finish;
-  write(fd, (const void *) buf->content, buf->size);
+  //write(fd, (const void *) buf->content, buf->size);
+  write(fd, (const void *) buf->content, xmlStrlen(buf->content));
   close(fd);
 #endif
 

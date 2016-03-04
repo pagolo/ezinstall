@@ -152,7 +152,8 @@ typedef struct IniData {
 // Log levels
 enum {
    LOG_NONE,
-   LOG_1
+   LOG_1,
+   LOG_2
 };
 #ifdef SEMUN_UNDEFINED
 typedef union semun {
