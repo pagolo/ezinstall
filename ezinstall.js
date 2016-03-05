@@ -9,6 +9,23 @@ String.prototype.endsWith = function(str)
 
 var textlen = 0;
 var file_sent = "file sent";
+var parseXml;
+
+if (typeof window.DOMParser != "undefined") {
+    parseXml = function(xmlStr) {
+        return ( new window.DOMParser() ).parseFromString(xmlStr, "text/xml");
+    };
+} else if (typeof window.ActiveXObject != "undefined" &&
+       new window.ActiveXObject("Microsoft.XMLDOM")) {
+    parseXml = function(xmlStr) {
+        var xmlDoc = new window.ActiveXObject("Microsoft.XMLDOM");
+        xmlDoc.async = "false";
+        xmlDoc.loadXML(xmlStr);
+        return xmlDoc;
+    };
+} else {
+    throw new Error("No XML parser found");
+}
 
 function createXMLHttpRequest() {
   try { return new XMLHttpRequest(); } catch (e) { }
@@ -101,11 +118,20 @@ function do_ajax_upload_ini(url, text) {
   var inifile = document.getElementsByName('inifile');
   var ini = document.getElementById('ini');
   var zip = document.getElementById('zip');
-  inifile[0].value = resp;
-  ini.disabled = true;
-  zip.disabled = false;
-  document.getElementById('ini_sent').innerHTML = file_sent;
-  document.getElementById('zip').addEventListener('change', handleZIPFile, false);
+  var progress = document.querySelector('.percent');
+  progress.style.width = '100%';
+  progress.textContent = '100%';
+  document.getElementById('progress_bar').className = 'loading';
+  if (resp.indexOf("ezin") == 0) {
+    inifile[0].value = resp;
+    ini.disabled = true;
+    zip.disabled = false;
+    document.getElementById('ini_sent').innerHTML = file_sent;
+    document.getElementById('zip').addEventListener('change', handleZIPFile, false);
+  } else {
+    alert(resp);
+    return false;
+  }
   return true;
 }
 
@@ -151,15 +177,27 @@ function handleXMLFile(evt) {
       var reader = new FileReader();
       reader.onerror = errorHandler;
       reader.onload = function(e) {
-        do_ajax_upload_ini(evt.target.url, e.target.result);
+        var xml = parseXml(e.target.result);
+        if (xml.documentElement.tagName != 'ezinstaller') {
+          alert('incompatible xml file');
+          return false;
+        }
+        do_ajax_upload_ini(evt.target.url, xml);
       };
       reader.readAsText(f);
       return true;
 }
 
 function InitAjax(url, file_sent_text) {
+  if (!(window.File && window.FileReader)) {
+    document.getElementById('continue').style.display = "none";
+    document.getElementById('submit').style.display = "inline";
+    document.getElementById('reset').style.display = "inline";
+    document.getElementById('zip').disabled = false;
+    return;
+  }
   file_sent = file_sent_text;
-  document.getElementById('ini').url=url;
+  document.getElementById('ini').url = url;
   document.getElementById('zip').url = url;
   document.getElementById('ini').addEventListener('change', handleXMLFile, false);
 }

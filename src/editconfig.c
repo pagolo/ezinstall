@@ -223,5 +223,5 @@ void SaveConfigFile(void) {
   if (!(fh)) Error(_("can't save configuration file"));
   fwrite(filebuf, strlen(filebuf), 1, fh);
   fclose(fh);
-  printf(_("<br />Configuration file has been saved..."));
+  printf("%s<br />&nbsp;", _("<br />Configuration file has been saved..."));
 }

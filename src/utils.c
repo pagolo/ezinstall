@@ -198,10 +198,10 @@ char *get_ini_upload(int ajax) {
   else
     buffer = getbinarybyname("ini", &len);
 
-  if (!buffer) return NULL;
+  if (!buffer) return _("Error allocating memory\n");
 
   fd = mkstemp(template);
-  if (fd == NO_FILE) return NULL;
+  if (fd == NO_FILE) return _("Can't create file");
   // mark removed due to xml format
   //write(fd,mark,strlen(mark)); // mark the file as an easinstall temporary file...
   write(fd, buffer, len);
