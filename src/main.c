@@ -164,7 +164,7 @@ char *createdir_string = "<form method=\"POST\" action=\"%s?%d\">\n"
         "<td><input type='text' name='folder' %s value='%s' size='32'></td>\n"
         "</tr>\n"
         "<tr>\n"
-        "<td class='submit_row_onecol'><input id='continue' type='submit' value='%s' name='B1'><input type='reset' value='%s' name='B2'></td>\n"
+        "<td class='submit_row_onecol'><input id='continue' type='submit' value='%s' name='B1'></td>\n"
         "</tr>\n"
         "</table>\n"
         "</form>";
@@ -180,8 +180,8 @@ void ShowCreateDirPage(void) {
           ":",
           "",
           globaldata.gd_inidata->directory,
-          _("Continue"),
-          _("Clear"));
+          _("Continue")
+          );
 }
 
 void ShowRenameDirPage(void) {
@@ -197,8 +197,8 @@ void ShowRenameDirPage(void) {
           dont_show_edit ? "" : ":",
           dont_show_edit ? "style='display: none'" : "",
           dir,
-          _("Continue"),
-          _("Clear"));
+          _("Continue")
+          );
 }
 
 void ShowArchive(void) {
@@ -533,8 +533,10 @@ int semaphore_client_main(int argc, char **argv) {
   printf(text);
   if (strstr(text, SEMAPHORE_END)) {
     strcpy(text, "*");
+#ifdef DEBUG
     if (globaldata.gd_loglevel > LOG_1) WriteLog("- SEMAPHORE_END");
     else sleep(1);
+#endif
   }
   semv_post(semid);
   //    semctl(semid, 0, IPC_RMID, arg);

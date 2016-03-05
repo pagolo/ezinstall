@@ -442,7 +442,7 @@ void HandleSemaphoreText(char *text, STRING **list, int append) {
   }
 }
 void EndSemaphore(void) {
-  union semun arg;
+  static union semun arg;
   if (!globaldata.gd_semaphore)
     return;
   if (globaldata.gd_semaphore->sem_id > -1)
