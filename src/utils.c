@@ -381,24 +381,26 @@ void StartSemaphore(void) {
   globaldata.gd_semaphore->sem_buffer = shmat(globaldata.gd_semaphore->sem_buffer_id, NULL, 0);
   strcpy(globaldata.gd_semaphore->sem_buffer, "\n<ul>\n");
 
-  arg.val = 1;
+  arg.val = 3;
   semctl(globaldata.gd_semaphore->sem_id,0,SETVAL,arg);
-  if (globaldata.gd_loglevel > LOG_1) WriteLog(mysprintf("- Starting semaphore %d", globaldata.gd_semaphore->sem_id));
+  if (globaldata.gd_loglevel > LOG_1) WriteLog(mysprintf("Starting semaphore %d", globaldata.gd_semaphore->sem_id));
 }
 static struct sembuf sb;
 void semv_wait(int semid) {
-  int counter = 16, rc;
+  int rc;
   sb.sem_op = -1;
-  while ((rc = semop(semid, &sb, 1)) == -1 && counter--) sleep(1);
+  sb.sem_flg = 0;
+  rc = semop(semid, &sb, 1);
   if (rc == -1) {
     printf(_("semaphore error"));
     exit(-1);
   }
 }
 void semv_post(int semid) {
-  int counter = 16, rc;
+  int rc;
   sb.sem_op = 1;
-  while ((rc = semop(semid, &sb, 1)) == -1 && counter--) sleep(1);
+  sb.sem_flg = 0;
+  rc = semop(semid, &sb, 1);
   if (rc == -1) {
     printf(_("semaphore error"));
     exit(-1);
@@ -442,15 +444,15 @@ void HandleSemaphoreText(char *text, STRING **list, int append) {
   }
 }
 void EndSemaphore(void) {
-  static union semun arg;
+  //static union semun arg;
   if (!globaldata.gd_semaphore)
     return;
   if (globaldata.gd_semaphore->sem_id > -1)
-    semctl(globaldata.gd_semaphore->sem_id, 0, IPC_RMID, arg);
+    semctl(globaldata.gd_semaphore->sem_id, 0, IPC_RMID);
   if (globaldata.gd_semaphore->sem_buffer)
     shmctl(globaldata.gd_semaphore->sem_buffer_id, IPC_RMID, 0);
   if (globaldata.gd_loglevel > LOG_1)
-    WriteLog(mysprintf("- Ending semaphore %d", globaldata.gd_semaphore->sem_id));
+    WriteLog(mysprintf("Ending semaphore %d", globaldata.gd_semaphore->sem_id));
   free(globaldata.gd_semaphore);
   globaldata.gd_semaphore = NULL;
 }
