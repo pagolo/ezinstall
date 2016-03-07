@@ -97,7 +97,7 @@ am_ezinstall_OBJECTS = main.$(OBJEXT) configure.$(OBJEXT) \
 	editconfig.$(OBJEXT) getinput.$(OBJEXT) ioapi.$(OBJEXT) \
 	login.$(OBJEXT) md5.$(OBJEXT) mylocale.$(OBJEXT) \
 	mysql.$(OBJEXT) myunzip.$(OBJEXT) session.$(OBJEXT) \
-	socket.$(OBJEXT) test.$(OBJEXT) untar.$(OBJEXT) \
+	socket.$(OBJEXT) curl.$(OBJEXT) test.$(OBJEXT) untar.$(OBJEXT) \
 	unzip.$(OBJEXT) utils.$(OBJEXT) xml.$(OBJEXT)
 ezinstall_OBJECTS = $(am_ezinstall_OBJECTS)
 ezinstall_DEPENDENCIES =
@@ -304,6 +304,8 @@ ezinstall_SOURCES = \
 	session.h      \
 	socket.c     \
 	socket.h     \
+	curl.c     \
+	curl.h     \
 	test.c     \
 	test.h     \
 	untar.c    \
@@ -406,6 +408,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/configure.Po
+include ./$(DEPDIR)/curl.Po
 include ./$(DEPDIR)/editconfig.Po
 include ./$(DEPDIR)/getinput.Po
 include ./$(DEPDIR)/ioapi.Po

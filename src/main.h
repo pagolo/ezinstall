@@ -215,4 +215,5 @@ void ChDirRoot(void);
 #include "myunzip.h"
 #include "untar.h"
 #include "ioapi.h"
+#include "curl.h"
 #endif

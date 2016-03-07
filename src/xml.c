@@ -316,11 +316,19 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
       xmlFree(key);
       if (attrib) xmlFree(attrib);
     }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "url"))) {
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      if (inidata->web_archive) free(inidata->web_archive);
+      inidata->web_archive = strdup((char *)key);
+      xmlFree(key);
+    }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "file"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       attrib = xmlGetProp(cur, (xmlChar *) "unzip");
-      if (globaldata.gd_iniaddress != NULL)
-        inidata->web_archive = cloneaddress(globaldata.gd_iniaddress, (char *) key);
+      if (globaldata.gd_iniaddress != NULL) {
+        if (inidata->web_archive == NULL)
+          inidata->web_archive = cloneaddress(globaldata.gd_iniaddress, (char *) key);
+      }
       else if (action == UPLOAD_CONFIG) { // upload, not download
         char *path = getenv("DOCUMENT_ROOT");
         if (path && *path) {

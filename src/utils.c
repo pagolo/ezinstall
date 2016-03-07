@@ -262,6 +262,8 @@ int graburl(char *url, int permissions, int expand, int tempname) {
 
 int graburl_list(char *url, int permissions, int expand, int tempname, STRING **list) {
   int success = 0;
+  
+/*
   SOCKET sock;
   char *z = NULL, *site = NULL, *dir = NULL;
 
@@ -282,6 +284,9 @@ int graburl_list(char *url, int permissions, int expand, int tempname, STRING **
   success = Download(sock, site, dir, tempname ? NULL : basename(url), permissions, list);
   CloseConnection(sock);
   if (site) free(site);
+*/
+
+  success = CurlDownload(url, permissions, tempname, list);
 
   if (success && globaldata.gd_loglevel > LOG_NONE)
     WriteLog(_("download successfull"));

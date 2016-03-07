@@ -35,6 +35,8 @@ ezinstall_SOURCES = \
 	session.h      \
 	socket.c     \
 	socket.h     \
+	curl.c     \
+	curl.h     \
 	test.c     \
 	test.h     \
 	untar.c    \

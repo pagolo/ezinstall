@@ -53,8 +53,12 @@ utils.o: utils.c /usr/include/stdc-predef.h main.h ../config.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed/limits.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix2_lim.h \
- /usr/include/bits/xopen_lim.h ioapi.h /usr/include/assert.h \
- /usr/include/errno.h /usr/include/bits/errno.h \
+ /usr/include/bits/xopen_lim.h ioapi.h curl.h /usr/include/curl/curl.h \
+ /usr/include/curl/curlver.h /usr/include/curl/curlbuild.h \
+ /usr/include/curl/curlrules.h /usr/include/sys/time.h \
+ /usr/include/curl/easy.h /usr/include/curl/multi.h \
+ /usr/include/curl/curl.h /usr/include/curl/typecheck-gcc.h \
+ /usr/include/assert.h /usr/include/errno.h /usr/include/bits/errno.h \
  /usr/include/linux/errno.h /usr/include/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/sys/param.h /usr/include/bits/param.h \
@@ -316,6 +320,26 @@ untar.h:
 /usr/include/bits/xopen_lim.h:
 
 ioapi.h:
+
+curl.h:
+
+/usr/include/curl/curl.h:
+
+/usr/include/curl/curlver.h:
+
+/usr/include/curl/curlbuild.h:
+
+/usr/include/curl/curlrules.h:
+
+/usr/include/sys/time.h:
+
+/usr/include/curl/easy.h:
+
+/usr/include/curl/multi.h:
+
+/usr/include/curl/curl.h:
+
+/usr/include/curl/typecheck-gcc.h:
 
 /usr/include/assert.h:
 

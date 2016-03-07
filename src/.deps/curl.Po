@@ -1,7 +1,7 @@
-mysql.o: mysql.c /usr/include/stdc-predef.h main.h ../config.h \
- conditions.h /usr/include/stdio.h /usr/include/features.h \
- /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
- /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
+curl.o: curl.c /usr/include/stdc-predef.h main.h ../config.h conditions.h \
+ /usr/include/stdio.h /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h \
  /usr/lib64/gcc/x86_64-suse-linux/4.8/include/stddef.h \
  /usr/include/bits/types.h /usr/include/bits/typesizes.h \
  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
@@ -56,10 +56,7 @@ mysql.o: mysql.c /usr/include/stdc-predef.h main.h ../config.h \
  /usr/include/curl/curlbuild.h /usr/include/curl/curlrules.h \
  /usr/include/sys/time.h /usr/include/curl/easy.h \
  /usr/include/curl/multi.h /usr/include/curl/curl.h \
- /usr/include/curl/typecheck-gcc.h /usr/include/mysql/mysql.h \
- /usr/include/mysql/mysql_version.h /usr/include/mysql/mysql_com.h \
- /usr/include/mysql/mysql_time.h /usr/include/mysql/my_list.h \
- /usr/include/mysql/typelib.h /usr/include/mysql/my_alloc.h
+ /usr/include/curl/typecheck-gcc.h
 
 /usr/include/stdc-predef.h:
 
@@ -332,17 +329,3 @@ curl.h:
 /usr/include/curl/curl.h:
 
 /usr/include/curl/typecheck-gcc.h:
-
-/usr/include/mysql/mysql.h:
-
-/usr/include/mysql/mysql_version.h:
-
-/usr/include/mysql/mysql_com.h:
-
-/usr/include/mysql/mysql_time.h:
-
-/usr/include/mysql/my_list.h:
-
-/usr/include/mysql/typelib.h:
-
-/usr/include/mysql/my_alloc.h:
