@@ -316,7 +316,7 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
       xmlFree(key);
       if (attrib) xmlFree(attrib);
     }
-    if ((!xmlStrcmp(cur->name, (xmlChar *) "url"))) {
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "url")) && action == DOWNLOAD_CONFIG) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       if (inidata->web_archive) free(inidata->web_archive);
       inidata->web_archive = strdup((char *)key);

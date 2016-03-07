@@ -24,6 +24,7 @@ void Error(char *msg) {
     EndSemaphore();
   exit(5);
 }
+
 void DaemonError(char *msg, STRING **list) {
   char *s1 = mysprintf("<em>%s</em>: %s", _("ERROR"), msg);
   HandleSemaphoreText(s1, list, 1);
