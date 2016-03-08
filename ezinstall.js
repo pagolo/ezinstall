@@ -201,3 +201,21 @@ function InitAjax(url, file_sent_text) {
   document.getElementById('zip').url = url;
   document.getElementById('ini').addEventListener('change', handleXMLFile, false);
 }
+
+function toggle_upload(el) {
+  down = document.getElementById('ini_download');
+  up = document.getElementById('ini_upload');
+  down_row = document.getElementById('down_row');
+  up_row = document.getElementById('up_row');
+  if (el.checked) {
+    up_row.style.display = 'block';
+    down_row.style.display = 'none';
+    up.disabled = false;
+    down.disabled = true;
+  } else {
+    up_row.style.display = 'none';
+    down_row.style.display = 'block';
+    up.disabled = true;
+    down.disabled = false;
+  }
+}

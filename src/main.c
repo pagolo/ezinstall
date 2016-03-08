@@ -292,16 +292,15 @@ void UploadForm(void) {
 }
 
 char *download_string =
-        "<form method=\"POST\" action=\"%s?%d\">\n"
+        "<form method=\"POST\" action=\"%s?%d\" enctype=\"multipart/form-data\">\n"
         "<input type='hidden' name='upload' value=\"0\">\n"
         "<table id='download_table'>\n"
-        "<tr>\n"
-        "<td>%s:</td>\n"
+        "<tr id='down_row'>\n"
+        "<td><label for='ini_download'>%s:</label><br /><input id='ini_download' type='text' name='url' value=\"http://\" size='64'></td>\n"
         "</tr>\n"
-        "<tr>\n"
-        "<td><input type='text' name='url' value=\"http://\" size='64'></td>\n"
-        "</tr>\n"
-        "<tr><td><input type='checkbox' name='overwrite' checked='checked'>%s</td></tr>\n"
+        "<tr><td><input id='overwrite' type='checkbox' name='overwrite' checked='checked' /><label for='overwrite'>%s</label></td></tr>\n"
+        "<tr><td><input id='toggle' type='checkbox' name='toggle' onclick='toggle_upload(this)' /><label for='toggle'>%s</label></td></tr>\n"
+        "<tr id='up_row' style='display:none'><td><input type='file' id='ini_upload' name='ini' disabled='disabled' size='40' /></td></tr>\n"
         "<tr>\n"
         "<td class='submit_row_onecol'><br /><input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td>\n"
         "</tr>\n"
@@ -313,6 +312,7 @@ void DownloadForm(void) {
           DOWNLOAD_CONFIG,
           _("Please insert the url of the configuration file"),
           _("overwrite file"),
+          _("upload xml file"),
           _("Submit"),
           _("Clear"));
 }
@@ -702,10 +702,18 @@ int main(int argc, char **argv) {
       }
     case DOWNLOAD_CONFIG:
       if (action == DOWNLOAD_CONFIG) {
-        if (!(globaldata.gd_iniaddress = get_ini_name(argc, argv)))
-          Error(_("ini file name not specified"));
-        rc = graburl(globaldata.gd_iniaddress, 0644, 0, 1);
-        if (rc == 0) Error(_("Can't download ini file"));
+        char *toggle = getfieldbyname("toggle");
+        int uploaded_ini = (toggle && strcasecmp(toggle, "on") == 0) ? 1 : 0;
+        if (uploaded_ini) {
+          if (!(globaldata.gd_inifile = get_ini_upload(0)))
+            Error(_("can't access configuration file"));
+        }
+        else {
+          if (!(globaldata.gd_iniaddress = get_ini_name(argc, argv)))
+            Error(_("ini file name not specified"));
+          rc = graburl(globaldata.gd_iniaddress, 0644, 0, 1);
+          if (rc == 0) Error(_("Can't download ini file"));
+        }
         rc = read_xml_file(action);
         if (rc == 0) Error(error_read);
       }
