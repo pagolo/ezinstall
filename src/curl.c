@@ -64,6 +64,7 @@ int CurlDownload(char *url, int mask, int tempname, STRING **list) {
     prog.list = list;
 
     curl_easy_setopt(curl, CURLOPT_URL, url);
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Ezinstall downloader/0.1");
     curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, older_progress);
     curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &prog);
 
