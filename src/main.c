@@ -300,7 +300,7 @@ char *download_string =
         "</tr>\n"
         "<tr><td><input id='overwrite' type='checkbox' name='overwrite' checked='checked' /><label for='overwrite'>%s</label></td></tr>\n"
         "<tr><td><input id='toggle' type='checkbox' name='toggle' onclick='toggle_upload(this)' /><label for='toggle'>%s</label></td></tr>\n"
-        "<tr id='up_row' style='display:none'><td><input type='file' id='ini_upload' name='ini' disabled='disabled' size='40' /></td></tr>\n"
+        "<tr id='up_row' style='display:none'><td><input type='file' id='ini_upload' name='ini' disabled='disabled' accept='text/xml' size='40' /></td></tr>\n"
         "<tr>\n"
         "<td class='submit_row_onecol'><br /><input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td>\n"
         "</tr>\n"
@@ -310,15 +310,15 @@ char *download_string =
 void DownloadForm(void) {
   printf(download_string, getenv("SCRIPT_NAME"),
           DOWNLOAD_CONFIG,
-          _("Please insert the url of the configuration file"),
+          _("Please insert url of xml configuration file"),
           _("overwrite file"),
-          _("upload xml file"),
+          _("upload xml configuration file"),
           _("Submit"),
           _("Clear"));
 }
 
 char *script_string =
-        "\n<script language=\"JavaScript\" type=\"text/javascript\">\n"
+        "\n<script type=\"text/javascript\">\n"
         "function CheckUp(theform) {\n"
         "if (theform.admin_name.value==\"\") {\n"
         "  alert(\"%s\");\n"
@@ -698,6 +698,9 @@ int main(int argc, char **argv) {
           char *result = get_zip_upload(0);
           if (strcmp("ok", result) != 0)
             Error(result);
+        } else if (globaldata.gd_inidata && globaldata.gd_inidata->web_archive) {
+          free(globaldata.gd_inidata->web_archive);
+          globaldata.gd_inidata->web_archive = strdup(zipfile);
         }
       }
     case DOWNLOAD_CONFIG:

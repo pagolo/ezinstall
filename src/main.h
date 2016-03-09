@@ -112,10 +112,12 @@ typedef struct PhpConf {
    struct PhpConf *next;
 } PHPCONF;
 
+// flags per struttura inidata
 enum {
    _CREATEDIR = 1,
    _SKIP_MYSQL = 2,
-   _SKIP_CONFIGFILE = 4
+   _SKIP_CONFIGFILE = 4,
+   _FORCE_ARCHIVE = 8
 };
 
 enum {

@@ -224,7 +224,7 @@ char *get_zip_upload(int ajax) {
   mode_t u_mask;
   int len = 0, fd = NO_FILE, overwrite;
   char *overwrite_str;
-  char *filename;
+  char *filename, *user_filename;
   char *buffer = getbinarybyname("zip", &len);
 
   overwrite_str = getfieldbyname("overwrite");
@@ -232,9 +232,14 @@ char *get_zip_upload(int ajax) {
 
   if (!buffer) return(_("error receiving archive file..."));
 
+  user_filename = win_basename(getfieldbyname("zip"));
+
+  // @TODO: controllare se esiste globaldata.gd_inidata->web_archive
+  
   // controllare il nome del file
-  if (strcasecmp(win_basename(getfieldbyname("zip")), basename(globaldata.gd_inidata->web_archive)) != 0)
-    return(_("archive filename does not match with configuration data..."));
+  if (strcasecmp(user_filename, basename(globaldata.gd_inidata->web_archive)) != 0) {
+    return(_("archive filename does not match configuration data..."));
+  }
 
   // controllare se il file esiste
   if (access(globaldata.gd_inidata->web_archive, F_OK) == 0 && overwrite == 0)

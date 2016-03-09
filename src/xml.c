@@ -293,7 +293,7 @@ int parseFinishNode(xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
-  xmlChar *key, *attrib, *message, *subdir;
+  xmlChar *key, *attrib, *message, *subdir, *force;
   cur = cur->xmlChildrenNode;
   INIDATA *inidata;
 
@@ -325,6 +325,10 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
     if ((!xmlStrcmp(cur->name, (xmlChar *) "file"))) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       attrib = xmlGetProp(cur, (xmlChar *) "unzip");
+      force = xmlGetProp(cur, (xmlChar *) "force");
+      if (force && xmlStrcmp(force, (xmlChar *) "yes") == 0) {
+        inidata->flags |= _FORCE_ARCHIVE;
+      }
       if (globaldata.gd_iniaddress != NULL) {
         if (inidata->web_archive == NULL)
           inidata->web_archive = cloneaddress(globaldata.gd_iniaddress, (char *) key);
@@ -332,14 +336,17 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
       else if (action == UPLOAD_CONFIG) { // upload, not download
         char *path = getenv("DOCUMENT_ROOT");
         if (path && *path) {
+          char *userfile = getfieldbyname("zip");
+          if (userfile == NULL) userfile = getfieldbyname("zipfile");
           path = append_cstring(NULL, path);
           if (path[strlen(path) - 1] != '/') path = append_cstring(path, "/");
-          inidata->web_archive = append_cstring(path, (char *) key);
+          inidata->web_archive = append_cstring(path, (inidata->flags & _FORCE_ARCHIVE) && userfile ? userfile : (char *) key);
         }
       }
-      inidata->zip_format = setUnzip((char *) key, attrib ? (char *) attrib : "auto");
+      inidata->zip_format = setUnzip(inidata->web_archive? inidata->web_archive : (char *)key, attrib ? (char *) attrib : "auto");
       xmlFree(key);
       if (attrib) xmlFree(attrib);
+      if (force) xmlFree(force);
     }
     cur = cur->next;
   }
