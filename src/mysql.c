@@ -208,8 +208,11 @@ void CreateDbTables(STRING **list) {
 
   if (globaldata.gd_mysql->db_files) {
     HandleSemaphoreText(_("creating database tables, please wait...<div class=\"throbber\">&nbsp;</div>"), list, 1);
-    for (ptr = globaldata.gd_mysql->db_files; ptr; ptr = ptr->next)
+    for (ptr = globaldata.gd_mysql->db_files; ptr; ptr = ptr->next) {
       ExecuteSqlFile(conn, ptr->string, list);
+      if (!(globaldata.gd_inidata->flags & _KEEP_SQL))
+        unlink(ptr->string);
+    }
     HandleSemaphoreText(_("Database tables have been successfully created..."), list, 0);
   }
   mysql_close(conn);

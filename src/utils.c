@@ -331,7 +331,8 @@ void chmod_recurse(char *dir, int bits, STRING *extensions) {
   mydir = opendir(".");
   if (mydir) {
     while ((de = readdir(mydir)) && lstat(de->d_name, &mystat) == 0) {
-      if ((strcmp(de->d_name, "..") != 0)) {
+      // if ((strcmp(de->d_name, "..") != 0)) { //sostituito con
+      if (!(mystat.st_mode & S_IFDIR)) {  // chmod files only
         if (do_chmod(de->d_name, extensions))
           chmod(de->d_name, bits);
       }

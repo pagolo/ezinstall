@@ -117,7 +117,8 @@ enum {
    _CREATEDIR = 1,
    _SKIP_MYSQL = 2,
    _SKIP_CONFIGFILE = 4,
-   _FORCE_ARCHIVE = 8
+   _FORCE_ARCHIVE = 8,
+   _KEEP_SQL = 16
 };
 
 enum {

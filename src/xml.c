@@ -262,6 +262,9 @@ int parseMysqlNode(xmlDocPtr doc, xmlNodePtr cur) {
       appendstring(&(globaldata.gd_mysql->db_files), strdup((char *) key));
       xmlFree(key);
     }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "keep_sql"))) {
+      inidata->flags &= _KEEP_SQL;
+    }
     cur = cur->next;
   }
 
