@@ -38,8 +38,22 @@ struct raw_tar {
   char  sum[8];
   char  type[1];
   char  linked[100];
-  char  align[255];
+  char magic[6];
+  char version[2];
+  char uname[32];
+  char gname[32];
+  char devmajor[8];
+  char devminor[8];
+  char prefix[155];
+  char padding[12];
 };
+
+typedef struct tar_extension {
+  char *path;
+  char *linkpath;
+  char *atime;
+  char *ctime;
+} TAR_EXT;
 
 /* tar ends */
 

@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "main.h"
 #include "untar.h"
 #include <errno.h>
@@ -166,10 +167,56 @@ void ReadBuffer(int fd, char *buffer, int size) {
   }
 }
 
-void ResetNextData(char **nextname, long int *nextlink) {
+void ResetNextData(char **wnf, char **nextname, long int *nextlink, TAR_EXT *extension) {
+  if (*wnf) free(*wnf);
   if (*nextname) free(*nextname);
+  if (extension->path) {
+    free(extension->path);
+    extension->path = NULL;
+  }
+  if (extension->linkpath) {
+    free(extension->linkpath);
+    extension->linkpath = NULL;
+  }
+  *wnf = NULL;
   *nextname = NULL;
   *nextlink = 0;
+}
+
+void GetTarExtension(char *buffer, int len, TAR_EXT *extension) {
+  char *dat, *ptr = dat = buffer;
+  while (ptr < &buffer[len]) {
+    int datlen = atoi(ptr);
+    if (datlen) {
+      char *z, *sp2z, *name, *value;
+      while (isdigit(*ptr)) ++ptr;
+      while (isspace(*ptr)) ++ptr;
+      if (ptr >= &buffer[len]) break;
+      z = sp2z = strchr(ptr, '=');
+      if (z) {
+        *z = '\0';
+        name = ptr;
+        while (--sp2z > ptr && isspace(*sp2z))
+          *sp2z = '\0';
+        ptr = ++z;
+        while (isspace(*ptr)) ++ptr;
+        z = strchr(ptr, 0x0A);
+        if (z == &dat[datlen-1]) {
+          *z = '\0';
+          value = ptr;
+          if (strcmp(name, "path") == 0) {
+            extension->path = strdup(value);
+          }
+          if (strcmp(name, "linkpath") == 0) {
+            extension->linkpath = strdup(value);
+          }
+        }
+      }
+    } else {
+      break;
+    }
+    dat = ptr = &dat[datlen];
+  }
 }
 
 void CreateFolderIfNotExists(char *path, mode_t mode) {
@@ -199,8 +246,12 @@ int Untar(char *filename, STRING **list) {
   pid_t childpid;
   char *buf = NULL;
   char *nextname = NULL;
+  char *tar_name = NULL;
   char *subdir = NULL;
+  TAR_EXT extension;
 
+  memset(&extension, 0, sizeof(TAR_EXT));
+  
   _fd[0] = _fd[1] = -1;
   pipe(_fd);
 
@@ -219,37 +270,48 @@ int Untar(char *filename, STRING **list) {
   fd = _fd[0];
 
   for (;;) {
-    char *work_name;
-    //char type;
-    work_name = NULL;
+    char *work_name_free, *work_name;
+    work_name = work_name_free = NULL;
     ReadBuffer(fd, (char *) &tar, sizeof (tar));
     if (!tar.name[0]) break;
+    tar_name = calloc(101,  sizeof(char));
+    if (!tar_name) break; // no memory
+    strncpy(tar_name,tar.name,100);
     len = strtol(tar.size, NULL, 8);
-    //sscanf(tar.size, "%o", &len);
     work = len;
     mod = work % 512;
     if (work && mod) work += 512 - mod;
     if (work) {
-      buf = calloc(1, work + 1);
+      buf = calloc(work + 1, sizeof(char));
+      if (!buf) break; // no memory
       ReadBuffer(fd, buf, work);
     }
     mode_t mode = (mode_t)strtol(tar.mode, NULL, 8);
-    //type = (len == 0) ? '5' : tar.type[0];
+
     switch (tar.type[0]) {
       case '5': // directory @TODO: check for error
-        work_name = (nextname && !nextlink) ? nextname : tar.name;
+        work_name = (nextname && !nextlink) ? nextname : tar_name;
+        if (extension.path) work_name = extension.path;
+        else if (tar.prefix[0]) {
+          work_name_free = work_name = mysprintf("%.155s/%.100s", tar.prefix, tar_name);
+        }
         if (do_save) {
-          if (subdir) work_name = &work_name[strlen(subdir) + 1];
+          if (subdir && strstr(work_name, subdir) == work_name)
+            work_name = &work_name[strlen(subdir) + 1];
           CreateFolderIfNotExists(work_name, mode);
         } else if (strcmp(basename(work_name), globaldata.gd_inidata->archive_dir) == 0) {
           subdir = strdup(work_name);
           do_save = 1;
         }
-        ResetNextData(&nextname, &nextlink);
+        ResetNextData(&work_name_free, &nextname, &nextlink, &extension);
         break;
       case '1':
       case '2':
-        work_name = (nextname && nextlink) ? nextname : tar.name;
+        work_name = (nextname && nextlink) ? nextname : tar_name;
+        if (extension.path) work_name = extension.path;
+        else if (tar.prefix[0]) {
+          work_name_free = work_name = mysprintf("%.155s/%.100s", tar.prefix, tar_name);
+        }
         if (!do_save && globaldata.gd_inidata->archive_dir) {
           char *ptr = strstr(work_name, globaldata.gd_inidata->archive_dir);
           if (ptr) {
@@ -261,12 +323,19 @@ int Untar(char *filename, STRING **list) {
           }
         }
         if (do_save) {
-          if (subdir) work_name = &work_name[strlen(subdir) + 1];
+          char *tar_linked = tar.linked;
+          if (extension.linkpath) tar_linked = extension.linkpath;
+          if (subdir && strstr(work_name, subdir) == work_name)
+            work_name = &work_name[strlen(subdir) + 1];
           CreateFolderIfNotExists(work_name, 0755);
-          if (tar.type[0] == '1') link(tar.linked, work_name);
-          else symlink(tar.linked, work_name);                    
+          if (tar.type[0] == '1') link(tar_linked, work_name);
+          else symlink(tar_linked, work_name);                    
         }          
-        ResetNextData(&nextname, &nextlink);
+        ResetNextData(&work_name_free, &nextname, &nextlink, &extension);
+        break;
+      case 'x':
+        if (memmem(buf, len, "path", 4))
+          GetTarExtension(buf, len, &extension);
         break;
       case 'K':
         nextlink = 1;
@@ -280,7 +349,11 @@ int Untar(char *filename, STRING **list) {
         break;
       case '0': // real file
       case '\0':
-        work_name = (nextname && !nextlink) ? nextname : tar.name;
+        work_name = (nextname && !nextlink) ? nextname : tar_name;
+        if (extension.path) work_name = extension.path;
+        else if (tar.prefix[0]) {
+          work_name_free = work_name = mysprintf("%.155s/%.100s", tar.prefix, tar_name);
+        }
         if (!do_save && globaldata.gd_inidata->archive_dir) {
           char *ptr = strstr(work_name, globaldata.gd_inidata->archive_dir);
           if (ptr) {
@@ -312,7 +385,7 @@ int Untar(char *filename, STRING **list) {
           free(buf);
           buf = NULL;
         }
-        ResetNextData(&nextname, &nextlink);
+        ResetNextData(&work_name_free, &nextname, &nextlink, &extension);
         break;
       // @TODO handle other types...
     }
@@ -320,6 +393,7 @@ int Untar(char *filename, STRING **list) {
       free(buf);
       buf = NULL;
     }
+    if (tar_name) free(tar_name);
   }
   close(fd);
   if (subdir) free(subdir);
