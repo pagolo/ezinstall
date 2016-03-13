@@ -327,6 +327,8 @@ int Untar(char *filename, STRING **list) {
           if (extension.linkpath) tar_linked = extension.linkpath;
           if (subdir && strstr(work_name, subdir) == work_name)
             work_name = &work_name[strlen(subdir) + 1];
+          if (subdir && strstr(tar_linked, subdir) == tar_linked)
+            tar_linked = &tar_linked[strlen(subdir) + 1];
           CreateFolderIfNotExists(work_name, 0755);
           if (tar.type[0] == '1') link(tar_linked, work_name);
           else symlink(tar_linked, work_name);                    

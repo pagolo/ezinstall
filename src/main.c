@@ -92,8 +92,7 @@ void CreateChangeDir(char *dirname, STRING **list, int dir_rename) {
 }
 
 int DownloadExtractArchiveFile(STRING **list) {
-  int rc;
-//  char *command;
+  int rc, free_filename = 0;
   char *filename;
 
   if (is_upload()) {
@@ -105,9 +104,17 @@ int DownloadExtractArchiveFile(STRING **list) {
     filename = basename(globaldata.gd_inidata->web_archive);
   }
 
-  //command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
-
   HandleSemaphoreText(_("Uncompressing archive...<br />"), list, 1);
+  
+  // read file in document_root
+  if (!(strchr(filename, SLASH))) {
+    char *path = getenv("DOCUMENT_ROOT");
+    if (path && *path) {
+      path = append_cstring(NULL, path);
+      if (path[strlen(path) - 1] != '/') path = append_cstring(path, "/");
+      filename = append_cstring(path, filename);
+    }
+  }
 
   if (globaldata.gd_inidata->zip_format == PKZIP) {
     if (Unzip(filename, list) == 0) {
@@ -122,7 +129,8 @@ int DownloadExtractArchiveFile(STRING **list) {
       unlink(filename);
     }
   }
-  //free(command);
+  
+  if (free_filename && filename) free(filename);
           
   return 1;
 }

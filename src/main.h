@@ -9,6 +9,7 @@
 #define SEMAPHORE_END   "\n<!-- end of ajax generated html /-->\n"
 #define PATH_SIZE       512
 #define SHARED_MEM_SIZE 2048
+#define SLASH           '/'
 
 #define _XOPEN_SOURCE_EXTENDED 1
 
