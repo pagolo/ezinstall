@@ -122,6 +122,12 @@ int DownloadExtractArchiveFile(STRING **list) {
         WriteLog(_("archive files extracted"));
       unlink(filename);
     }
+  } else if (globaldata.gd_inidata->zip_format == SEVENZIP) {
+    extern int Unseven(char *filename, STRING **list);
+    if (Unseven(filename, list) == 0) {
+      if (globaldata.gd_loglevel > LOG_NONE)
+        WriteLog(_("archive files extracted"));
+    }
   } else {
     if (Untar(filename, list) == 0) {
       if (globaldata.gd_loglevel > LOG_NONE)

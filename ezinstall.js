@@ -158,7 +158,7 @@ function handleZIPFile(evt) {
   var f = evt.target.files[0]; // file object
   // Only process compressed archives.
   var ext =  f.name.split('.').pop().toLowerCase();
-  if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' ) {
+  if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' && ext!='7z' ) {
     alert('zip/gzip/bzip2 files only');
     return false;
   }

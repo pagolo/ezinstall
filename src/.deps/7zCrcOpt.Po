@@ -1,0 +1,15 @@
+7zCrcOpt.o: 7zip/7zCrcOpt.c /usr/include/stdc-predef.h 7zip/Precomp.h \
+ 7zip/Compiler.h 7zip/CpuArch.h 7zip/7zTypes.h \
+ /usr/lib64/gcc/x86_64-suse-linux/4.8/include/stddef.h
+
+/usr/include/stdc-predef.h:
+
+7zip/Precomp.h:
+
+7zip/Compiler.h:
+
+7zip/CpuArch.h:
+
+7zip/7zTypes.h:
+
+/usr/lib64/gcc/x86_64-suse-linux/4.8/include/stddef.h:

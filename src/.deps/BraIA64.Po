@@ -1,0 +1,15 @@
+BraIA64.o: 7zip/BraIA64.c /usr/include/stdc-predef.h 7zip/Precomp.h \
+ 7zip/Compiler.h 7zip/Bra.h 7zip/7zTypes.h \
+ /usr/lib64/gcc/x86_64-suse-linux/4.8/include/stddef.h
+
+/usr/include/stdc-predef.h:
+
+7zip/Precomp.h:
+
+7zip/Compiler.h:
+
+7zip/Bra.h:
+
+7zip/7zTypes.h:
+
+/usr/lib64/gcc/x86_64-suse-linux/4.8/include/stddef.h:

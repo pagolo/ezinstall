@@ -100,6 +100,8 @@ int setUnzip(char *filename, char *mode) {
       return BZ2_TAR;
 //    else if (ptr && (strcasecmp(ptr, ".Z") == 0))
 //      return Z_TAR;
+    else if (ptr && (strcasecmp(ptr, ".7z") == 0))
+      return SEVENZIP;
     else Error(_("Unknown format of archive file"));
   } else {
     // accepted values: auto, zip, gzip, bzip
@@ -109,6 +111,8 @@ int setUnzip(char *filename, char *mode) {
       return GZ_TAR;
     else if (strcasecmp(mode, "bzip") == 0)
       return BZ2_TAR;
+    else if (strcasecmp(mode, "7zip") == 0)
+      return SEVENZIP;
     else Error(_("Unknown format of archive file"));
   }
   // never

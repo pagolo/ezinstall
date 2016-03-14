@@ -132,7 +132,8 @@ enum { // per il campo zip_format
   PKZIP,
   GZ_TAR,
   Z_TAR,
-  BZ2_TAR
+  BZ2_TAR,
+  SEVENZIP
 };
 
 typedef struct IniData {
@@ -217,7 +218,9 @@ void ChDirRoot(void);
 #include "xml.h"
 #include "md5.h"
 #include "myunzip.h"
+#ifndef __7Z_PRECOMP_H
 #include "untar.h"
 #include "ioapi.h"
+#endif
 #include "curl.h"
 #endif

@@ -1,0 +1,17 @@
+Bcj2.o: 7zip/Bcj2.c /usr/include/stdc-predef.h 7zip/Precomp.h \
+ 7zip/Compiler.h 7zip/Bcj2.h 7zip/7zTypes.h \
+ /usr/lib64/gcc/x86_64-suse-linux/4.8/include/stddef.h 7zip/CpuArch.h
+
+/usr/include/stdc-predef.h:
+
+7zip/Precomp.h:
+
+7zip/Compiler.h:
+
+7zip/Bcj2.h:
+
+7zip/7zTypes.h:
+
+/usr/lib64/gcc/x86_64-suse-linux/4.8/include/stddef.h:
+
+7zip/CpuArch.h:

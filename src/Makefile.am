@@ -33,6 +33,8 @@ ezinstall_SOURCES = \
 	myunzip.h     \
 	session.c      \
 	session.h      \
+        sevenzip.c     \
+	precomp.h     \
 	socket.c     \
 	socket.h     \
 	curl.c     \
@@ -47,7 +49,28 @@ ezinstall_SOURCES = \
 	utils.h     \
 	xml.c     \
 	xml.h     \
-	conditions.h
+	conditions.h     \
+	7zip/7zAlloc.c     \
+	7zip/7zArcIn.c     \
+	7zip/7zBuf2.c     \
+	7zip/7zBuf.c     \
+	7zip/7zCrc.c     \
+	7zip/7zCrcOpt.c     \
+	7zip/7zDec.c     \
+	7zip/7zFile.c     \
+	7zip/7zStream.c     \
+	7zip/Bcj2.c     \
+	7zip/Bra86.c     \
+	7zip/Bra.c     \
+	7zip/BraIA64.c     \
+	7zip/CpuArch.c     \
+	7zip/Delta.c     \
+	7zip/Lzma2Dec.c     \
+	7zip/LzmaDec.c     \
+	7zip/Ppmd7.c     \
+	7zip/Ppmd7Dec.c
+
+7zDec.$(OBJEXT) : CFLAGS += -D_7ZIP_PPMD_SUPPPORT
 
 ezinstall_LDFLAGS = 
 

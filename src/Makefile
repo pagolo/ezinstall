@@ -97,8 +97,15 @@ am_ezinstall_OBJECTS = main.$(OBJEXT) configure.$(OBJEXT) \
 	editconfig.$(OBJEXT) getinput.$(OBJEXT) ioapi.$(OBJEXT) \
 	login.$(OBJEXT) md5.$(OBJEXT) mylocale.$(OBJEXT) \
 	mysql.$(OBJEXT) myunzip.$(OBJEXT) session.$(OBJEXT) \
-	socket.$(OBJEXT) curl.$(OBJEXT) test.$(OBJEXT) untar.$(OBJEXT) \
-	unzip.$(OBJEXT) utils.$(OBJEXT) xml.$(OBJEXT)
+	sevenzip.$(OBJEXT) socket.$(OBJEXT) curl.$(OBJEXT) \
+	test.$(OBJEXT) untar.$(OBJEXT) unzip.$(OBJEXT) utils.$(OBJEXT) \
+	xml.$(OBJEXT) 7zAlloc.$(OBJEXT) 7zArcIn.$(OBJEXT) \
+	7zBuf2.$(OBJEXT) 7zBuf.$(OBJEXT) 7zCrc.$(OBJEXT) \
+	7zCrcOpt.$(OBJEXT) 7zDec.$(OBJEXT) 7zFile.$(OBJEXT) \
+	7zStream.$(OBJEXT) Bcj2.$(OBJEXT) Bra86.$(OBJEXT) \
+	Bra.$(OBJEXT) BraIA64.$(OBJEXT) CpuArch.$(OBJEXT) \
+	Delta.$(OBJEXT) Lzma2Dec.$(OBJEXT) LzmaDec.$(OBJEXT) \
+	Ppmd7.$(OBJEXT) Ppmd7Dec.$(OBJEXT)
 ezinstall_OBJECTS = $(am_ezinstall_OBJECTS)
 ezinstall_DEPENDENCIES =
 ezinstall_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(ezinstall_LDFLAGS) \
@@ -119,6 +126,10 @@ DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 AM_V_CC = $(am__v_CC_$(V))
@@ -302,6 +313,8 @@ ezinstall_SOURCES = \
 	myunzip.h     \
 	session.c      \
 	session.h      \
+        sevenzip.c     \
+	precomp.h     \
 	socket.c     \
 	socket.h     \
 	curl.c     \
@@ -316,7 +329,26 @@ ezinstall_SOURCES = \
 	utils.h     \
 	xml.c     \
 	xml.h     \
-	conditions.h
+	conditions.h     \
+	7zip/7zAlloc.c     \
+	7zip/7zArcIn.c     \
+	7zip/7zBuf2.c     \
+	7zip/7zBuf.c     \
+	7zip/7zCrc.c     \
+	7zip/7zCrcOpt.c     \
+	7zip/7zDec.c     \
+	7zip/7zFile.c     \
+	7zip/7zStream.c     \
+	7zip/Bcj2.c     \
+	7zip/Bra86.c     \
+	7zip/Bra.c     \
+	7zip/BraIA64.c     \
+	7zip/CpuArch.c     \
+	7zip/Delta.c     \
+	7zip/Lzma2Dec.c     \
+	7zip/LzmaDec.c     \
+	7zip/Ppmd7.c     \
+	7zip/Ppmd7Dec.c
 
 ezinstall_LDFLAGS = 
 ezinstall_LDADD = 
@@ -407,6 +439,25 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/7zAlloc.Po
+include ./$(DEPDIR)/7zArcIn.Po
+include ./$(DEPDIR)/7zBuf.Po
+include ./$(DEPDIR)/7zBuf2.Po
+include ./$(DEPDIR)/7zCrc.Po
+include ./$(DEPDIR)/7zCrcOpt.Po
+include ./$(DEPDIR)/7zDec.Po
+include ./$(DEPDIR)/7zFile.Po
+include ./$(DEPDIR)/7zStream.Po
+include ./$(DEPDIR)/Bcj2.Po
+include ./$(DEPDIR)/Bra.Po
+include ./$(DEPDIR)/Bra86.Po
+include ./$(DEPDIR)/BraIA64.Po
+include ./$(DEPDIR)/CpuArch.Po
+include ./$(DEPDIR)/Delta.Po
+include ./$(DEPDIR)/Lzma2Dec.Po
+include ./$(DEPDIR)/LzmaDec.Po
+include ./$(DEPDIR)/Ppmd7.Po
+include ./$(DEPDIR)/Ppmd7Dec.Po
 include ./$(DEPDIR)/configure.Po
 include ./$(DEPDIR)/curl.Po
 include ./$(DEPDIR)/editconfig.Po
@@ -419,6 +470,7 @@ include ./$(DEPDIR)/mylocale.Po
 include ./$(DEPDIR)/mysql.Po
 include ./$(DEPDIR)/myunzip.Po
 include ./$(DEPDIR)/session.Po
+include ./$(DEPDIR)/sevenzip.Po
 include ./$(DEPDIR)/socket.Po
 include ./$(DEPDIR)/test.Po
 include ./$(DEPDIR)/untar.Po
@@ -439,6 +491,272 @@ include ./$(DEPDIR)/xml.Po
 #	$(AM_V_CC)source='$<' object='$@' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(COMPILE) -c `$(CYGPATH_W) '$<'`
+
+7zAlloc.o: 7zip/7zAlloc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zAlloc.o -MD -MP -MF $(DEPDIR)/7zAlloc.Tpo -c -o 7zAlloc.o `test -f '7zip/7zAlloc.c' || echo '$(srcdir)/'`7zip/7zAlloc.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zAlloc.Tpo $(DEPDIR)/7zAlloc.Po
+#	$(AM_V_CC)source='7zip/7zAlloc.c' object='7zAlloc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zAlloc.o `test -f '7zip/7zAlloc.c' || echo '$(srcdir)/'`7zip/7zAlloc.c
+
+7zAlloc.obj: 7zip/7zAlloc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zAlloc.obj -MD -MP -MF $(DEPDIR)/7zAlloc.Tpo -c -o 7zAlloc.obj `if test -f '7zip/7zAlloc.c'; then $(CYGPATH_W) '7zip/7zAlloc.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zAlloc.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zAlloc.Tpo $(DEPDIR)/7zAlloc.Po
+#	$(AM_V_CC)source='7zip/7zAlloc.c' object='7zAlloc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zAlloc.obj `if test -f '7zip/7zAlloc.c'; then $(CYGPATH_W) '7zip/7zAlloc.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zAlloc.c'; fi`
+
+7zArcIn.o: 7zip/7zArcIn.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zArcIn.o -MD -MP -MF $(DEPDIR)/7zArcIn.Tpo -c -o 7zArcIn.o `test -f '7zip/7zArcIn.c' || echo '$(srcdir)/'`7zip/7zArcIn.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zArcIn.Tpo $(DEPDIR)/7zArcIn.Po
+#	$(AM_V_CC)source='7zip/7zArcIn.c' object='7zArcIn.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zArcIn.o `test -f '7zip/7zArcIn.c' || echo '$(srcdir)/'`7zip/7zArcIn.c
+
+7zArcIn.obj: 7zip/7zArcIn.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zArcIn.obj -MD -MP -MF $(DEPDIR)/7zArcIn.Tpo -c -o 7zArcIn.obj `if test -f '7zip/7zArcIn.c'; then $(CYGPATH_W) '7zip/7zArcIn.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zArcIn.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zArcIn.Tpo $(DEPDIR)/7zArcIn.Po
+#	$(AM_V_CC)source='7zip/7zArcIn.c' object='7zArcIn.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zArcIn.obj `if test -f '7zip/7zArcIn.c'; then $(CYGPATH_W) '7zip/7zArcIn.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zArcIn.c'; fi`
+
+7zBuf2.o: 7zip/7zBuf2.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zBuf2.o -MD -MP -MF $(DEPDIR)/7zBuf2.Tpo -c -o 7zBuf2.o `test -f '7zip/7zBuf2.c' || echo '$(srcdir)/'`7zip/7zBuf2.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zBuf2.Tpo $(DEPDIR)/7zBuf2.Po
+#	$(AM_V_CC)source='7zip/7zBuf2.c' object='7zBuf2.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zBuf2.o `test -f '7zip/7zBuf2.c' || echo '$(srcdir)/'`7zip/7zBuf2.c
+
+7zBuf2.obj: 7zip/7zBuf2.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zBuf2.obj -MD -MP -MF $(DEPDIR)/7zBuf2.Tpo -c -o 7zBuf2.obj `if test -f '7zip/7zBuf2.c'; then $(CYGPATH_W) '7zip/7zBuf2.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zBuf2.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zBuf2.Tpo $(DEPDIR)/7zBuf2.Po
+#	$(AM_V_CC)source='7zip/7zBuf2.c' object='7zBuf2.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zBuf2.obj `if test -f '7zip/7zBuf2.c'; then $(CYGPATH_W) '7zip/7zBuf2.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zBuf2.c'; fi`
+
+7zBuf.o: 7zip/7zBuf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zBuf.o -MD -MP -MF $(DEPDIR)/7zBuf.Tpo -c -o 7zBuf.o `test -f '7zip/7zBuf.c' || echo '$(srcdir)/'`7zip/7zBuf.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zBuf.Tpo $(DEPDIR)/7zBuf.Po
+#	$(AM_V_CC)source='7zip/7zBuf.c' object='7zBuf.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zBuf.o `test -f '7zip/7zBuf.c' || echo '$(srcdir)/'`7zip/7zBuf.c
+
+7zBuf.obj: 7zip/7zBuf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zBuf.obj -MD -MP -MF $(DEPDIR)/7zBuf.Tpo -c -o 7zBuf.obj `if test -f '7zip/7zBuf.c'; then $(CYGPATH_W) '7zip/7zBuf.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zBuf.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zBuf.Tpo $(DEPDIR)/7zBuf.Po
+#	$(AM_V_CC)source='7zip/7zBuf.c' object='7zBuf.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zBuf.obj `if test -f '7zip/7zBuf.c'; then $(CYGPATH_W) '7zip/7zBuf.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zBuf.c'; fi`
+
+7zCrc.o: 7zip/7zCrc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zCrc.o -MD -MP -MF $(DEPDIR)/7zCrc.Tpo -c -o 7zCrc.o `test -f '7zip/7zCrc.c' || echo '$(srcdir)/'`7zip/7zCrc.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zCrc.Tpo $(DEPDIR)/7zCrc.Po
+#	$(AM_V_CC)source='7zip/7zCrc.c' object='7zCrc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zCrc.o `test -f '7zip/7zCrc.c' || echo '$(srcdir)/'`7zip/7zCrc.c
+
+7zCrc.obj: 7zip/7zCrc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zCrc.obj -MD -MP -MF $(DEPDIR)/7zCrc.Tpo -c -o 7zCrc.obj `if test -f '7zip/7zCrc.c'; then $(CYGPATH_W) '7zip/7zCrc.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zCrc.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zCrc.Tpo $(DEPDIR)/7zCrc.Po
+#	$(AM_V_CC)source='7zip/7zCrc.c' object='7zCrc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zCrc.obj `if test -f '7zip/7zCrc.c'; then $(CYGPATH_W) '7zip/7zCrc.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zCrc.c'; fi`
+
+7zCrcOpt.o: 7zip/7zCrcOpt.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zCrcOpt.o -MD -MP -MF $(DEPDIR)/7zCrcOpt.Tpo -c -o 7zCrcOpt.o `test -f '7zip/7zCrcOpt.c' || echo '$(srcdir)/'`7zip/7zCrcOpt.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zCrcOpt.Tpo $(DEPDIR)/7zCrcOpt.Po
+#	$(AM_V_CC)source='7zip/7zCrcOpt.c' object='7zCrcOpt.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zCrcOpt.o `test -f '7zip/7zCrcOpt.c' || echo '$(srcdir)/'`7zip/7zCrcOpt.c
+
+7zCrcOpt.obj: 7zip/7zCrcOpt.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zCrcOpt.obj -MD -MP -MF $(DEPDIR)/7zCrcOpt.Tpo -c -o 7zCrcOpt.obj `if test -f '7zip/7zCrcOpt.c'; then $(CYGPATH_W) '7zip/7zCrcOpt.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zCrcOpt.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zCrcOpt.Tpo $(DEPDIR)/7zCrcOpt.Po
+#	$(AM_V_CC)source='7zip/7zCrcOpt.c' object='7zCrcOpt.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zCrcOpt.obj `if test -f '7zip/7zCrcOpt.c'; then $(CYGPATH_W) '7zip/7zCrcOpt.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zCrcOpt.c'; fi`
+
+7zDec.o: 7zip/7zDec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zDec.o -MD -MP -MF $(DEPDIR)/7zDec.Tpo -c -o 7zDec.o `test -f '7zip/7zDec.c' || echo '$(srcdir)/'`7zip/7zDec.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zDec.Tpo $(DEPDIR)/7zDec.Po
+#	$(AM_V_CC)source='7zip/7zDec.c' object='7zDec.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zDec.o `test -f '7zip/7zDec.c' || echo '$(srcdir)/'`7zip/7zDec.c
+
+7zDec.obj: 7zip/7zDec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zDec.obj -MD -MP -MF $(DEPDIR)/7zDec.Tpo -c -o 7zDec.obj `if test -f '7zip/7zDec.c'; then $(CYGPATH_W) '7zip/7zDec.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zDec.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zDec.Tpo $(DEPDIR)/7zDec.Po
+#	$(AM_V_CC)source='7zip/7zDec.c' object='7zDec.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zDec.obj `if test -f '7zip/7zDec.c'; then $(CYGPATH_W) '7zip/7zDec.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zDec.c'; fi`
+
+7zFile.o: 7zip/7zFile.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zFile.o -MD -MP -MF $(DEPDIR)/7zFile.Tpo -c -o 7zFile.o `test -f '7zip/7zFile.c' || echo '$(srcdir)/'`7zip/7zFile.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zFile.Tpo $(DEPDIR)/7zFile.Po
+#	$(AM_V_CC)source='7zip/7zFile.c' object='7zFile.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zFile.o `test -f '7zip/7zFile.c' || echo '$(srcdir)/'`7zip/7zFile.c
+
+7zFile.obj: 7zip/7zFile.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zFile.obj -MD -MP -MF $(DEPDIR)/7zFile.Tpo -c -o 7zFile.obj `if test -f '7zip/7zFile.c'; then $(CYGPATH_W) '7zip/7zFile.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zFile.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zFile.Tpo $(DEPDIR)/7zFile.Po
+#	$(AM_V_CC)source='7zip/7zFile.c' object='7zFile.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zFile.obj `if test -f '7zip/7zFile.c'; then $(CYGPATH_W) '7zip/7zFile.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zFile.c'; fi`
+
+7zStream.o: 7zip/7zStream.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zStream.o -MD -MP -MF $(DEPDIR)/7zStream.Tpo -c -o 7zStream.o `test -f '7zip/7zStream.c' || echo '$(srcdir)/'`7zip/7zStream.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zStream.Tpo $(DEPDIR)/7zStream.Po
+#	$(AM_V_CC)source='7zip/7zStream.c' object='7zStream.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zStream.o `test -f '7zip/7zStream.c' || echo '$(srcdir)/'`7zip/7zStream.c
+
+7zStream.obj: 7zip/7zStream.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT 7zStream.obj -MD -MP -MF $(DEPDIR)/7zStream.Tpo -c -o 7zStream.obj `if test -f '7zip/7zStream.c'; then $(CYGPATH_W) '7zip/7zStream.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zStream.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/7zStream.Tpo $(DEPDIR)/7zStream.Po
+#	$(AM_V_CC)source='7zip/7zStream.c' object='7zStream.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o 7zStream.obj `if test -f '7zip/7zStream.c'; then $(CYGPATH_W) '7zip/7zStream.c'; else $(CYGPATH_W) '$(srcdir)/7zip/7zStream.c'; fi`
+
+Bcj2.o: 7zip/Bcj2.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Bcj2.o -MD -MP -MF $(DEPDIR)/Bcj2.Tpo -c -o Bcj2.o `test -f '7zip/Bcj2.c' || echo '$(srcdir)/'`7zip/Bcj2.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Bcj2.Tpo $(DEPDIR)/Bcj2.Po
+#	$(AM_V_CC)source='7zip/Bcj2.c' object='Bcj2.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Bcj2.o `test -f '7zip/Bcj2.c' || echo '$(srcdir)/'`7zip/Bcj2.c
+
+Bcj2.obj: 7zip/Bcj2.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Bcj2.obj -MD -MP -MF $(DEPDIR)/Bcj2.Tpo -c -o Bcj2.obj `if test -f '7zip/Bcj2.c'; then $(CYGPATH_W) '7zip/Bcj2.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Bcj2.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Bcj2.Tpo $(DEPDIR)/Bcj2.Po
+#	$(AM_V_CC)source='7zip/Bcj2.c' object='Bcj2.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Bcj2.obj `if test -f '7zip/Bcj2.c'; then $(CYGPATH_W) '7zip/Bcj2.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Bcj2.c'; fi`
+
+Bra86.o: 7zip/Bra86.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Bra86.o -MD -MP -MF $(DEPDIR)/Bra86.Tpo -c -o Bra86.o `test -f '7zip/Bra86.c' || echo '$(srcdir)/'`7zip/Bra86.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Bra86.Tpo $(DEPDIR)/Bra86.Po
+#	$(AM_V_CC)source='7zip/Bra86.c' object='Bra86.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Bra86.o `test -f '7zip/Bra86.c' || echo '$(srcdir)/'`7zip/Bra86.c
+
+Bra86.obj: 7zip/Bra86.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Bra86.obj -MD -MP -MF $(DEPDIR)/Bra86.Tpo -c -o Bra86.obj `if test -f '7zip/Bra86.c'; then $(CYGPATH_W) '7zip/Bra86.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Bra86.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Bra86.Tpo $(DEPDIR)/Bra86.Po
+#	$(AM_V_CC)source='7zip/Bra86.c' object='Bra86.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Bra86.obj `if test -f '7zip/Bra86.c'; then $(CYGPATH_W) '7zip/Bra86.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Bra86.c'; fi`
+
+Bra.o: 7zip/Bra.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Bra.o -MD -MP -MF $(DEPDIR)/Bra.Tpo -c -o Bra.o `test -f '7zip/Bra.c' || echo '$(srcdir)/'`7zip/Bra.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Bra.Tpo $(DEPDIR)/Bra.Po
+#	$(AM_V_CC)source='7zip/Bra.c' object='Bra.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Bra.o `test -f '7zip/Bra.c' || echo '$(srcdir)/'`7zip/Bra.c
+
+Bra.obj: 7zip/Bra.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Bra.obj -MD -MP -MF $(DEPDIR)/Bra.Tpo -c -o Bra.obj `if test -f '7zip/Bra.c'; then $(CYGPATH_W) '7zip/Bra.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Bra.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Bra.Tpo $(DEPDIR)/Bra.Po
+#	$(AM_V_CC)source='7zip/Bra.c' object='Bra.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Bra.obj `if test -f '7zip/Bra.c'; then $(CYGPATH_W) '7zip/Bra.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Bra.c'; fi`
+
+BraIA64.o: 7zip/BraIA64.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT BraIA64.o -MD -MP -MF $(DEPDIR)/BraIA64.Tpo -c -o BraIA64.o `test -f '7zip/BraIA64.c' || echo '$(srcdir)/'`7zip/BraIA64.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/BraIA64.Tpo $(DEPDIR)/BraIA64.Po
+#	$(AM_V_CC)source='7zip/BraIA64.c' object='BraIA64.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o BraIA64.o `test -f '7zip/BraIA64.c' || echo '$(srcdir)/'`7zip/BraIA64.c
+
+BraIA64.obj: 7zip/BraIA64.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT BraIA64.obj -MD -MP -MF $(DEPDIR)/BraIA64.Tpo -c -o BraIA64.obj `if test -f '7zip/BraIA64.c'; then $(CYGPATH_W) '7zip/BraIA64.c'; else $(CYGPATH_W) '$(srcdir)/7zip/BraIA64.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/BraIA64.Tpo $(DEPDIR)/BraIA64.Po
+#	$(AM_V_CC)source='7zip/BraIA64.c' object='BraIA64.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o BraIA64.obj `if test -f '7zip/BraIA64.c'; then $(CYGPATH_W) '7zip/BraIA64.c'; else $(CYGPATH_W) '$(srcdir)/7zip/BraIA64.c'; fi`
+
+CpuArch.o: 7zip/CpuArch.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT CpuArch.o -MD -MP -MF $(DEPDIR)/CpuArch.Tpo -c -o CpuArch.o `test -f '7zip/CpuArch.c' || echo '$(srcdir)/'`7zip/CpuArch.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CpuArch.Tpo $(DEPDIR)/CpuArch.Po
+#	$(AM_V_CC)source='7zip/CpuArch.c' object='CpuArch.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o CpuArch.o `test -f '7zip/CpuArch.c' || echo '$(srcdir)/'`7zip/CpuArch.c
+
+CpuArch.obj: 7zip/CpuArch.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT CpuArch.obj -MD -MP -MF $(DEPDIR)/CpuArch.Tpo -c -o CpuArch.obj `if test -f '7zip/CpuArch.c'; then $(CYGPATH_W) '7zip/CpuArch.c'; else $(CYGPATH_W) '$(srcdir)/7zip/CpuArch.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CpuArch.Tpo $(DEPDIR)/CpuArch.Po
+#	$(AM_V_CC)source='7zip/CpuArch.c' object='CpuArch.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o CpuArch.obj `if test -f '7zip/CpuArch.c'; then $(CYGPATH_W) '7zip/CpuArch.c'; else $(CYGPATH_W) '$(srcdir)/7zip/CpuArch.c'; fi`
+
+Delta.o: 7zip/Delta.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Delta.o -MD -MP -MF $(DEPDIR)/Delta.Tpo -c -o Delta.o `test -f '7zip/Delta.c' || echo '$(srcdir)/'`7zip/Delta.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Delta.Tpo $(DEPDIR)/Delta.Po
+#	$(AM_V_CC)source='7zip/Delta.c' object='Delta.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Delta.o `test -f '7zip/Delta.c' || echo '$(srcdir)/'`7zip/Delta.c
+
+Delta.obj: 7zip/Delta.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Delta.obj -MD -MP -MF $(DEPDIR)/Delta.Tpo -c -o Delta.obj `if test -f '7zip/Delta.c'; then $(CYGPATH_W) '7zip/Delta.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Delta.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Delta.Tpo $(DEPDIR)/Delta.Po
+#	$(AM_V_CC)source='7zip/Delta.c' object='Delta.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Delta.obj `if test -f '7zip/Delta.c'; then $(CYGPATH_W) '7zip/Delta.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Delta.c'; fi`
+
+Lzma2Dec.o: 7zip/Lzma2Dec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Lzma2Dec.o -MD -MP -MF $(DEPDIR)/Lzma2Dec.Tpo -c -o Lzma2Dec.o `test -f '7zip/Lzma2Dec.c' || echo '$(srcdir)/'`7zip/Lzma2Dec.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Lzma2Dec.Tpo $(DEPDIR)/Lzma2Dec.Po
+#	$(AM_V_CC)source='7zip/Lzma2Dec.c' object='Lzma2Dec.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Lzma2Dec.o `test -f '7zip/Lzma2Dec.c' || echo '$(srcdir)/'`7zip/Lzma2Dec.c
+
+Lzma2Dec.obj: 7zip/Lzma2Dec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Lzma2Dec.obj -MD -MP -MF $(DEPDIR)/Lzma2Dec.Tpo -c -o Lzma2Dec.obj `if test -f '7zip/Lzma2Dec.c'; then $(CYGPATH_W) '7zip/Lzma2Dec.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Lzma2Dec.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Lzma2Dec.Tpo $(DEPDIR)/Lzma2Dec.Po
+#	$(AM_V_CC)source='7zip/Lzma2Dec.c' object='Lzma2Dec.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Lzma2Dec.obj `if test -f '7zip/Lzma2Dec.c'; then $(CYGPATH_W) '7zip/Lzma2Dec.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Lzma2Dec.c'; fi`
+
+LzmaDec.o: 7zip/LzmaDec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT LzmaDec.o -MD -MP -MF $(DEPDIR)/LzmaDec.Tpo -c -o LzmaDec.o `test -f '7zip/LzmaDec.c' || echo '$(srcdir)/'`7zip/LzmaDec.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/LzmaDec.Tpo $(DEPDIR)/LzmaDec.Po
+#	$(AM_V_CC)source='7zip/LzmaDec.c' object='LzmaDec.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o LzmaDec.o `test -f '7zip/LzmaDec.c' || echo '$(srcdir)/'`7zip/LzmaDec.c
+
+LzmaDec.obj: 7zip/LzmaDec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT LzmaDec.obj -MD -MP -MF $(DEPDIR)/LzmaDec.Tpo -c -o LzmaDec.obj `if test -f '7zip/LzmaDec.c'; then $(CYGPATH_W) '7zip/LzmaDec.c'; else $(CYGPATH_W) '$(srcdir)/7zip/LzmaDec.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/LzmaDec.Tpo $(DEPDIR)/LzmaDec.Po
+#	$(AM_V_CC)source='7zip/LzmaDec.c' object='LzmaDec.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o LzmaDec.obj `if test -f '7zip/LzmaDec.c'; then $(CYGPATH_W) '7zip/LzmaDec.c'; else $(CYGPATH_W) '$(srcdir)/7zip/LzmaDec.c'; fi`
+
+Ppmd7.o: 7zip/Ppmd7.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Ppmd7.o -MD -MP -MF $(DEPDIR)/Ppmd7.Tpo -c -o Ppmd7.o `test -f '7zip/Ppmd7.c' || echo '$(srcdir)/'`7zip/Ppmd7.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Ppmd7.Tpo $(DEPDIR)/Ppmd7.Po
+#	$(AM_V_CC)source='7zip/Ppmd7.c' object='Ppmd7.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Ppmd7.o `test -f '7zip/Ppmd7.c' || echo '$(srcdir)/'`7zip/Ppmd7.c
+
+Ppmd7.obj: 7zip/Ppmd7.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Ppmd7.obj -MD -MP -MF $(DEPDIR)/Ppmd7.Tpo -c -o Ppmd7.obj `if test -f '7zip/Ppmd7.c'; then $(CYGPATH_W) '7zip/Ppmd7.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Ppmd7.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Ppmd7.Tpo $(DEPDIR)/Ppmd7.Po
+#	$(AM_V_CC)source='7zip/Ppmd7.c' object='Ppmd7.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Ppmd7.obj `if test -f '7zip/Ppmd7.c'; then $(CYGPATH_W) '7zip/Ppmd7.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Ppmd7.c'; fi`
+
+Ppmd7Dec.o: 7zip/Ppmd7Dec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Ppmd7Dec.o -MD -MP -MF $(DEPDIR)/Ppmd7Dec.Tpo -c -o Ppmd7Dec.o `test -f '7zip/Ppmd7Dec.c' || echo '$(srcdir)/'`7zip/Ppmd7Dec.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Ppmd7Dec.Tpo $(DEPDIR)/Ppmd7Dec.Po
+#	$(AM_V_CC)source='7zip/Ppmd7Dec.c' object='Ppmd7Dec.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Ppmd7Dec.o `test -f '7zip/Ppmd7Dec.c' || echo '$(srcdir)/'`7zip/Ppmd7Dec.c
+
+Ppmd7Dec.obj: 7zip/Ppmd7Dec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Ppmd7Dec.obj -MD -MP -MF $(DEPDIR)/Ppmd7Dec.Tpo -c -o Ppmd7Dec.obj `if test -f '7zip/Ppmd7Dec.c'; then $(CYGPATH_W) '7zip/Ppmd7Dec.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Ppmd7Dec.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/Ppmd7Dec.Tpo $(DEPDIR)/Ppmd7Dec.Po
+#	$(AM_V_CC)source='7zip/Ppmd7Dec.c' object='Ppmd7Dec.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Ppmd7Dec.obj `if test -f '7zip/Ppmd7Dec.c'; then $(CYGPATH_W) '7zip/Ppmd7Dec.c'; else $(CYGPATH_W) '$(srcdir)/7zip/Ppmd7Dec.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -644,6 +962,8 @@ uninstall-am: uninstall-binPROGRAMS
 	ps ps-am tags tags-am uninstall uninstall-am \
 	uninstall-binPROGRAMS
 
+
+7zDec.$(OBJEXT) : CFLAGS += -D_7ZIP_PPMD_SUPPPORT
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
