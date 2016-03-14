@@ -133,7 +133,8 @@ enum { // per il campo zip_format
   GZ_TAR,
   Z_TAR,
   BZ2_TAR,
-  SEVENZIP
+  SEVENZIP,
+  UNKNOWN_COMP_FORMAT
 };
 
 typedef struct IniData {

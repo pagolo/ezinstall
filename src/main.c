@@ -94,6 +94,7 @@ void CreateChangeDir(char *dirname, STRING **list, int dir_rename) {
 int DownloadExtractArchiveFile(STRING **list) {
   int rc, free_filename = 0;
   char *filename;
+  int (*Uncompress) (char *filename, STRING **list);
 
   if (is_upload()) {
     filename = globaldata.gd_inidata->web_archive;
@@ -113,27 +114,39 @@ int DownloadExtractArchiveFile(STRING **list) {
       path = append_cstring(NULL, path);
       if (path[strlen(path) - 1] != '/') path = append_cstring(path, "/");
       filename = append_cstring(path, filename);
+      free_filename = 1;
     }
   }
 
-  if (globaldata.gd_inidata->zip_format == PKZIP) {
-    if (Unzip(filename, list) == 0) {
+  extern int Unseven(char *filename, STRING **list);
+
+  switch (globaldata.gd_inidata->zip_format) {
+    case PKZIP:
+      Uncompress = &Unzip;
+      break;
+    case SEVENZIP:
+      Uncompress = &Unseven;
+      break;
+    case GZ_TAR:
+    case Z_TAR:
+    case BZ2_TAR:
+      Uncompress = &Untar;
+      break;
+    default:
+      globaldata.gd_inidata->zip_format = UNKNOWN_COMP_FORMAT;
+      break;
+  }
+  
+  if (globaldata.gd_inidata->zip_format != UNKNOWN_COMP_FORMAT) {
+    if ((*Uncompress)(filename, list) == 0) {
       if (globaldata.gd_loglevel > LOG_NONE)
         WriteLog(_("archive files extracted"));
       unlink(filename);
-    }
-  } else if (globaldata.gd_inidata->zip_format == SEVENZIP) {
-    extern int Unseven(char *filename, STRING **list);
-    if (Unseven(filename, list) == 0) {
-      if (globaldata.gd_loglevel > LOG_NONE)
-        WriteLog(_("archive files extracted"));
+    } else {
+      DaemonError(_("Error extracting archive files"), list);
     }
   } else {
-    if (Untar(filename, list) == 0) {
-      if (globaldata.gd_loglevel > LOG_NONE)
-        WriteLog(_("archive files extracted"));
-      unlink(filename);
-    }
+    DaemonError(_("Unknown archive format"), list);
   }
   
   if (free_filename && filename) free(filename);
