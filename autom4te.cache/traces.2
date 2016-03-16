@@ -456,314 +456,336 @@ m4trace:configure.ac:13: -1- AC_DEFINE_TRACE_LITERAL([STDC_HEADERS])
 m4trace:configure.ac:13: -1- m4_pattern_allow([^STDC_HEADERS$])
 m4trace:configure.ac:13: -1- AH_OUTPUT([STDC_HEADERS], [/* Define to 1 if you have the ANSI C header files. */
 @%:@undef STDC_HEADERS])
-m4trace:configure.ac:41: -1- AH_OUTPUT([HAVE_LIBMYSQLCLIENT], [/* Define to 1 if you have the `mysqlclient\' library (-lmysqlclient). */
+m4trace:configure.ac:20: -1- AM_CONDITIONAL([WITH_7ZIP], [true])
+m4trace:configure.ac:20: -1- AC_SUBST([WITH_7ZIP_TRUE])
+m4trace:configure.ac:20: -1- AC_SUBST_TRACE([WITH_7ZIP_TRUE])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^WITH_7ZIP_TRUE$])
+m4trace:configure.ac:20: -1- AC_SUBST([WITH_7ZIP_FALSE])
+m4trace:configure.ac:20: -1- AC_SUBST_TRACE([WITH_7ZIP_FALSE])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^WITH_7ZIP_FALSE$])
+m4trace:configure.ac:20: -1- _AM_SUBST_NOTMAKE([WITH_7ZIP_TRUE])
+m4trace:configure.ac:20: -1- _AM_SUBST_NOTMAKE([WITH_7ZIP_FALSE])
+m4trace:configure.ac:20: -1- AC_DEFINE_TRACE_LITERAL([WITH_7ZIP])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^WITH_7ZIP$])
+m4trace:configure.ac:20: -1- AH_OUTPUT([WITH_7ZIP], [/* Use 7zip */
+@%:@undef WITH_7ZIP])
+m4trace:configure.ac:20: -1- AM_CONDITIONAL([WITH_7ZIP], [false])
+m4trace:configure.ac:20: -1- AC_SUBST([WITH_7ZIP_TRUE])
+m4trace:configure.ac:20: -1- AC_SUBST_TRACE([WITH_7ZIP_TRUE])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^WITH_7ZIP_TRUE$])
+m4trace:configure.ac:20: -1- AC_SUBST([WITH_7ZIP_FALSE])
+m4trace:configure.ac:20: -1- AC_SUBST_TRACE([WITH_7ZIP_FALSE])
+m4trace:configure.ac:20: -1- m4_pattern_allow([^WITH_7ZIP_FALSE$])
+m4trace:configure.ac:20: -1- _AM_SUBST_NOTMAKE([WITH_7ZIP_TRUE])
+m4trace:configure.ac:20: -1- _AM_SUBST_NOTMAKE([WITH_7ZIP_FALSE])
+m4trace:configure.ac:56: -1- AH_OUTPUT([HAVE_LIBMYSQLCLIENT], [/* Define to 1 if you have the `mysqlclient\' library (-lmysqlclient). */
 @%:@undef HAVE_LIBMYSQLCLIENT])
-m4trace:configure.ac:41: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBMYSQLCLIENT])
-m4trace:configure.ac:41: -1- m4_pattern_allow([^HAVE_LIBMYSQLCLIENT$])
-m4trace:configure.ac:43: -1- AH_OUTPUT([HAVE_LIBXML2], [/* Define to 1 if you have the `xml2\' library (-lxml2). */
+m4trace:configure.ac:56: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBMYSQLCLIENT])
+m4trace:configure.ac:56: -1- m4_pattern_allow([^HAVE_LIBMYSQLCLIENT$])
+m4trace:configure.ac:58: -1- AH_OUTPUT([HAVE_LIBXML2], [/* Define to 1 if you have the `xml2\' library (-lxml2). */
 @%:@undef HAVE_LIBXML2])
-m4trace:configure.ac:43: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBXML2])
-m4trace:configure.ac:43: -1- m4_pattern_allow([^HAVE_LIBXML2$])
-m4trace:configure.ac:45: -1- AH_OUTPUT([HAVE_LIBPTHREAD], [/* Define to 1 if you have the `pthread\' library (-lpthread). */
+m4trace:configure.ac:58: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBXML2])
+m4trace:configure.ac:58: -1- m4_pattern_allow([^HAVE_LIBXML2$])
+m4trace:configure.ac:60: -1- AH_OUTPUT([HAVE_LIBPTHREAD], [/* Define to 1 if you have the `pthread\' library (-lpthread). */
 @%:@undef HAVE_LIBPTHREAD])
-m4trace:configure.ac:45: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBPTHREAD])
-m4trace:configure.ac:45: -1- m4_pattern_allow([^HAVE_LIBPTHREAD$])
-m4trace:configure.ac:47: -1- AH_OUTPUT([HAVE_LIBZ], [/* Define to 1 if you have the `z\' library (-lz). */
+m4trace:configure.ac:60: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBPTHREAD])
+m4trace:configure.ac:60: -1- m4_pattern_allow([^HAVE_LIBPTHREAD$])
+m4trace:configure.ac:62: -1- AH_OUTPUT([HAVE_LIBZ], [/* Define to 1 if you have the `z\' library (-lz). */
 @%:@undef HAVE_LIBZ])
-m4trace:configure.ac:47: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBZ])
-m4trace:configure.ac:47: -1- m4_pattern_allow([^HAVE_LIBZ$])
-m4trace:configure.ac:49: -1- AH_OUTPUT([HAVE_LIBBZ2], [/* Define to 1 if you have the `bz2\' library (-lbz2). */
+m4trace:configure.ac:62: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBZ])
+m4trace:configure.ac:62: -1- m4_pattern_allow([^HAVE_LIBZ$])
+m4trace:configure.ac:64: -1- AH_OUTPUT([HAVE_LIBBZ2], [/* Define to 1 if you have the `bz2\' library (-lbz2). */
 @%:@undef HAVE_LIBBZ2])
-m4trace:configure.ac:49: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBBZ2])
-m4trace:configure.ac:49: -1- m4_pattern_allow([^HAVE_LIBBZ2$])
-m4trace:configure.ac:51: -1- AH_OUTPUT([HAVE_LIBCURL], [/* Define to 1 if you have the `curl\' library (-lcurl). */
+m4trace:configure.ac:64: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBBZ2])
+m4trace:configure.ac:64: -1- m4_pattern_allow([^HAVE_LIBBZ2$])
+m4trace:configure.ac:66: -1- AH_OUTPUT([HAVE_LIBCURL], [/* Define to 1 if you have the `curl\' library (-lcurl). */
 @%:@undef HAVE_LIBCURL])
-m4trace:configure.ac:51: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBCURL])
-m4trace:configure.ac:51: -1- m4_pattern_allow([^HAVE_LIBCURL$])
-m4trace:configure.ac:53: -1- AH_OUTPUT([HAVE_LIBINTL], [/* Define to 1 if you have the `intl\' library (-lintl). */
+m4trace:configure.ac:66: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBCURL])
+m4trace:configure.ac:66: -1- m4_pattern_allow([^HAVE_LIBCURL$])
+m4trace:configure.ac:68: -1- AH_OUTPUT([HAVE_LIBINTL], [/* Define to 1 if you have the `intl\' library (-lintl). */
 @%:@undef HAVE_LIBINTL])
-m4trace:configure.ac:53: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBINTL])
-m4trace:configure.ac:53: -1- m4_pattern_allow([^HAVE_LIBINTL$])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_FCNTL_H], [/* Define to 1 if you have the <fcntl.h> header file. */
+m4trace:configure.ac:68: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBINTL])
+m4trace:configure.ac:68: -1- m4_pattern_allow([^HAVE_LIBINTL$])
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_FCNTL_H], [/* Define to 1 if you have the <fcntl.h> header file. */
 @%:@undef HAVE_FCNTL_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_LIMITS_H], [/* Define to 1 if you have the <limits.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_LIMITS_H], [/* Define to 1 if you have the <limits.h> header file. */
 @%:@undef HAVE_LIMITS_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_MEMORY_H], [/* Define to 1 if you have the <memory.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_MEMORY_H], [/* Define to 1 if you have the <memory.h> header file. */
 @%:@undef HAVE_MEMORY_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_NETDB_H], [/* Define to 1 if you have the <netdb.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_NETDB_H], [/* Define to 1 if you have the <netdb.h> header file. */
 @%:@undef HAVE_NETDB_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_NETINET_IN_H], [/* Define to 1 if you have the <netinet/in.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_NETINET_IN_H], [/* Define to 1 if you have the <netinet/in.h> header file. */
 @%:@undef HAVE_NETINET_IN_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_STDLIB_H], [/* Define to 1 if you have the <stdlib.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_STDLIB_H], [/* Define to 1 if you have the <stdlib.h> header file. */
 @%:@undef HAVE_STDLIB_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_STRING_H], [/* Define to 1 if you have the <string.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_STRING_H], [/* Define to 1 if you have the <string.h> header file. */
 @%:@undef HAVE_STRING_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_SYS_PARAM_H], [/* Define to 1 if you have the <sys/param.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_SYS_PARAM_H], [/* Define to 1 if you have the <sys/param.h> header file. */
 @%:@undef HAVE_SYS_PARAM_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_SYS_SOCKET_H], [/* Define to 1 if you have the <sys/socket.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_SYS_SOCKET_H], [/* Define to 1 if you have the <sys/socket.h> header file. */
 @%:@undef HAVE_SYS_SOCKET_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_UNISTD_H], [/* Define to 1 if you have the <unistd.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_UNISTD_H], [/* Define to 1 if you have the <unistd.h> header file. */
 @%:@undef HAVE_UNISTD_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_SYS_TYPES_H], [/* Define to 1 if you have the <sys/types.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_SYS_TYPES_H], [/* Define to 1 if you have the <sys/types.h> header file. */
 @%:@undef HAVE_SYS_TYPES_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_SYS_STAT_H], [/* Define to 1 if you have the <sys/stat.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_SYS_STAT_H], [/* Define to 1 if you have the <sys/stat.h> header file. */
 @%:@undef HAVE_SYS_STAT_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_STDLIB_H], [/* Define to 1 if you have the <stdlib.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_STDLIB_H], [/* Define to 1 if you have the <stdlib.h> header file. */
 @%:@undef HAVE_STDLIB_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_STRING_H], [/* Define to 1 if you have the <string.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_STRING_H], [/* Define to 1 if you have the <string.h> header file. */
 @%:@undef HAVE_STRING_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_MEMORY_H], [/* Define to 1 if you have the <memory.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_MEMORY_H], [/* Define to 1 if you have the <memory.h> header file. */
 @%:@undef HAVE_MEMORY_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_STRINGS_H], [/* Define to 1 if you have the <strings.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_STRINGS_H], [/* Define to 1 if you have the <strings.h> header file. */
 @%:@undef HAVE_STRINGS_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_INTTYPES_H], [/* Define to 1 if you have the <inttypes.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_INTTYPES_H], [/* Define to 1 if you have the <inttypes.h> header file. */
 @%:@undef HAVE_INTTYPES_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_STDINT_H], [/* Define to 1 if you have the <stdint.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_STDINT_H], [/* Define to 1 if you have the <stdint.h> header file. */
 @%:@undef HAVE_STDINT_H])
-m4trace:configure.ac:55: -1- AH_OUTPUT([HAVE_UNISTD_H], [/* Define to 1 if you have the <unistd.h> header file. */
+m4trace:configure.ac:70: -1- AH_OUTPUT([HAVE_UNISTD_H], [/* Define to 1 if you have the <unistd.h> header file. */
 @%:@undef HAVE_UNISTD_H])
-m4trace:configure.ac:57: -1- AC_SUBST([xml2_config])
-m4trace:configure.ac:57: -1- AC_SUBST_TRACE([xml2_config])
-m4trace:configure.ac:57: -1- m4_pattern_allow([^xml2_config$])
-m4trace:configure.ac:72: -1- AC_DEFINE_TRACE_LITERAL([const])
-m4trace:configure.ac:72: -1- m4_pattern_allow([^const$])
-m4trace:configure.ac:72: -1- AH_OUTPUT([const], [/* Define to empty if `const\' does not conform to ANSI C. */
+m4trace:configure.ac:72: -1- AC_SUBST([xml2_config])
+m4trace:configure.ac:72: -1- AC_SUBST_TRACE([xml2_config])
+m4trace:configure.ac:72: -1- m4_pattern_allow([^xml2_config$])
+m4trace:configure.ac:87: -1- AC_DEFINE_TRACE_LITERAL([const])
+m4trace:configure.ac:87: -1- m4_pattern_allow([^const$])
+m4trace:configure.ac:87: -1- AH_OUTPUT([const], [/* Define to empty if `const\' does not conform to ANSI C. */
 @%:@undef const])
-m4trace:configure.ac:73: -1- AC_DEFINE_TRACE_LITERAL([HAVE__BOOL])
-m4trace:configure.ac:73: -1- m4_pattern_allow([^HAVE__BOOL$])
-m4trace:configure.ac:73: -1- AH_OUTPUT([HAVE__BOOL], [/* Define to 1 if the system has the type `_Bool\'. */
+m4trace:configure.ac:88: -1- AC_DEFINE_TRACE_LITERAL([HAVE__BOOL])
+m4trace:configure.ac:88: -1- m4_pattern_allow([^HAVE__BOOL$])
+m4trace:configure.ac:88: -1- AH_OUTPUT([HAVE__BOOL], [/* Define to 1 if the system has the type `_Bool\'. */
 @%:@undef HAVE__BOOL])
-m4trace:configure.ac:73: -1- AC_DEFINE_TRACE_LITERAL([HAVE_STDBOOL_H])
-m4trace:configure.ac:73: -1- m4_pattern_allow([^HAVE_STDBOOL_H$])
-m4trace:configure.ac:73: -1- AH_OUTPUT([HAVE_STDBOOL_H], [/* Define to 1 if stdbool.h conforms to C99. */
+m4trace:configure.ac:88: -1- AC_DEFINE_TRACE_LITERAL([HAVE_STDBOOL_H])
+m4trace:configure.ac:88: -1- m4_pattern_allow([^HAVE_STDBOOL_H$])
+m4trace:configure.ac:88: -1- AH_OUTPUT([HAVE_STDBOOL_H], [/* Define to 1 if stdbool.h conforms to C99. */
 @%:@undef HAVE_STDBOOL_H])
-m4trace:configure.ac:74: -1- AC_DEFINE_TRACE_LITERAL([mode_t])
-m4trace:configure.ac:74: -1- m4_pattern_allow([^mode_t$])
-m4trace:configure.ac:74: -1- AH_OUTPUT([mode_t], [/* Define to `int\' if <sys/types.h> does not define. */
+m4trace:configure.ac:89: -1- AC_DEFINE_TRACE_LITERAL([mode_t])
+m4trace:configure.ac:89: -1- m4_pattern_allow([^mode_t$])
+m4trace:configure.ac:89: -1- AH_OUTPUT([mode_t], [/* Define to `int\' if <sys/types.h> does not define. */
 @%:@undef mode_t])
-m4trace:configure.ac:75: -1- AC_DEFINE_TRACE_LITERAL([TM_IN_SYS_TIME])
-m4trace:configure.ac:75: -1- m4_pattern_allow([^TM_IN_SYS_TIME$])
-m4trace:configure.ac:75: -1- AH_OUTPUT([TM_IN_SYS_TIME], [/* Define to 1 if your <sys/time.h> declares `struct tm\'. */
+m4trace:configure.ac:90: -1- AC_DEFINE_TRACE_LITERAL([TM_IN_SYS_TIME])
+m4trace:configure.ac:90: -1- m4_pattern_allow([^TM_IN_SYS_TIME$])
+m4trace:configure.ac:90: -1- AH_OUTPUT([TM_IN_SYS_TIME], [/* Define to 1 if your <sys/time.h> declares `struct tm\'. */
 @%:@undef TM_IN_SYS_TIME])
-m4trace:configure.ac:78: -1- AC_DEFINE_TRACE_LITERAL([LSTAT_FOLLOWS_SLASHED_SYMLINK])
-m4trace:configure.ac:78: -1- m4_pattern_allow([^LSTAT_FOLLOWS_SLASHED_SYMLINK$])
-m4trace:configure.ac:78: -1- AH_OUTPUT([LSTAT_FOLLOWS_SLASHED_SYMLINK], [/* Define to 1 if `lstat\' dereferences a symlink specified with a trailing
+m4trace:configure.ac:93: -1- AC_DEFINE_TRACE_LITERAL([LSTAT_FOLLOWS_SLASHED_SYMLINK])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^LSTAT_FOLLOWS_SLASHED_SYMLINK$])
+m4trace:configure.ac:93: -1- AH_OUTPUT([LSTAT_FOLLOWS_SLASHED_SYMLINK], [/* Define to 1 if `lstat\' dereferences a symlink specified with a trailing
    slash. */
 @%:@undef LSTAT_FOLLOWS_SLASHED_SYMLINK])
-m4trace:configure.ac:78: -1- AC_SUBST([LIB@&t@OBJS], ["$LIB@&t@OBJS lstat.$ac_objext"])
-m4trace:configure.ac:78: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
-m4trace:configure.ac:78: -1- m4_pattern_allow([^LIB@&t@OBJS$])
-m4trace:configure.ac:78: -1- AC_LIBSOURCE([lstat.c])
-m4trace:configure.ac:78: -1- AC_SUBST([LIB@&t@OBJS], ["$LIB@&t@OBJS lstat.$ac_objext"])
-m4trace:configure.ac:78: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
-m4trace:configure.ac:78: -1- m4_pattern_allow([^LIB@&t@OBJS$])
-m4trace:configure.ac:78: -1- AC_LIBSOURCE([lstat.c])
-m4trace:configure.ac:78: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LSTAT_EMPTY_STRING_BUG])
-m4trace:configure.ac:78: -1- m4_pattern_allow([^HAVE_LSTAT_EMPTY_STRING_BUG$])
-m4trace:configure.ac:78: -1- AH_OUTPUT([HAVE_LSTAT_EMPTY_STRING_BUG], [/* Define to 1 if `lstat\' has the bug that it succeeds when given the
+m4trace:configure.ac:93: -1- AC_SUBST([LIB@&t@OBJS], ["$LIB@&t@OBJS lstat.$ac_objext"])
+m4trace:configure.ac:93: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:93: -1- AC_LIBSOURCE([lstat.c])
+m4trace:configure.ac:93: -1- AC_SUBST([LIB@&t@OBJS], ["$LIB@&t@OBJS lstat.$ac_objext"])
+m4trace:configure.ac:93: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:93: -1- AC_LIBSOURCE([lstat.c])
+m4trace:configure.ac:93: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LSTAT_EMPTY_STRING_BUG])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^HAVE_LSTAT_EMPTY_STRING_BUG$])
+m4trace:configure.ac:93: -1- AH_OUTPUT([HAVE_LSTAT_EMPTY_STRING_BUG], [/* Define to 1 if `lstat\' has the bug that it succeeds when given the
    zero-length file name argument. */
 @%:@undef HAVE_LSTAT_EMPTY_STRING_BUG])
-m4trace:configure.ac:79: -1- AC_DEFINE_TRACE_LITERAL([LSTAT_FOLLOWS_SLASHED_SYMLINK])
-m4trace:configure.ac:79: -1- m4_pattern_allow([^LSTAT_FOLLOWS_SLASHED_SYMLINK$])
-m4trace:configure.ac:79: -1- AH_OUTPUT([LSTAT_FOLLOWS_SLASHED_SYMLINK], [/* Define to 1 if `lstat\' dereferences a symlink specified with a trailing
+m4trace:configure.ac:94: -1- AC_DEFINE_TRACE_LITERAL([LSTAT_FOLLOWS_SLASHED_SYMLINK])
+m4trace:configure.ac:94: -1- m4_pattern_allow([^LSTAT_FOLLOWS_SLASHED_SYMLINK$])
+m4trace:configure.ac:94: -1- AH_OUTPUT([LSTAT_FOLLOWS_SLASHED_SYMLINK], [/* Define to 1 if `lstat\' dereferences a symlink specified with a trailing
    slash. */
 @%:@undef LSTAT_FOLLOWS_SLASHED_SYMLINK])
-m4trace:configure.ac:79: -1- AC_SUBST([LIB@&t@OBJS], ["$LIB@&t@OBJS lstat.$ac_objext"])
-m4trace:configure.ac:79: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
-m4trace:configure.ac:79: -1- m4_pattern_allow([^LIB@&t@OBJS$])
-m4trace:configure.ac:79: -1- AC_LIBSOURCE([lstat.c])
-m4trace:configure.ac:80: -1- AH_OUTPUT([HAVE_STRFTIME], [/* Define to 1 if you have the `strftime\' function. */
+m4trace:configure.ac:94: -1- AC_SUBST([LIB@&t@OBJS], ["$LIB@&t@OBJS lstat.$ac_objext"])
+m4trace:configure.ac:94: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
+m4trace:configure.ac:94: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:94: -1- AC_LIBSOURCE([lstat.c])
+m4trace:configure.ac:95: -1- AH_OUTPUT([HAVE_STRFTIME], [/* Define to 1 if you have the `strftime\' function. */
 @%:@undef HAVE_STRFTIME])
-m4trace:configure.ac:80: -1- AC_DEFINE_TRACE_LITERAL([HAVE_STRFTIME])
-m4trace:configure.ac:80: -1- m4_pattern_allow([^HAVE_STRFTIME$])
-m4trace:configure.ac:80: -1- AC_DEFINE_TRACE_LITERAL([HAVE_STRFTIME])
-m4trace:configure.ac:80: -1- m4_pattern_allow([^HAVE_STRFTIME$])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_GETCWD], [/* Define to 1 if you have the `getcwd\' function. */
+m4trace:configure.ac:95: -1- AC_DEFINE_TRACE_LITERAL([HAVE_STRFTIME])
+m4trace:configure.ac:95: -1- m4_pattern_allow([^HAVE_STRFTIME$])
+m4trace:configure.ac:95: -1- AC_DEFINE_TRACE_LITERAL([HAVE_STRFTIME])
+m4trace:configure.ac:95: -1- m4_pattern_allow([^HAVE_STRFTIME$])
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_GETCWD], [/* Define to 1 if you have the `getcwd\' function. */
 @%:@undef HAVE_GETCWD])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_GETHOSTBYADDR], [/* Define to 1 if you have the `gethostbyaddr\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_GETHOSTBYADDR], [/* Define to 1 if you have the `gethostbyaddr\' function. */
 @%:@undef HAVE_GETHOSTBYADDR])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_GETHOSTBYNAME], [/* Define to 1 if you have the `gethostbyname\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_GETHOSTBYNAME], [/* Define to 1 if you have the `gethostbyname\' function. */
 @%:@undef HAVE_GETHOSTBYNAME])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_MEMSET], [/* Define to 1 if you have the `memset\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_MEMSET], [/* Define to 1 if you have the `memset\' function. */
 @%:@undef HAVE_MEMSET])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_MEMMEM], [/* Define to 1 if you have the `memmem\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_MEMMEM], [/* Define to 1 if you have the `memmem\' function. */
 @%:@undef HAVE_MEMMEM])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_MKDIR], [/* Define to 1 if you have the `mkdir\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_MKDIR], [/* Define to 1 if you have the `mkdir\' function. */
 @%:@undef HAVE_MKDIR])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_SOCKET], [/* Define to 1 if you have the `socket\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_SOCKET], [/* Define to 1 if you have the `socket\' function. */
 @%:@undef HAVE_SOCKET])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRCASECMP], [/* Define to 1 if you have the `strcasecmp\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRCASECMP], [/* Define to 1 if you have the `strcasecmp\' function. */
 @%:@undef HAVE_STRCASECMP])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRICMP], [/* Define to 1 if you have the `stricmp\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRICMP], [/* Define to 1 if you have the `stricmp\' function. */
 @%:@undef HAVE_STRICMP])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRCHR], [/* Define to 1 if you have the `strchr\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRCHR], [/* Define to 1 if you have the `strchr\' function. */
 @%:@undef HAVE_STRCHR])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRDUP], [/* Define to 1 if you have the `strdup\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRDUP], [/* Define to 1 if you have the `strdup\' function. */
 @%:@undef HAVE_STRDUP])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRERROR], [/* Define to 1 if you have the `strerror\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRERROR], [/* Define to 1 if you have the `strerror\' function. */
 @%:@undef HAVE_STRERROR])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRNCASECMP], [/* Define to 1 if you have the `strncasecmp\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRNCASECMP], [/* Define to 1 if you have the `strncasecmp\' function. */
 @%:@undef HAVE_STRNCASECMP])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRNICMP], [/* Define to 1 if you have the `strnicmp\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRNICMP], [/* Define to 1 if you have the `strnicmp\' function. */
 @%:@undef HAVE_STRNICMP])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRRCHR], [/* Define to 1 if you have the `strrchr\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRRCHR], [/* Define to 1 if you have the `strrchr\' function. */
 @%:@undef HAVE_STRRCHR])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRSTR], [/* Define to 1 if you have the `strstr\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRSTR], [/* Define to 1 if you have the `strstr\' function. */
 @%:@undef HAVE_STRSTR])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_STRTOL], [/* Define to 1 if you have the `strtol\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_STRTOL], [/* Define to 1 if you have the `strtol\' function. */
 @%:@undef HAVE_STRTOL])
-m4trace:configure.ac:81: -1- AH_OUTPUT([HAVE_FOPEN64], [/* Define to 1 if you have the `fopen64\' function. */
+m4trace:configure.ac:96: -1- AH_OUTPUT([HAVE_FOPEN64], [/* Define to 1 if you have the `fopen64\' function. */
 @%:@undef HAVE_FOPEN64])
-m4trace:configure.ac:84: -1- AH_OUTPUT([SEMUN_UNDEFINED], [/* Check if union semun doesn\'t exist */
+m4trace:configure.ac:99: -1- AH_OUTPUT([SEMUN_UNDEFINED], [/* Check if union semun doesn\'t exist */
 @%:@undef SEMUN_UNDEFINED])
-m4trace:configure.ac:88: -2- AC_DEFINE_TRACE_LITERAL([SEMUN_UNDEFINED])
-m4trace:configure.ac:88: -2- m4_pattern_allow([^SEMUN_UNDEFINED$])
-m4trace:configure.ac:85: -1- _m4_warn([obsolete], [The macro `AC_COMPILE_CHECK' is obsolete.
+m4trace:configure.ac:103: -2- AC_DEFINE_TRACE_LITERAL([SEMUN_UNDEFINED])
+m4trace:configure.ac:103: -2- m4_pattern_allow([^SEMUN_UNDEFINED$])
+m4trace:configure.ac:100: -1- _m4_warn([obsolete], [The macro `AC_COMPILE_CHECK' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2694: AC_COMPILE_CHECK is expanded from...
-configure.ac:85: the top level])
-m4trace:configure.ac:97: -1- AM_NLS
-m4trace:configure.ac:97: -1- AC_SUBST([USE_NLS])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([USE_NLS])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^USE_NLS$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_UPDATE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_UPDATE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_UPDATE$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_MERGE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_MERGE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_MERGE$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_EXTRACT])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_EXTRACT])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_EXTRACT$])
-m4trace:configure.ac:97: -1- AC_SUBST([AM_DEFAULT_VERBOSITY])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([AM_DEFAULT_VERBOSITY])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^AM_DEFAULT_VERBOSITY$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_V_MERGE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_V_MERGE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_V_MERGE$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL__v_MERGE_])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL__v_MERGE_])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL__v_MERGE_$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL__v_MERGE_0])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL__v_MERGE_0])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL__v_MERGE_0$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_V_MERGE_OPTIONS])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_V_MERGE_OPTIONS])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_V_MERGE_OPTIONS$])
-m4trace:configure.ac:97: -1- AC_SUBST([intltool__v_merge_options_])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([intltool__v_merge_options_])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^intltool__v_merge_options_$])
-m4trace:configure.ac:97: -1- AC_SUBST([intltool__v_merge_options_0])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([intltool__v_merge_options_0])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^intltool__v_merge_options_0$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_DESKTOP_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_DESKTOP_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_DESKTOP_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_DESKTOP_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_DIRECTORY_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_DIRECTORY_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_DIRECTORY_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_DIRECTORY_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_KEYS_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_KEYS_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_KEYS_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_KEYS_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_PROP_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_PROP_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_PROP_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_PROP_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_OAF_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_OAF_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_OAF_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_OAF_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_PONG_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_PONG_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_PONG_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_PONG_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_SERVER_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_SERVER_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_SERVER_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SERVER_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_SHEET_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_SHEET_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_SHEET_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SHEET_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_SOUNDLIST_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_SOUNDLIST_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_SOUNDLIST_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SOUNDLIST_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_UI_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_UI_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_UI_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_UI_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_XAM_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_XAM_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_XAM_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_XAM_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_KBD_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_KBD_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_KBD_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_KBD_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_XML_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_XML_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_XML_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_XML_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_XML_NOMERGE_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_XML_NOMERGE_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_XML_NOMERGE_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_XML_NOMERGE_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_CAVES_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_CAVES_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_CAVES_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_CAVES_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_SCHEMAS_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_SCHEMAS_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_SCHEMAS_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SCHEMAS_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_THEME_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_THEME_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_THEME_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_THEME_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_SERVICE_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_SERVICE_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_SERVICE_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SERVICE_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_POLICY_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_POLICY_RULE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_POLICY_RULE$])
-m4trace:configure.ac:97: -1- _AM_SUBST_NOTMAKE([INTLTOOL_POLICY_RULE])
-m4trace:configure.ac:97: -1- AC_SUBST([XGETTEXT])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([XGETTEXT])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^XGETTEXT$])
-m4trace:configure.ac:97: -1- AC_SUBST([MSGMERGE])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([MSGMERGE])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^MSGMERGE$])
-m4trace:configure.ac:97: -1- AC_SUBST([MSGFMT])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([MSGFMT])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^MSGFMT$])
-m4trace:configure.ac:97: -1- AC_SUBST([GMSGFMT])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([GMSGFMT])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^GMSGFMT$])
-m4trace:configure.ac:97: -1- AC_SUBST([INTLTOOL_PERL])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([INTLTOOL_PERL])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^INTLTOOL_PERL$])
-m4trace:configure.ac:97: -1- AC_SUBST([ALL_LINGUAS])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([ALL_LINGUAS])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^ALL_LINGUAS$])
-m4trace:configure.ac:97: -1- AC_SUBST([DATADIRNAME])
-m4trace:configure.ac:97: -1- AC_SUBST_TRACE([DATADIRNAME])
-m4trace:configure.ac:97: -1- m4_pattern_allow([^DATADIRNAME$])
-m4trace:configure.ac:100: -1- AC_SUBST([GETTEXT_PACKAGE])
-m4trace:configure.ac:100: -1- AC_SUBST_TRACE([GETTEXT_PACKAGE])
-m4trace:configure.ac:100: -1- m4_pattern_allow([^GETTEXT_PACKAGE$])
-m4trace:configure.ac:101: -1- AC_DEFINE_TRACE_LITERAL([GETTEXT_PACKAGE])
-m4trace:configure.ac:101: -1- m4_pattern_allow([^GETTEXT_PACKAGE$])
-m4trace:configure.ac:101: -1- AH_OUTPUT([GETTEXT_PACKAGE], [/* GETTEXT package name */
+configure.ac:100: the top level])
+m4trace:configure.ac:112: -1- AM_NLS
+m4trace:configure.ac:112: -1- AC_SUBST([USE_NLS])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([USE_NLS])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^USE_NLS$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_UPDATE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_UPDATE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_UPDATE$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_MERGE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_MERGE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_MERGE$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_EXTRACT])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_EXTRACT])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_EXTRACT$])
+m4trace:configure.ac:112: -1- AC_SUBST([AM_DEFAULT_VERBOSITY])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([AM_DEFAULT_VERBOSITY])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^AM_DEFAULT_VERBOSITY$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_V_MERGE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_V_MERGE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_V_MERGE$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL__v_MERGE_])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL__v_MERGE_])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL__v_MERGE_$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL__v_MERGE_0])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL__v_MERGE_0])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL__v_MERGE_0$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_V_MERGE_OPTIONS])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_V_MERGE_OPTIONS])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_V_MERGE_OPTIONS$])
+m4trace:configure.ac:112: -1- AC_SUBST([intltool__v_merge_options_])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([intltool__v_merge_options_])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^intltool__v_merge_options_$])
+m4trace:configure.ac:112: -1- AC_SUBST([intltool__v_merge_options_0])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([intltool__v_merge_options_0])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^intltool__v_merge_options_0$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_DESKTOP_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_DESKTOP_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_DESKTOP_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_DESKTOP_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_DIRECTORY_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_DIRECTORY_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_DIRECTORY_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_DIRECTORY_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_KEYS_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_KEYS_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_KEYS_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_KEYS_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_PROP_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_PROP_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_PROP_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_PROP_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_OAF_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_OAF_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_OAF_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_OAF_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_PONG_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_PONG_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_PONG_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_PONG_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_SERVER_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_SERVER_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_SERVER_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SERVER_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_SHEET_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_SHEET_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_SHEET_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SHEET_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_SOUNDLIST_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_SOUNDLIST_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_SOUNDLIST_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SOUNDLIST_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_UI_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_UI_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_UI_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_UI_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_XAM_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_XAM_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_XAM_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_XAM_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_KBD_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_KBD_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_KBD_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_KBD_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_XML_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_XML_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_XML_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_XML_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_XML_NOMERGE_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_XML_NOMERGE_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_XML_NOMERGE_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_XML_NOMERGE_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_CAVES_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_CAVES_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_CAVES_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_CAVES_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_SCHEMAS_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_SCHEMAS_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_SCHEMAS_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SCHEMAS_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_THEME_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_THEME_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_THEME_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_THEME_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_SERVICE_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_SERVICE_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_SERVICE_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_SERVICE_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_POLICY_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_POLICY_RULE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_POLICY_RULE$])
+m4trace:configure.ac:112: -1- _AM_SUBST_NOTMAKE([INTLTOOL_POLICY_RULE])
+m4trace:configure.ac:112: -1- AC_SUBST([XGETTEXT])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([XGETTEXT])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^XGETTEXT$])
+m4trace:configure.ac:112: -1- AC_SUBST([MSGMERGE])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([MSGMERGE])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^MSGMERGE$])
+m4trace:configure.ac:112: -1- AC_SUBST([MSGFMT])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([MSGFMT])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^MSGFMT$])
+m4trace:configure.ac:112: -1- AC_SUBST([GMSGFMT])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([GMSGFMT])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^GMSGFMT$])
+m4trace:configure.ac:112: -1- AC_SUBST([INTLTOOL_PERL])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([INTLTOOL_PERL])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^INTLTOOL_PERL$])
+m4trace:configure.ac:112: -1- AC_SUBST([ALL_LINGUAS])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([ALL_LINGUAS])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^ALL_LINGUAS$])
+m4trace:configure.ac:112: -1- AC_SUBST([DATADIRNAME])
+m4trace:configure.ac:112: -1- AC_SUBST_TRACE([DATADIRNAME])
+m4trace:configure.ac:112: -1- m4_pattern_allow([^DATADIRNAME$])
+m4trace:configure.ac:115: -1- AC_SUBST([GETTEXT_PACKAGE])
+m4trace:configure.ac:115: -1- AC_SUBST_TRACE([GETTEXT_PACKAGE])
+m4trace:configure.ac:115: -1- m4_pattern_allow([^GETTEXT_PACKAGE$])
+m4trace:configure.ac:116: -1- AC_DEFINE_TRACE_LITERAL([GETTEXT_PACKAGE])
+m4trace:configure.ac:116: -1- m4_pattern_allow([^GETTEXT_PACKAGE$])
+m4trace:configure.ac:116: -1- AH_OUTPUT([GETTEXT_PACKAGE], [/* GETTEXT package name */
 @%:@undef GETTEXT_PACKAGE])
-m4trace:configure.ac:103: -1- AH_OUTPUT([HAVE_LOCALE_H], [/* Define to 1 if you have the <locale.h> header file. */
+m4trace:configure.ac:118: -1- AH_OUTPUT([HAVE_LOCALE_H], [/* Define to 1 if you have the <locale.h> header file. */
 @%:@undef HAVE_LOCALE_H])
-m4trace:configure.ac:103: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LOCALE_H])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^HAVE_LOCALE_H$])
-m4trace:configure.ac:103: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+m4trace:configure.ac:118: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LOCALE_H])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^HAVE_LOCALE_H$])
+m4trace:configure.ac:118: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
 ../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
 ../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
@@ -771,15 +793,15 @@ You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is
 aclocal.m4:70: GLIB_LC_MESSAGES is expanded from...
 aclocal.m4:338: GLIB_GNU_GETTEXT is expanded from...
 aclocal.m4:437: AM_GLIB_GNU_GETTEXT is expanded from...
-configure.ac:103: the top level])
-m4trace:configure.ac:103: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LC_MESSAGES])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^HAVE_LC_MESSAGES$])
-m4trace:configure.ac:103: -1- AH_OUTPUT([HAVE_LC_MESSAGES], [/* Define if your <locale.h> file defines LC_MESSAGES. */
+configure.ac:118: the top level])
+m4trace:configure.ac:118: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LC_MESSAGES])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^HAVE_LC_MESSAGES$])
+m4trace:configure.ac:118: -1- AH_OUTPUT([HAVE_LC_MESSAGES], [/* Define if your <locale.h> file defines LC_MESSAGES. */
 @%:@undef HAVE_LC_MESSAGES])
-m4trace:configure.ac:103: -1- AC_SUBST([USE_NLS])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([USE_NLS])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^USE_NLS$])
-m4trace:configure.ac:103: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+m4trace:configure.ac:118: -1- AC_SUBST([USE_NLS])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([USE_NLS])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^USE_NLS$])
+m4trace:configure.ac:118: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
 ../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
 ../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
@@ -790,8 +812,8 @@ You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is
 aclocal.m4:124: GLIB_WITH_NLS is expanded from...
 aclocal.m4:338: GLIB_GNU_GETTEXT is expanded from...
 aclocal.m4:437: AM_GLIB_GNU_GETTEXT is expanded from...
-configure.ac:103: the top level])
-m4trace:configure.ac:103: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+configure.ac:118: the top level])
+m4trace:configure.ac:118: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
 ../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
 ../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
@@ -802,36 +824,36 @@ You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is
 aclocal.m4:124: GLIB_WITH_NLS is expanded from...
 aclocal.m4:338: GLIB_GNU_GETTEXT is expanded from...
 aclocal.m4:437: AM_GLIB_GNU_GETTEXT is expanded from...
-configure.ac:103: the top level])
-m4trace:configure.ac:103: -1- AH_OUTPUT([HAVE_BIND_TEXTDOMAIN_CODESET], [/* Define to 1 if you have the `bind_textdomain_codeset\' function. */
+configure.ac:118: the top level])
+m4trace:configure.ac:118: -1- AH_OUTPUT([HAVE_BIND_TEXTDOMAIN_CODESET], [/* Define to 1 if you have the `bind_textdomain_codeset\' function. */
 @%:@undef HAVE_BIND_TEXTDOMAIN_CODESET])
-m4trace:configure.ac:103: -1- AC_DEFINE_TRACE_LITERAL([HAVE_BIND_TEXTDOMAIN_CODESET])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^HAVE_BIND_TEXTDOMAIN_CODESET$])
-m4trace:configure.ac:103: -1- AH_OUTPUT([HAVE_BIND_TEXTDOMAIN_CODESET], [/* Define to 1 if you have the `bind_textdomain_codeset\' function. */
+m4trace:configure.ac:118: -1- AC_DEFINE_TRACE_LITERAL([HAVE_BIND_TEXTDOMAIN_CODESET])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^HAVE_BIND_TEXTDOMAIN_CODESET$])
+m4trace:configure.ac:118: -1- AH_OUTPUT([HAVE_BIND_TEXTDOMAIN_CODESET], [/* Define to 1 if you have the `bind_textdomain_codeset\' function. */
 @%:@undef HAVE_BIND_TEXTDOMAIN_CODESET])
-m4trace:configure.ac:103: -1- AC_DEFINE_TRACE_LITERAL([HAVE_BIND_TEXTDOMAIN_CODESET])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^HAVE_BIND_TEXTDOMAIN_CODESET$])
-m4trace:configure.ac:103: -1- AC_DEFINE_TRACE_LITERAL([HAVE_GETTEXT])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^HAVE_GETTEXT$])
-m4trace:configure.ac:103: -1- AH_OUTPUT([HAVE_GETTEXT], [/* Define if the GNU gettext() function is already present or preinstalled. */
+m4trace:configure.ac:118: -1- AC_DEFINE_TRACE_LITERAL([HAVE_BIND_TEXTDOMAIN_CODESET])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^HAVE_BIND_TEXTDOMAIN_CODESET$])
+m4trace:configure.ac:118: -1- AC_DEFINE_TRACE_LITERAL([HAVE_GETTEXT])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^HAVE_GETTEXT$])
+m4trace:configure.ac:118: -1- AH_OUTPUT([HAVE_GETTEXT], [/* Define if the GNU gettext() function is already present or preinstalled. */
 @%:@undef HAVE_GETTEXT])
-m4trace:configure.ac:103: -1- AC_SUBST([MSGFMT])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([MSGFMT])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^MSGFMT$])
-m4trace:configure.ac:103: -1- AH_OUTPUT([HAVE_DCGETTEXT], [/* Define to 1 if you have the `dcgettext\' function. */
+m4trace:configure.ac:118: -1- AC_SUBST([MSGFMT])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([MSGFMT])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^MSGFMT$])
+m4trace:configure.ac:118: -1- AH_OUTPUT([HAVE_DCGETTEXT], [/* Define to 1 if you have the `dcgettext\' function. */
 @%:@undef HAVE_DCGETTEXT])
-m4trace:configure.ac:103: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DCGETTEXT])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^HAVE_DCGETTEXT$])
-m4trace:configure.ac:103: -1- AC_SUBST([MSGFMT_OPTS])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([MSGFMT_OPTS])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^MSGFMT_OPTS$])
-m4trace:configure.ac:103: -1- AC_SUBST([GMSGFMT])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([GMSGFMT])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^GMSGFMT$])
-m4trace:configure.ac:103: -1- AC_SUBST([XGETTEXT])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([XGETTEXT])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^XGETTEXT$])
-m4trace:configure.ac:103: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+m4trace:configure.ac:118: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DCGETTEXT])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^HAVE_DCGETTEXT$])
+m4trace:configure.ac:118: -1- AC_SUBST([MSGFMT_OPTS])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([MSGFMT_OPTS])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^MSGFMT_OPTS$])
+m4trace:configure.ac:118: -1- AC_SUBST([GMSGFMT])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([GMSGFMT])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^GMSGFMT$])
+m4trace:configure.ac:118: -1- AC_SUBST([XGETTEXT])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([XGETTEXT])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^XGETTEXT$])
+m4trace:configure.ac:118: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
 ../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
 ../../lib/autoconf/headers.m4:129: _AC_CHECK_HEADER_MONGREL is expanded from...
@@ -839,80 +861,80 @@ You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is
 aclocal.m4:124: GLIB_WITH_NLS is expanded from...
 aclocal.m4:338: GLIB_GNU_GETTEXT is expanded from...
 aclocal.m4:437: AM_GLIB_GNU_GETTEXT is expanded from...
-configure.ac:103: the top level])
-m4trace:configure.ac:103: -1- AC_DEFINE_TRACE_LITERAL([ENABLE_NLS])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^ENABLE_NLS$])
-m4trace:configure.ac:103: -1- AH_OUTPUT([ENABLE_NLS], [/* always defined to indicate that i18n is enabled */
+configure.ac:118: the top level])
+m4trace:configure.ac:118: -1- AC_DEFINE_TRACE_LITERAL([ENABLE_NLS])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^ENABLE_NLS$])
+m4trace:configure.ac:118: -1- AH_OUTPUT([ENABLE_NLS], [/* always defined to indicate that i18n is enabled */
 @%:@undef ENABLE_NLS])
-m4trace:configure.ac:103: -1- _m4_warn([obsolete], [The macro `AC_OUTPUT_COMMANDS' is obsolete.
+m4trace:configure.ac:118: -1- _m4_warn([obsolete], [The macro `AC_OUTPUT_COMMANDS' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/status.m4:1026: AC_OUTPUT_COMMANDS is expanded from...
 aclocal.m4:124: GLIB_WITH_NLS is expanded from...
 aclocal.m4:338: GLIB_GNU_GETTEXT is expanded from...
 aclocal.m4:437: AM_GLIB_GNU_GETTEXT is expanded from...
-configure.ac:103: the top level])
-m4trace:configure.ac:103: -1- AC_SUBST([CATALOGS])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([CATALOGS])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^CATALOGS$])
-m4trace:configure.ac:103: -1- AC_SUBST([CATOBJEXT])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([CATOBJEXT])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^CATOBJEXT$])
-m4trace:configure.ac:103: -1- AC_SUBST([DATADIRNAME])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([DATADIRNAME])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^DATADIRNAME$])
-m4trace:configure.ac:103: -1- AC_SUBST([GMOFILES])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([GMOFILES])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^GMOFILES$])
-m4trace:configure.ac:103: -1- AC_SUBST([INSTOBJEXT])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([INSTOBJEXT])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^INSTOBJEXT$])
-m4trace:configure.ac:103: -1- AC_SUBST([INTLLIBS])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([INTLLIBS])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^INTLLIBS$])
-m4trace:configure.ac:103: -1- AC_SUBST([PO_IN_DATADIR_TRUE])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([PO_IN_DATADIR_TRUE])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^PO_IN_DATADIR_TRUE$])
-m4trace:configure.ac:103: -1- AC_SUBST([PO_IN_DATADIR_FALSE])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([PO_IN_DATADIR_FALSE])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^PO_IN_DATADIR_FALSE$])
-m4trace:configure.ac:103: -1- AC_SUBST([POFILES])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([POFILES])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^POFILES$])
-m4trace:configure.ac:103: -1- AC_SUBST([POSUB])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([POSUB])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^POSUB$])
-m4trace:configure.ac:103: -1- AC_SUBST([MKINSTALLDIRS])
-m4trace:configure.ac:103: -1- AC_SUBST_TRACE([MKINSTALLDIRS])
-m4trace:configure.ac:103: -1- m4_pattern_allow([^MKINSTALLDIRS$])
-m4trace:configure.ac:105: -1- AC_CONFIG_FILES([
+configure.ac:118: the top level])
+m4trace:configure.ac:118: -1- AC_SUBST([CATALOGS])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([CATALOGS])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^CATALOGS$])
+m4trace:configure.ac:118: -1- AC_SUBST([CATOBJEXT])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([CATOBJEXT])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^CATOBJEXT$])
+m4trace:configure.ac:118: -1- AC_SUBST([DATADIRNAME])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([DATADIRNAME])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^DATADIRNAME$])
+m4trace:configure.ac:118: -1- AC_SUBST([GMOFILES])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([GMOFILES])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^GMOFILES$])
+m4trace:configure.ac:118: -1- AC_SUBST([INSTOBJEXT])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([INSTOBJEXT])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^INSTOBJEXT$])
+m4trace:configure.ac:118: -1- AC_SUBST([INTLLIBS])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([INTLLIBS])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^INTLLIBS$])
+m4trace:configure.ac:118: -1- AC_SUBST([PO_IN_DATADIR_TRUE])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([PO_IN_DATADIR_TRUE])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^PO_IN_DATADIR_TRUE$])
+m4trace:configure.ac:118: -1- AC_SUBST([PO_IN_DATADIR_FALSE])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([PO_IN_DATADIR_FALSE])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^PO_IN_DATADIR_FALSE$])
+m4trace:configure.ac:118: -1- AC_SUBST([POFILES])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([POFILES])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^POFILES$])
+m4trace:configure.ac:118: -1- AC_SUBST([POSUB])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([POSUB])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^POSUB$])
+m4trace:configure.ac:118: -1- AC_SUBST([MKINSTALLDIRS])
+m4trace:configure.ac:118: -1- AC_SUBST_TRACE([MKINSTALLDIRS])
+m4trace:configure.ac:118: -1- m4_pattern_allow([^MKINSTALLDIRS$])
+m4trace:configure.ac:120: -1- AC_CONFIG_FILES([
 Makefile
 src/Makefile
 po/Makefile.in
 ])
-m4trace:configure.ac:105: -1- _m4_warn([obsolete], [AC_OUTPUT should be used without arguments.
+m4trace:configure.ac:120: -1- _m4_warn([obsolete], [AC_OUTPUT should be used without arguments.
 You should run autoupdate.], [])
-m4trace:configure.ac:105: -1- AC_SUBST([LIB@&t@OBJS], [$ac_libobjs])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
-m4trace:configure.ac:105: -1- m4_pattern_allow([^LIB@&t@OBJS$])
-m4trace:configure.ac:105: -1- AC_SUBST([LTLIBOBJS], [$ac_ltlibobjs])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([LTLIBOBJS])
-m4trace:configure.ac:105: -1- m4_pattern_allow([^LTLIBOBJS$])
-m4trace:configure.ac:105: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
-m4trace:configure.ac:105: -1- AC_SUBST([am__EXEEXT_TRUE])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([am__EXEEXT_TRUE])
-m4trace:configure.ac:105: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
-m4trace:configure.ac:105: -1- AC_SUBST([am__EXEEXT_FALSE])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([am__EXEEXT_FALSE])
-m4trace:configure.ac:105: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
-m4trace:configure.ac:105: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
-m4trace:configure.ac:105: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([top_builddir])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([top_build_prefix])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([srcdir])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([abs_srcdir])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([top_srcdir])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([abs_top_srcdir])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([builddir])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([abs_builddir])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([abs_top_builddir])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([INSTALL])
-m4trace:configure.ac:105: -1- AC_SUBST_TRACE([MKDIR_P])
+m4trace:configure.ac:120: -1- AC_SUBST([LIB@&t@OBJS], [$ac_libobjs])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
+m4trace:configure.ac:120: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:120: -1- AC_SUBST([LTLIBOBJS], [$ac_ltlibobjs])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([LTLIBOBJS])
+m4trace:configure.ac:120: -1- m4_pattern_allow([^LTLIBOBJS$])
+m4trace:configure.ac:120: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
+m4trace:configure.ac:120: -1- AC_SUBST([am__EXEEXT_TRUE])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([am__EXEEXT_TRUE])
+m4trace:configure.ac:120: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
+m4trace:configure.ac:120: -1- AC_SUBST([am__EXEEXT_FALSE])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([am__EXEEXT_FALSE])
+m4trace:configure.ac:120: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
+m4trace:configure.ac:120: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
+m4trace:configure.ac:120: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([top_builddir])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([top_build_prefix])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([srcdir])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([abs_srcdir])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([top_srcdir])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([abs_top_srcdir])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([builddir])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([abs_builddir])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([abs_top_builddir])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([INSTALL])
+m4trace:configure.ac:120: -1- AC_SUBST_TRACE([MKDIR_P])

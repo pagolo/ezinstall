@@ -9,6 +9,7 @@ String.prototype.endsWith = function(str)
 
 var textlen = 0;
 var file_sent = "file sent";
+var with_7zip = false;
 var parseXml;
 
 if (typeof window.DOMParser != "undefined") {
@@ -158,7 +159,7 @@ function handleZIPFile(evt) {
   var f = evt.target.files[0]; // file object
   // Only process compressed archives.
   var ext =  f.name.split('.').pop().toLowerCase();
-  if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' && ext!='7z' ) {
+  if ( ext!='zip' && ext!='bz2' && ext!='gz' && ext!='tgz' && ext!='tbz' && ( with_7zip==false || ext!='7z' ) ) {
     alert('zip/gzip/bzip2 files only');
     return false;
   }
@@ -188,7 +189,7 @@ function handleXMLFile(evt) {
       return true;
 }
 
-function InitAjax(url, file_sent_text) {
+function InitAjax(url, file_sent_text, sevenzip) {
   if (!(window.File && window.FileReader)) {
     document.getElementById('continue').style.display = "none";
     document.getElementById('submit').style.display = "inline";
@@ -197,6 +198,7 @@ function InitAjax(url, file_sent_text) {
     return;
   }
   file_sent = file_sent_text;
+  with_7zip = sevenzip;
   document.getElementById('ini').url = url;
   document.getElementById('zip').url = url;
   document.getElementById('ini').addEventListener('change', handleXMLFile, false);

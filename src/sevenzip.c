@@ -258,7 +258,7 @@ void PrintError(char *sz)
 
 // #define NUM_PARENTS_MAX 128
 
-int Unseven(char *filename, STRING **list)
+int Unseven(const char *filename, STRING **list)
 {
   CFileInStream archiveStream;
   CLookToRead lookStream;

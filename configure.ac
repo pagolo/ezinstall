@@ -12,6 +12,21 @@ AC_PROG_CC
 AM_PROG_CC_STDC
 AC_HEADER_STDC
 
+#conditional compiling with(out) 7zip support
+AC_ARG_WITH([7zip],
+	[AS_HELP_STRING([--with-7zip], [compile with 7zip archive integrated support])],
+	[],
+	[with_7zip=no])
+AS_IF([test "x$with_7zip" = xyes],
+	[
+	AM_CONDITIONAL(WITH_7ZIP, true)
+	AC_DEFINE(WITH_7ZIP,[],[Use 7zip])
+	], 
+        [
+	AM_CONDITIONAL(WITH_7ZIP, false)
+	])
+
+
 ## Determine MySQL library path
 # try and find libs without any additional libraries
 AC_CHECK_LIB(mysqlclient, mysql_init,

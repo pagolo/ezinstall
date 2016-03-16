@@ -80,6 +80,29 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = ezinstall$(EXEEXT)
+am__append_1 = \
+        sevenzip.c     \
+	precomp.h     \
+	7zip/7zAlloc.c     \
+	7zip/7zArcIn.c     \
+	7zip/7zBuf2.c     \
+	7zip/7zBuf.c     \
+	7zip/7zCrc.c     \
+	7zip/7zCrcOpt.c     \
+	7zip/7zDec.c     \
+	7zip/7zFile.c     \
+	7zip/7zStream.c     \
+	7zip/Bcj2.c     \
+	7zip/Bra86.c     \
+	7zip/Bra.c     \
+	7zip/BraIA64.c     \
+	7zip/CpuArch.c     \
+	7zip/Delta.c     \
+	7zip/Lzma2Dec.c     \
+	7zip/LzmaDec.c     \
+	7zip/Ppmd7.c     \
+	7zip/Ppmd7Dec.c
+
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/mkinstalldirs $(top_srcdir)/depcomp
@@ -93,19 +116,34 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am__ezinstall_SOURCES_DIST = main.c configure.c configure.h \
+	editconfig.c editconfig.h getinput.c getinput.h ioapi.c \
+	ioapi.h login.c login.h main.h md5.c md5.h mylocale.c \
+	mylocale.h mysql.c mysql.h myunzip.c myunzip.h session.c \
+	session.h socket.c socket.h curl.c curl.h test.c test.h \
+	untar.c untar.h unzip.c unzip.h utils.c utils.h xml.c xml.h \
+	conditions.h sevenzip.c precomp.h 7zip/7zAlloc.c \
+	7zip/7zArcIn.c 7zip/7zBuf2.c 7zip/7zBuf.c 7zip/7zCrc.c \
+	7zip/7zCrcOpt.c 7zip/7zDec.c 7zip/7zFile.c 7zip/7zStream.c \
+	7zip/Bcj2.c 7zip/Bra86.c 7zip/Bra.c 7zip/BraIA64.c \
+	7zip/CpuArch.c 7zip/Delta.c 7zip/Lzma2Dec.c 7zip/LzmaDec.c \
+	7zip/Ppmd7.c 7zip/Ppmd7Dec.c
+am__objects_1 = sevenzip.$(OBJEXT) 7zAlloc.$(OBJEXT) \
+	7zArcIn.$(OBJEXT) 7zBuf2.$(OBJEXT) \
+	7zBuf.$(OBJEXT) 7zCrc.$(OBJEXT) \
+	7zCrcOpt.$(OBJEXT) 7zDec.$(OBJEXT) \
+	7zFile.$(OBJEXT) 7zStream.$(OBJEXT) \
+	Bcj2.$(OBJEXT) Bra86.$(OBJEXT) Bra.$(OBJEXT) \
+	BraIA64.$(OBJEXT) CpuArch.$(OBJEXT) \
+	Delta.$(OBJEXT) Lzma2Dec.$(OBJEXT) \
+	LzmaDec.$(OBJEXT) Ppmd7.$(OBJEXT) \
+	Ppmd7Dec.$(OBJEXT)
 am_ezinstall_OBJECTS = main.$(OBJEXT) configure.$(OBJEXT) \
 	editconfig.$(OBJEXT) getinput.$(OBJEXT) ioapi.$(OBJEXT) \
 	login.$(OBJEXT) md5.$(OBJEXT) mylocale.$(OBJEXT) \
 	mysql.$(OBJEXT) myunzip.$(OBJEXT) session.$(OBJEXT) \
-	sevenzip.$(OBJEXT) socket.$(OBJEXT) curl.$(OBJEXT) \
-	test.$(OBJEXT) untar.$(OBJEXT) unzip.$(OBJEXT) utils.$(OBJEXT) \
-	xml.$(OBJEXT) 7zAlloc.$(OBJEXT) 7zArcIn.$(OBJEXT) \
-	7zBuf2.$(OBJEXT) 7zBuf.$(OBJEXT) 7zCrc.$(OBJEXT) \
-	7zCrcOpt.$(OBJEXT) 7zDec.$(OBJEXT) 7zFile.$(OBJEXT) \
-	7zStream.$(OBJEXT) Bcj2.$(OBJEXT) Bra86.$(OBJEXT) \
-	Bra.$(OBJEXT) BraIA64.$(OBJEXT) CpuArch.$(OBJEXT) \
-	Delta.$(OBJEXT) Lzma2Dec.$(OBJEXT) LzmaDec.$(OBJEXT) \
-	Ppmd7.$(OBJEXT) Ppmd7Dec.$(OBJEXT)
+	socket.$(OBJEXT) curl.$(OBJEXT) test.$(OBJEXT) untar.$(OBJEXT) \
+	unzip.$(OBJEXT) utils.$(OBJEXT) xml.$(OBJEXT) $(am__objects_1)
 ezinstall_OBJECTS = $(am_ezinstall_OBJECTS)
 ezinstall_DEPENDENCIES =
 ezinstall_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(ezinstall_LDFLAGS) \
@@ -143,7 +181,7 @@ am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(ezinstall_SOURCES)
-DIST_SOURCES = $(ezinstall_SOURCES)
+DIST_SOURCES = $(am__ezinstall_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -290,66 +328,13 @@ xml2_config = xml2-config
 AM_CFLAGS = \
 	 -Wall
 
-ezinstall_SOURCES = \
-	main.c     \
-	configure.c     \
-	configure.h     \
-	editconfig.c     \
-	editconfig.h     \
-	getinput.c     \
-	getinput.h     \
-	ioapi.c     \
-	ioapi.h     \
-	login.c     \
-	login.h     \
-	main.h     \
-	md5.c     \
-	md5.h     \
-	mylocale.c     \
-	mylocale.h     \
-	mysql.c     \
-	mysql.h     \
-	myunzip.c     \
-	myunzip.h     \
-	session.c      \
-	session.h      \
-        sevenzip.c     \
-	precomp.h     \
-	socket.c     \
-	socket.h     \
-	curl.c     \
-	curl.h     \
-	test.c     \
-	test.h     \
-	untar.c    \
-	untar.h    \
-	unzip.c     \
-	unzip.h     \
-	utils.c     \
-	utils.h     \
-	xml.c     \
-	xml.h     \
-	conditions.h     \
-	7zip/7zAlloc.c     \
-	7zip/7zArcIn.c     \
-	7zip/7zBuf2.c     \
-	7zip/7zBuf.c     \
-	7zip/7zCrc.c     \
-	7zip/7zCrcOpt.c     \
-	7zip/7zDec.c     \
-	7zip/7zFile.c     \
-	7zip/7zStream.c     \
-	7zip/Bcj2.c     \
-	7zip/Bra86.c     \
-	7zip/Bra.c     \
-	7zip/BraIA64.c     \
-	7zip/CpuArch.c     \
-	7zip/Delta.c     \
-	7zip/Lzma2Dec.c     \
-	7zip/LzmaDec.c     \
-	7zip/Ppmd7.c     \
-	7zip/Ppmd7Dec.c
-
+ezinstall_SOURCES = main.c configure.c configure.h editconfig.c \
+	editconfig.h getinput.c getinput.h ioapi.c ioapi.h login.c \
+	login.h main.h md5.c md5.h mylocale.c mylocale.h mysql.c \
+	mysql.h myunzip.c myunzip.h session.c session.h socket.c \
+	socket.h curl.c curl.h test.c test.h untar.c untar.h unzip.c \
+	unzip.h utils.c utils.h xml.c xml.h conditions.h \
+	$(am__append_1)
 ezinstall_LDFLAGS = 
 ezinstall_LDADD = 
 all: all-am

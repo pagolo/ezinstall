@@ -192,6 +192,9 @@
 /* Version number of package */
 #define VERSION "0.1.0"
 
+/* Use 7zip */
+#define WITH_7ZIP /**/
+
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
 

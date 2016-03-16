@@ -134,7 +134,7 @@ int inf(FILE *source, int dest, STRING **list) {
   return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
 }
 
-void Expand(char *filename, STRING **list, int fd, int zip_format) {
+void Expand(const char *filename, STRING **list, int fd, int zip_format) {
   int (*tar_inflate) (FILE *source, int dest, STRING **list);
   int ret;
   if (zip_format == BZ2_TAR)
@@ -238,7 +238,7 @@ void CreateFolderIfNotExists(char *path, mode_t mode) {
   free(folder);
 }
 
-int Untar(char *filename, STRING **list) {
+int Untar(const char *filename, STRING **list) {
   int _fd[2];
   int fd;
   struct raw_tar tar;

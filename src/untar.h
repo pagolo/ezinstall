@@ -57,6 +57,6 @@ typedef struct tar_extension {
 
 /* tar ends */
 
-int Untar(char *filename, STRING **list);
+int Untar(const char *filename, STRING **list);
 
 #endif

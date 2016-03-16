@@ -94,7 +94,7 @@ void CreateChangeDir(char *dirname, STRING **list, int dir_rename) {
 int DownloadExtractArchiveFile(STRING **list) {
   int rc, free_filename = 0;
   char *filename;
-  int (*Uncompress) (char *filename, STRING **list);
+  int (*Uncompress) (const char *filename, STRING **list);
 
   if (is_upload()) {
     filename = globaldata.gd_inidata->web_archive;
@@ -118,15 +118,19 @@ int DownloadExtractArchiveFile(STRING **list) {
     }
   }
 
-  extern int Unseven(char *filename, STRING **list);
+#ifdef WITH_7ZIP
+  extern int Unseven(const char *filename, STRING **list);
+#endif
 
   switch (globaldata.gd_inidata->zip_format) {
     case PKZIP:
       Uncompress = &Unzip;
       break;
+#ifdef WITH_7ZIP
     case SEVENZIP:
       Uncompress = &Unseven;
       break;
+#endif
     case GZ_TAR:
     case Z_TAR:
     case BZ2_TAR:
@@ -302,7 +306,7 @@ char *upload_string =
         "<input id='continue' type='submit' value='%s' disabled='disabled' name='B3'>"
         "</td></tr>\n"
         "</table></form>\n"
-        "<script type=\"text/javascript\">InitAjax('%s','%s');</script>\n";
+        "<script type=\"text/javascript\">InitAjax('%s','%s',%s);</script>\n";
 
 void UploadForm(void) {
   printf(upload_string, getenv("SCRIPT_NAME"),
@@ -314,7 +318,12 @@ void UploadForm(void) {
           _("Clear"),
           _("Continue"),
           getenv("SCRIPT_NAME"),
-          _("File sent...")
+          _("File sent..."),
+#ifdef WITH_7ZIP
+          "true"
+#else
+          "false"
+#endif
           );
 }
 
@@ -326,7 +335,7 @@ char *download_string =
         "<td><label for='ini_download'>%s:</label><br /><input id='ini_download' type='text' name='url' value=\"http://\" size='64'></td>\n"
         "</tr>\n"
         "<tr><td><input id='overwrite' type='checkbox' name='overwrite' checked='checked' /><label for='overwrite'>%s</label></td></tr>\n"
-        "<tr><td><input id='toggle' type='checkbox' name='toggle' onclick='toggle_upload(this)' /><label for='toggle'>%s</label></td></tr>\n"
+        "<tr><td><input id='toggle' type='checkbox' name='toggle' onchange='toggle_upload(this)' /><label for='toggle'>%s</label></td></tr>\n"
         "<tr id='up_row' style='display:none'><td><input type='file' id='ini_upload' name='ini' disabled='disabled' accept='text/xml' size='40' /></td></tr>\n"
         "<tr>\n"
         "<td class='submit_row_onecol'><br /><input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td>\n"

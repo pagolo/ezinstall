@@ -671,6 +671,8 @@ INTLTOOL_UPDATE
 USE_NLS
 LIBOBJS
 xml2_config
+WITH_7ZIP_FALSE
+WITH_7ZIP_TRUE
 EGREP
 GREP
 CPP
@@ -765,6 +767,7 @@ enable_option_checking
 enable_silent_rules
 enable_maintainer_mode
 enable_dependency_tracking
+with_7zip
 enable_nls
 '
       ac_precious_vars='build_alias
@@ -1400,6 +1403,11 @@ Optional Features:
   --disable-dependency-tracking
                           speeds up one-time build
   --disable-nls           do not use Native Language Support
+
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-7zip             compile with 7zip archive integrated support
 
 Some influential environment variables:
   CC          C compiler command
@@ -5592,6 +5600,43 @@ $as_echo "#define STDC_HEADERS 1" >>confdefs.h
 fi
 
 
+#conditional compiling with(out) 7zip support
+
+# Check whether --with-7zip was given.
+if test "${with_7zip+set}" = set; then :
+  withval=$with_7zip;
+else
+  with_7zip=no
+fi
+
+if test "x$with_7zip" = xyes; then :
+
+	 if true; then
+  WITH_7ZIP_TRUE=
+  WITH_7ZIP_FALSE='#'
+else
+  WITH_7ZIP_TRUE='#'
+  WITH_7ZIP_FALSE=
+fi
+
+
+$as_echo "#define WITH_7ZIP /**/" >>confdefs.h
+
+
+else
+
+	 if false; then
+  WITH_7ZIP_TRUE=
+  WITH_7ZIP_FALSE='#'
+else
+  WITH_7ZIP_TRUE='#'
+  WITH_7ZIP_FALSE=
+fi
+
+
+fi
+
+
 ## Determine MySQL library path
 # try and find libs without any additional libraries
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for mysql_init in -lmysqlclient" >&5
@@ -7997,6 +8042,14 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCC_TRUE}" && test -z "${am__fastdepCC_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WITH_7ZIP_TRUE}" && test -z "${WITH_7ZIP_FALSE}"; then
+  as_fn_error $? "conditional \"WITH_7ZIP\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WITH_7ZIP_TRUE}" && test -z "${WITH_7ZIP_FALSE}"; then
+  as_fn_error $? "conditional \"WITH_7ZIP\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
