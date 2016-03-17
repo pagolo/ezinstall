@@ -345,9 +345,9 @@ int Unseven(const char *filename, STRING **list)
         SzArEx_GetFileNameUtf16(&db, i, temp);
 
     { // progression output
-      char *s = mysprintf(_("Extracting (%d%%)"), ((i + 1) * 100) / db.NumFiles);
+      static char s[256];
+      snprintf(s, 255, _("Extracting (%d%%)"), ((i + 1) * 100) / db.NumFiles);
       HandleSemaphoreText(s, list, !i ? 1 : 0);
-      if (s) free(s);
     }
         if (isDir)
           ;//printf("/");

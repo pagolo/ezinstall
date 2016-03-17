@@ -447,7 +447,9 @@ void HandleSemaphoreText(char *text, STRING **list, int append) {
     free(ptr->string);
     ptr->string = strdup(text);
   }
+  semv_wait(globaldata.gd_semaphore->sem_id);
   globaldata.gd_semaphore->sem_buffer[0] = '\0'; // empty string
+  semv_post(globaldata.gd_semaphore->sem_id);
   for (ptr = *list; ptr != NULL; ptr = ptr->next) {
     char *li = mysprintf("<li>%s</li>\n", ptr->string);
     AddSemaphoreText(li);

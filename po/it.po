@@ -7,271 +7,307 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ezinstall 0.0.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-15 20:40+0200\n"
-"PO-Revision-Date: 2013-10-15 20:47+0100\n"
+"POT-Creation-Date: 2016-03-16 23:07+0100\n"
+"PO-Revision-Date: 2016-03-16 23:18+0100\n"
 "Last-Translator: pagolo <info@dbfweb.com>\n"
 "Language-Team: pagolo <pagolo.bozzo@gmail.com>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.8.7\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/main.c:14 ../src/main.c:26
+#: ../src/main.c:16 ../src/main.c:29
 msgid "ERROR"
 msgstr "ERRORE"
 
-#: ../src/main.c:18
+#: ../src/main.c:20
 msgid "BACK"
 msgstr "INDIETRO"
 
-#: ../src/main.c:41 ../src/main.c:80
+#: ../src/main.c:44 ../src/main.c:83
 #, c-format
 msgid "Creating folder &quot;%s&quot;..."
 msgstr "Creo la cartella &quot;%s&quot;..."
 
-#: ../src/main.c:45
+#: ../src/main.c:48
 msgid "Can't create folder"
 msgstr "Impossibile creare la cartella"
 
-#: ../src/main.c:47
+#: ../src/main.c:50
 #, c-format
 msgid "Creating file &quot;%s&quot;...<br />"
 msgstr "Creo il file &quot;%s&quot;...<br />"
 
-#: ../src/main.c:51
+#: ../src/main.c:54 ../src/utils.c:204
 msgid "Can't create file"
 msgstr "Impossibile creare il file"
 
-#: ../src/main.c:67 ../src/main.c:212
+#: ../src/main.c:70 ../src/main.c:246
 msgid "Can't chdir to document_root"
 msgstr "Impossibile spostarsi alla radice del sito"
 
-#: ../src/main.c:71
+#: ../src/main.c:74
 msgid "No need to rename folder...<br />"
 msgstr "Non &egrave; necessario rinominare la cartella...<br />"
 
-#: ../src/main.c:73
+#: ../src/main.c:76
 #, c-format
 msgid "Renaming folder &quot;%s&quot; to &quot;%s&quot;...<br />"
 msgstr "Rinomino la cartella &quot;%s&quot; in &quot;%s&quot;...<br />"
 
-#: ../src/main.c:77
+#: ../src/main.c:80
 msgid "Can't rename project folder"
 msgstr "Impossibile rinominare la cartella del progetto"
 
-#: ../src/main.c:84
+#: ../src/main.c:87
 msgid "Can't create project folder"
 msgstr "Impossibile creare la cartella principale del progetto"
 
-#: ../src/main.c:88 ../src/editconfig.c:189 ../src/editconfig.c:220
-#: ../src/mysql.c:190
+#: ../src/main.c:91 ../src/editconfig.c:189 ../src/editconfig.c:220
+#: ../src/mysql.c:206
 msgid "Can't chdir to project folder"
 msgstr "Impossibile spostarsi alla cartella principale del progetto"
 
-#: ../src/main.c:99
+#: ../src/main.c:102
 msgid "Downloading archive...<br />"
 msgstr "Scarico l'archivio..."
 
-#: ../src/main.c:101
+#: ../src/main.c:104
 msgid "Can't download the script archive"
 msgstr "Impossibile scaricare l'archivio"
 
-#. command = mysprintf("%s '%s'", globaldata.gd_inidata->unzip, filename);
-#: ../src/main.c:107
+#: ../src/main.c:108
 msgid "Uncompressing archive...<br />"
 msgstr "Decomprimo l'archivio...<br />"
 
-#: ../src/main.c:112 ../src/main.c:118
+#: ../src/main.c:147
 msgid "archive files extracted"
 msgstr "i file sono stati estratti dall'archivio"
 
-#: ../src/main.c:146
+#: ../src/main.c:150
+msgid "Error extracting archive files"
+msgstr "Errore nell'estrarre i file dall'archivio"
+
+#: ../src/main.c:153
+msgid "Unknown archive format"
+msgstr "Formato di archivio sconosciuto"
+
+#: ../src/main.c:180
 msgid "Username"
 msgstr "Nome utente"
 
-#: ../src/main.c:147
+#: ../src/main.c:181
 msgid "Password"
 msgstr "Password"
 
-#: ../src/main.c:148 ../src/main.c:267 ../src/main.c:293
+#: ../src/main.c:182 ../src/main.c:317 ../src/main.c:352
 msgid "Submit"
 msgstr "Invia"
 
-#: ../src/main.c:149 ../src/main.c:182 ../src/main.c:199 ../src/main.c:268
-#: ../src/main.c:294 ../src/editconfig.c:208 ../src/mysql.c:91
+#: ../src/main.c:183 ../src/main.c:318 ../src/main.c:353
+#: ../src/editconfig.c:208 ../src/mysql.c:91
 msgid "Clear"
 msgstr "Azzera"
 
-#: ../src/main.c:177 ../src/main.c:194
+#: ../src/main.c:211 ../src/main.c:228
 msgid "Please edit the destination web folder name"
 msgstr "Modifica, se vuoi, il nome della cartella"
 
-#: ../src/main.c:181 ../src/main.c:198 ../src/main.c:237
+#: ../src/main.c:215 ../src/main.c:232 ../src/main.c:271 ../src/main.c:319
 #: ../src/editconfig.c:207 ../src/mysql.c:90
 msgid "Continue"
 msgstr "Continua"
 
-#: ../src/main.c:204
+#: ../src/main.c:238
 #, c-format
 msgid "<strong>Installing <em>%s</em></strong><br />&nbsp;<br />"
 msgstr "<strong>Installazione di <em>%s</em></strong><br />&nbsp;<br />"
 
-#: ../src/main.c:264
+#: ../src/main.c:282
+#, c-format
+msgid "Please wait..."
+msgstr "Attendere..."
+
+#: ../src/main.c:314
 msgid "configuration file"
 msgstr "file di configurazione"
 
-#: ../src/main.c:265
+#: ../src/main.c:315
 msgid "archive file"
 msgstr "file di archivio"
 
-#: ../src/main.c:266 ../src/main.c:292
+#: ../src/main.c:316 ../src/main.c:350
 msgid "overwrite file"
 msgstr "sovrascrivi il file"
 
-#: ../src/main.c:291
-msgid "Please insert the url of the configuration file"
-msgstr "Inserisci l'url del file di configurazione"
+#: ../src/main.c:321
+msgid "File sent..."
+msgstr "File inviato..."
 
-#: ../src/main.c:381
+#: ../src/main.c:349
+msgid "Please insert url of xml configuration file"
+msgstr "Inserire l'indirizzo web del file xml"
+
+#: ../src/main.c:351
+msgid "upload xml configuration file"
+msgstr "Invia file xml"
+
+#: ../src/main.c:440
 msgid "Language"
 msgstr "Lingua"
 
-#: ../src/main.c:395
+#: ../src/main.c:454
 msgid "LogLevel"
 msgstr "Livello di registro"
 
-#: ../src/main.c:397
+#: ../src/main.c:456
 msgid "None"
 msgstr "Nessuno"
 
-#: ../src/main.c:400
+#: ../src/main.c:459
 msgid "Level 1"
 msgstr "Livello 1"
 
-#: ../src/main.c:411
+#: ../src/main.c:462
+msgid "Level 2"
+msgstr "Livello 2"
+
+#: ../src/main.c:470
+msgid "Static data path"
+msgstr "Percorso dati statici"
+
+#: ../src/main.c:477
 msgid "Please insert a username for the administrator"
 msgstr "Inserire un nome utente per amministrare..."
 
-#: ../src/main.c:412
+#: ../src/main.c:478
 msgid "The administrator password must be at least six chars long"
 msgstr "La password di amministratore deve essere almeno di sei caratteri"
 
-#: ../src/main.c:413
+#: ../src/main.c:479
 msgid "Administrator password and confirmation don't match. Please try again."
 msgstr "La password di amministratore e la conferma non coincidono. Riprovare."
 
-#: ../src/main.c:414
+#: ../src/main.c:480
 msgid "Please insert a username for the mysql user"
 msgstr "Inserire un nome utente per gestire i db mysql"
 
-#: ../src/main.c:415
+#: ../src/main.c:481
 msgid "Please insert a password for the mysql user"
 msgstr "Inserire una password per l'utente mysql"
 
-#: ../src/main.c:416
+#: ../src/main.c:482
 msgid "Mysql user password and confirmation don't match. Please try again."
 msgstr "La password mysql e la conferma non coincidono. Riprovare."
 
-#: ../src/main.c:422
+#: ../src/main.c:488
 msgid "Administrator"
 msgstr "Amministratore"
 
-#: ../src/main.c:423 ../src/main.c:433
+#: ../src/main.c:489 ../src/main.c:500
 msgid "username"
 msgstr "utente"
 
-#: ../src/main.c:425 ../src/main.c:435
+#: ../src/main.c:491 ../src/main.c:502
 msgid "password"
 msgstr "password"
 
-#: ../src/main.c:427 ../src/main.c:437
+#: ../src/main.c:493 ../src/main.c:504
 msgid "password (repeat)"
 msgstr "password (ripeti)"
 
-#: ../src/main.c:429
-msgid "Localization & Log"
-msgstr "Localizzazione e registro"
+#: ../src/main.c:495
+msgid "Localization & Log & Static Data Path"
+msgstr "Localizzazione, Log, Dati statici"
 
-#: ../src/main.c:432
+#: ../src/main.c:499
 msgid "MySQL"
 msgstr "MySQL"
 
-#: ../src/main.c:439
+#: ../src/main.c:506
 msgid "hostname"
 msgstr "nome host"
 
-#: ../src/main.c:441
+#: ../src/main.c:508
 msgid "default database"
 msgstr "database predefinito"
 
-#: ../src/main.c:443
+#: ../src/main.c:510
 msgid "Save"
 msgstr "Salva"
 
-#: ../src/main.c:491
+#: ../src/main.c:556
+msgid "- client: unable to execute semaphore"
+msgstr "- client: impossibile usare il semaforo"
+
+#: ../src/main.c:563
 #, c-format
 msgid "client:failure in shmget"
 msgstr "client: errore di memoria condivisa"
 
-#: ../src/main.c:548
+#: ../src/main.c:632
 msgid "MySQL setup"
 msgstr "Impostazioni MySQL"
 
-#: ../src/main.c:562
+#: ../src/main.c:669
 msgid "Error reading xml file"
 msgstr "errore nella lettura del file xml..."
 
-#: ../src/main.c:596 ../src/main.c:689
+#: ../src/main.c:688
+msgid "Access forbidden"
+msgstr "Accesso vietato"
+
+#: ../src/main.c:717 ../src/main.c:830
 msgid "Configuration test"
 msgstr "Test della configurazione"
 
-#: ../src/main.c:597 ../src/main.c:694
+#: ../src/main.c:718 ../src/main.c:835
 msgid "Download & install"
 msgstr "Scarica e installa"
 
-#: ../src/main.c:598 ../src/main.c:699
+#: ../src/main.c:719 ../src/main.c:840
 msgid "Upload & install"
 msgstr "Invia e installa"
 
-#: ../src/main.c:599
+#: ../src/main.c:720
 msgid "Are you sure you want to exit?"
 msgstr "Sicuro di voler uscire?"
 
-#: ../src/main.c:600
+#: ../src/main.c:721
 msgid "Exit"
 msgstr "Esci"
 
-#: ../src/main.c:605
+#: ../src/main.c:728 ../src/main.c:748
 msgid "can't access configuration file"
 msgstr "File di configurazione non trovato"
 
-#: ../src/main.c:612
+#: ../src/main.c:752
 msgid "ini file name not specified"
 msgstr "File di inizializzazione del pacchetto non specificato"
 
-#: ../src/main.c:614
+#: ../src/main.c:754
 msgid "Can't download ini file"
 msgstr "Impossibile scaricare il file di inizializzazione del pacchetto"
 
-#: ../src/main.c:674
+#: ../src/main.c:815
 msgid "Config file saved"
 msgstr "File di configurazione salvato"
 
-#: ../src/main.c:690 ../src/main.c:695 ../src/main.c:700 ../src/main.c:705
+#: ../src/main.c:831 ../src/main.c:836 ../src/main.c:841 ../src/main.c:846
 msgid "Home page"
 msgstr "Pagina iniziale"
 
-#: ../src/main.c:704 ../src/test.c:87
+#: ../src/main.c:845 ../src/test.c:87
 msgid "Edit configuration"
 msgstr "Modifica la configurazione"
 
-#: ../src/configure.c:48
+#: ../src/configure.c:50
 msgid "Configuration error, admin data..."
 msgstr "Configurazione, errore nei dati..."
 
-#: ../src/configure.c:53
+#: ../src/configure.c:55
 msgid "Configuration error, mysql data..."
 msgstr "Configurazione, errore mysql..."
 
@@ -289,15 +325,14 @@ msgid "can't save configuration file"
 msgstr "impossibile salvare il file di configurazione"
 
 #: ../src/editconfig.c:226
-#, c-format
 msgid "<br />Configuration file has been saved..."
 msgstr "<br />File di configurazione salvato..."
 
-#: ../src/mysql.c:48 ../src/mysql.c:157
+#: ../src/mysql.c:48 ../src/mysql.c:169
 msgid "error initiating MySQL"
 msgstr "errore nell'inizializzare MySQL"
 
-#: ../src/mysql.c:52 ../src/mysql.c:161
+#: ../src/mysql.c:52 ../src/mysql.c:173
 msgid "error connecting to MySQL"
 msgstr "errore nella connessione a MySQL"
 
@@ -322,54 +357,60 @@ msgstr "nome del database"
 msgid "Can't open .sql file"
 msgstr "File sql non trovato"
 
-#: ../src/mysql.c:110
+#: ../src/mysql.c:111
 msgid "Can't stat .sql file"
 msgstr "file sql, impossibile eseguire stat()"
 
-#: ../src/mysql.c:116
+#: ../src/mysql.c:118
 msgid "Can't allocate memory"
 msgstr "Impossibile allocare memoria"
 
-#: ../src/mysql.c:124
+#: ../src/mysql.c:136
 msgid "Can't execute statements"
 msgstr "impossibile eseguire i comandi del file .sql"
 
-#: ../src/mysql.c:139
+#: ../src/mysql.c:151
 msgid "Can't retrieve result set"
 msgstr "Impossibile caricare risultati (mysql)"
 
-#: ../src/mysql.c:145
+#: ../src/mysql.c:157
 msgid "Can't execute statement"
 msgstr "impossibile eseguire un comando del file .sql"
 
-#: ../src/mysql.c:168
+#: ../src/mysql.c:180
 msgid "can't create new database, please go back and select an existing db"
 msgstr ""
 "impossibile creare un database, tornare indietro e sceglierne uno esistente"
 
-#: ../src/mysql.c:170
+#: ../src/mysql.c:182
 #, c-format
 msgid "Database '%s' has been created<br />"
 msgstr "Il database '%s' &egrave; stato creato<br />"
 
-#: ../src/mysql.c:176
+#: ../src/mysql.c:189
+msgid "Can't select newly created database"
+msgstr "Impossibile selezionare il database creato ex-novo"
+
+#: ../src/mysql.c:192
 #, c-format
 msgid "Database '%s' was found<br />"
 msgstr "Il database '%s' &egrave; stato trovato<br />"
 
-#: ../src/mysql.c:185
+#: ../src/mysql.c:201
 msgid "No project folder name"
 msgstr "Manca il nome della cartella di progetto"
 
-#: ../src/mysql.c:194
-msgid "creating database tables, please wait..."
-msgstr "creo le tabelle del database, attendere..."
+#: ../src/mysql.c:210
+msgid ""
+"creating database tables, please wait...<div class=\"throbber\">&nbsp;</div>"
+msgstr ""
+"creo tabelle del database, attendere...<div class=\"throbber\">&nbsp;</div>"
 
-#: ../src/mysql.c:197
-msgid "database tables have been created"
-msgstr "Le tabelle del database sono state create"
+#: ../src/mysql.c:216
+msgid "Database tables have been successfully created..."
+msgstr "Tabelle del database create con successo..."
 
-#: ../src/myunzip.c:60
+#: ../src/myunzip.c:60 ../src/utils.c:201
 #, fuzzy
 msgid "Error allocating memory\n"
 msgstr "Impossibile allocare memoria"
@@ -379,57 +420,57 @@ msgstr "Impossibile allocare memoria"
 msgid "couldn't create directory %s"
 msgstr "Impossibile creare la cartella %s"
 
-#: ../src/myunzip.c:110
+#: ../src/myunzip.c:114
 #, c-format
 msgid "error %d with zipfile in unzGetCurrentFileInfo"
 msgstr "errore %d con zipfile in unzGetCurrentFileInfo"
 
-#: ../src/myunzip.c:116
+#: ../src/myunzip.c:120
 #, fuzzy
 msgid "Error allocating memory"
 msgstr "Impossibile allocare memoria"
 
-#: ../src/myunzip.c:141
+#: ../src/myunzip.c:153
 #, c-format
 msgid "error %d with zipfile in unzOpenCurrentFilePassword"
 msgstr "errore %d con zipfile in unzOpenCurrentFilePassword"
 
-#: ../src/myunzip.c:158
+#: ../src/myunzip.c:170
 #, c-format
 msgid "error opening %s"
 msgstr "errore nell'aprire %s"
 
-#: ../src/myunzip.c:166
+#: ../src/myunzip.c:178
 #, c-format
 msgid "error %d with zipfile in unzReadCurrentFile"
 msgstr "errore %d con zipfile in unzReadCurrentFile"
 
-#: ../src/myunzip.c:186
+#: ../src/myunzip.c:198
 #, c-format
 msgid "error %d with zipfile in unzCloseCurrentFile"
 msgstr "errore %d con zipfile in unzCloseCurrentFile"
 
-#: ../src/myunzip.c:204
+#: ../src/myunzip.c:216
 #, c-format
 msgid "error %d with zipfile in unzGetGlobalInfo"
 msgstr "errore %d con zipfile in unzGetGlobalInfo"
 
-#: ../src/myunzip.c:214
+#: ../src/myunzip.c:226
 #, c-format
 msgid "error %d with zipfile in unzGoToNextFile"
 msgstr "errore %d con zipfile in unzGoToNextFile"
 
-#: ../src/myunzip.c:218 ../src/untar.c:88 ../src/untar.c:140
+#: ../src/myunzip.c:230 ../src/untar.c:33 ../src/untar.c:92
 #, c-format
 msgid "Extracting (%d%%)"
 msgstr "Estrazione file (%d%%)"
 
-#: ../src/myunzip.c:241
+#: ../src/myunzip.c:253
 #, c-format
 msgid "Cannot open %s"
 msgstr "Impossibile aprire %s"
 
-#: ../src/myunzip.c:244
+#: ../src/myunzip.c:256
 #, c-format
 msgid "Opening %s..."
 msgstr "Apro %s..."
@@ -507,66 +548,69 @@ msgstr "Sicuro di voler cancellare\\ni file temporanei?"
 msgid "Delete temporary files"
 msgstr "Cancella file temporanei"
 
-#: ../src/utils.c:75
+#: ../src/untar.c:405
+msgid "Files have been extracted"
+msgstr "I file sono stati estratti"
+
+#: ../src/utils.c:82
 #, c-format
 msgid "External process failure..."
 msgstr "Fallimento processo esterno..."
 
-#: ../src/utils.c:221
+#: ../src/utils.c:233
 msgid "error receiving archive file..."
 msgstr "errore nella ricezione del file di archivio..."
 
-#: ../src/utils.c:225
-msgid "archive filename does not match with configuration data..."
-msgstr ""
-"il nome del file di archivio non coincide con i dati di configurazione..."
+#: ../src/utils.c:241
+msgid "archive filename does not match configuration data..."
+msgstr "il nome del file non coincide con quello presente nel file xml..."
 
-#: ../src/utils.c:229
+#: ../src/utils.c:246
 msgid "archive already exists! Please use the checkbox to overwrite it"
 msgstr "il file di archivio esiste! Tornare indietro e selezionare sovrascrivi"
 
-#: ../src/utils.c:235
+#: ../src/utils.c:254
 msgid "can't create archive file, check user and permissions."
 msgstr "impossibile creare il file di archivio: controllare utente e permessi"
 
-#: ../src/utils.c:240
+#: ../src/utils.c:259
 msgid "upload successfull"
 msgstr "caricamento dati effettuato con successo"
 
-#: ../src/utils.c:273
+#: ../src/utils.c:297
 msgid "download successfull"
 msgstr "scaricamento dati effettuato con successo"
 
-#: ../src/utils.c:332
+#: ../src/utils.c:357
 msgid "recursive permissions setup"
 msgstr "impostazione di permessi ricorsivi"
 
-#: ../src/utils.c:347
+#: ../src/utils.c:372
 msgid "permissions setup"
 msgstr "impostazione di permessi"
 
-#: ../src/utils.c:361
+#: ../src/utils.c:386
 msgid "unable to create semaphore"
 msgstr "impossibile creare il semaforo"
 
-#: ../src/utils.c:365
+#: ../src/utils.c:390
 msgid "failure in shmget"
 msgstr "errore di memoria condivisa"
 
-#: ../src/utils.c:379 ../src/utils.c:388
+#: ../src/utils.c:406 ../src/utils.c:416
 #, c-format
 msgid "semaphore error"
 msgstr "errore relativo al semaforo"
 
-#: ../src/utils.c:402
+#: ../src/utils.c:430
 msgid "DONE."
 msgstr "Operazioni completate."
 
-#: ../src/xml.c:43 ../src/xml.c:344
+#: ../src/xml.c:43 ../src/xml.c:375
 msgid "Configuration xml document not parsed successfully. \n"
 msgstr "Documento di configurazione xml non conforme. \n"
 
-#: ../src/xml.c:50 ../src/xml.c:351
+#: ../src/xml.c:50 ../src/xml.c:382
 msgid "Configuration: empty document\n"
 msgstr "Configurazione: file vuoto\n"
 
@@ -574,13 +618,29 @@ msgstr "Configurazione: file vuoto\n"
 msgid "Configuration: document of the wrong type, root node != ezinstall"
 msgstr "Configurazione: documento del tipo sbagliato, controllare"
 
-#: ../src/xml.c:102 ../src/xml.c:111
+#: ../src/xml.c:107 ../src/xml.c:120
 msgid "Unknown format of archive file"
 msgstr "Formato del file di archivio sconosciuto"
 
-#: ../src/xml.c:356
+#: ../src/xml.c:387
 msgid "Configuration: document of the wrong type, root node != ezinstaller"
 msgstr "Configurazione: documento del tipo sbagliato, controllare"
+
+#~ msgid "Please insert the url of the configuration file"
+#~ msgstr "Inserisci l'url del file di configurazione"
+
+#~ msgid "Localization & Log"
+#~ msgstr "Localizzazione e registro"
+
+#~ msgid "creating database tables, please wait..."
+#~ msgstr "creo le tabelle del database, attendere..."
+
+#~ msgid "database tables have been created"
+#~ msgstr "Le tabelle del database sono state create"
+
+#~ msgid "archive filename does not match with configuration data..."
+#~ msgstr ""
+#~ "il nome del file di archivio non coincide con i dati di configurazione..."
 
 #~ msgid "<span style='color:red'>not found</span>"
 #~ msgstr "<span style='color:red'>non trovato</span>"
