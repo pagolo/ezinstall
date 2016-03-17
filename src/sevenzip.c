@@ -346,7 +346,7 @@ int Unseven(const char *filename, STRING **list)
 
     { // progression output
       static char s[256];
-      snprintf(s, 255, _("Extracting (%d%%)"), ((i + 1) * 100) / db.NumFiles);
+      snprintf(s, 255, _("Extracting files (%d%%)"), ((i + 1) * 100) / db.NumFiles);
       HandleSemaphoreText(s, list, !i ? 1 : 0);
     }
         if (isDir)
