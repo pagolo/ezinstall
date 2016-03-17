@@ -762,7 +762,7 @@ configure:6560: $? = 0
 configure:6560: result: yes
 configure:6560: checking for stricmp
 configure:6560: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-/tmp/ccJSXIjR.o: In function `main':
+/tmp/ccAdY5Oh.o: In function `main':
 /home/paolo/Src/ezinstall-remote/conftest.c:85: undefined reference to `stricmp'
 collect2: error: ld returned 1 exit status
 configure:6560: $? = 1
@@ -883,7 +883,7 @@ configure:6560: $? = 0
 configure:6560: result: yes
 configure:6560: checking for strnicmp
 configure:6560: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-/tmp/ccyZjfDy.o: In function `main':
+/tmp/cc8si1rQ.o: In function `main':
 /home/paolo/Src/ezinstall-remote/conftest.c:89: undefined reference to `strnicmp'
 collect2: error: ld returned 1 exit status
 configure:6560: $? = 1

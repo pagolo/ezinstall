@@ -451,9 +451,10 @@ void HandleSemaphoreText(char *text, STRING **list, int append) {
   globaldata.gd_semaphore->sem_buffer[0] = '\0'; // empty string
   semv_post(globaldata.gd_semaphore->sem_id);
   for (ptr = *list; ptr != NULL; ptr = ptr->next) {
-    char *li = mysprintf("<li>%s</li>\n", ptr->string);
+    static char li[256];
+    memset(li, 0, 256);
+    snprintf(li, 255, "<li>%s</li>\n", ptr->string);
     AddSemaphoreText(li);
-    if (li) free(li);
   }
 }
 void EndSemaphore(void) {
