@@ -582,6 +582,7 @@ finish:
 #ifdef MEMORY
   xmlBufferFree(buf);
 #endif
+  createsession(username);
   return result;
 }
 
