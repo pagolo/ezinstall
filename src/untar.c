@@ -137,6 +137,7 @@ int inf(FILE *source, int dest, STRING **list) {
 void Expand(const char *filename, STRING **list, int fd, int zip_format) {
   int (*tar_inflate) (FILE *source, int dest, STRING **list);
   int ret;
+
   if (zip_format == BZ2_TAR)
     tar_inflate = &inf_bz;
   else
@@ -251,6 +252,9 @@ int Untar(const char *filename, STRING **list) {
   TAR_EXT extension;
 
   memset(&extension, 0, sizeof(TAR_EXT));
+  
+  if (access(filename, F_OK) != 0)
+    return -1;
   
   _fd[0] = _fd[1] = -1;
   pipe(_fd);

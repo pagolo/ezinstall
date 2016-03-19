@@ -53,6 +53,7 @@ int CurlDownload(char *url, int mask, int tempname, STRING **list) {
   char *urlfile;
   FILE *pagefile;
   int fd = NO_FILE;
+//  static char cwd[512];
   
   if ((!(url)) || (!(*url))) return 0;
   urlfile = basename(url);
@@ -76,6 +77,12 @@ int CurlDownload(char *url, int mask, int tempname, STRING **list) {
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, list == NULL);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
 
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+//    getcwd(cwd, 512);
+//    ChDirRoot();
+    
     fd = create_file(tempname ? NULL : urlfile, mask);
     if (fd == NO_FILE) {
       curl_easy_cleanup(curl);
@@ -84,7 +91,9 @@ int CurlDownload(char *url, int mask, int tempname, STRING **list) {
       else
         Error(_( "Can't create archive file"));
     }
-    
+
+//    chdir(cwd);
+        
     pagefile = fdopen(fd, "wb");
     if (pagefile) {
       curl_easy_setopt(curl, CURLOPT_WRITEDATA, pagefile);

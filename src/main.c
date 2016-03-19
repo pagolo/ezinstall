@@ -107,8 +107,8 @@ int DownloadExtractArchiveFile(STRING **list) {
 
   HandleSemaphoreText(_("Uncompressing archive...<br />"), list, 1);
   
-  // read file in document_root
-  if (!(strchr(filename, SLASH))) {
+  // read file in document_root if not in current dir
+  if (!(strchr(filename, SLASH)) && access(filename, F_OK)) {
     char *path = getenv("DOCUMENT_ROOT");
     if (path && *path) {
       path = append_cstring(NULL, path);

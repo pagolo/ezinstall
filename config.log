@@ -762,7 +762,7 @@ configure:6560: $? = 0
 configure:6560: result: yes
 configure:6560: checking for stricmp
 configure:6560: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-/tmp/ccV5pwFt.o: In function `main':
+/tmp/ccTmXqcE.o: In function `main':
 /home/paolo/Src/ezinstall-remote/conftest.c:85: undefined reference to `stricmp'
 collect2: error: ld returned 1 exit status
 configure:6560: $? = 1
@@ -883,7 +883,7 @@ configure:6560: $? = 0
 configure:6560: result: yes
 configure:6560: checking for strnicmp
 configure:6560: gcc -o conftest -g -O2  -I/usr/include/libxml2  conftest.c -lcurl -lbz2 -lz -lpthread -lxml2 -lmysqlclient  >&5
-/tmp/ccOaoQXe.o: In function `main':
+/tmp/ccItrDuc.o: In function `main':
 /home/paolo/Src/ezinstall-remote/conftest.c:89: undefined reference to `strnicmp'
 collect2: error: ld returned 1 exit status
 configure:6560: $? = 1
@@ -1192,6 +1192,7 @@ config.status:976: creating Makefile
 config.status:976: creating src/Makefile
 config.status:976: creating po/Makefile.in
 config.status:976: creating config.h
+config.status:1157: config.h is unchanged
 config.status:1205: executing depfiles commands
 config.status:1205: executing default-1 commands
 config.status:1205: executing po/stamp-it commands
