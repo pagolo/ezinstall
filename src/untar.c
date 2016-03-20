@@ -291,7 +291,6 @@ int Untar(const char *filename, STRING **list) {
       ReadBuffer(fd, buf, work);
     }
     mode_t mode = (mode_t)strtol(tar.mode, NULL, 8);
-
     switch (tar.type[0]) {
       case '5': // directory @TODO: check for error
         work_name = (nextname && !nextlink) ? nextname : tar_name;

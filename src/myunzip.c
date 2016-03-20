@@ -139,6 +139,11 @@ STRING **list;
     int sql;
     
     sql = FileIsSQL(filename_inzip);
+
+    if (sql == 0 && strncasecmp(filename_inzip, globaldata.gd_inidata->archive_dir, strlen(globaldata.gd_inidata->archive_dir)) == 0) {
+      subdir = strdup(globaldata.gd_inidata->archive_dir);
+      do_save = 1;
+    }
     
     if ((do_save == 0 && sql == 0) || (subdir && strncmp(filename_inzip, subdir, strlen(subdir)))) {  // skip file
       free(buf);
