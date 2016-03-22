@@ -144,6 +144,7 @@ typedef struct IniData {
    char *archive_dir;   // nome cartella di archivio (opzionale)
    char *dir_msg;       // messaggio da mostrare accanto al bottone di testo della cartella
    char *web_archive;   // archivio da scaricare via http
+   char *filename;      // nome del file scaricato
    int  zip_format;     // formato archivio
    FSOBJ *filesys_list; // lista di cartelle o file da creare
    CHMOD *perm_list;    // lista delle cartelle su cui cambiare i permessi

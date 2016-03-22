@@ -271,7 +271,7 @@ int parseMysqlNode(xmlDocPtr doc, xmlNodePtr cur) {
       xmlFree(key);
     }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "keep_sql"))) {
-      inidata->flags &= _KEEP_SQL;
+      inidata->flags |= _KEEP_SQL;
     }
     cur = cur->next;
   }
@@ -339,6 +339,7 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
       force = xmlGetProp(cur, (xmlChar *) "force");
       if (force && xmlStrcmp(force, (xmlChar *) "yes") == 0) {
         inidata->flags |= _FORCE_ARCHIVE;
+      inidata->filename = strdup((char *)key);
       }
       if (globaldata.gd_iniaddress != NULL) {
         if (inidata->web_archive == NULL)
@@ -354,7 +355,7 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
           inidata->web_archive = append_cstring(path, (inidata->flags & _FORCE_ARCHIVE) && userfile ? userfile : (char *) key);
         }
       }
-      inidata->zip_format = setUnzip(inidata->web_archive? inidata->web_archive : (char *)key, attrib ? (char *) attrib : "auto");
+      inidata->zip_format = setUnzip(/*inidata->web_archive? inidata->web_archive :*/ (char *)key, attrib ? (char *) attrib : "auto");
       xmlFree(key);
       if (attrib) xmlFree(attrib);
       if (force) xmlFree(force);
@@ -412,7 +413,7 @@ int read_xml_file(int action) {
 
 int WriteGlobalConfig(void) {
   int rc, result = 0;
-  char *username, *password;
+  char *username = NULL, *password;
   char *config_name = globaldata.gd_config_root ? CONFIG_NAME_ROOT : CONFIG_NAME;
   xmlTextWriterPtr writer;
 #ifdef MEMORY
@@ -582,7 +583,7 @@ finish:
 #ifdef MEMORY
   xmlBufferFree(buf);
 #endif
-  createsession(username);
+  if (username) createsession(username);
   return result;
 }
 

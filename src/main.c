@@ -102,7 +102,7 @@ int DownloadExtractArchiveFile(STRING **list) {
     HandleSemaphoreText(_("Downloading archive...<br />"), list, 1);
     rc = graburl_list(globaldata.gd_inidata->web_archive, 0644, 0, 0, list);
     if (rc == 0) DaemonError(_("Can't download the script archive"), list);
-    filename = basename(globaldata.gd_inidata->web_archive);
+    filename = globaldata.gd_inidata->filename;
   }
 
   HandleSemaphoreText(_("Uncompressing archive...<br />"), list, 1);
@@ -234,8 +234,8 @@ void ShowRenameDirPage(void) {
 }
 
 void ShowArchive(void) {
-  if (globaldata.gd_inidata && globaldata.gd_inidata->web_archive)
-    printf(_("<strong>Installing <em>%s</em></strong><br />&nbsp;<br />"), basename(globaldata.gd_inidata->web_archive));
+  if (globaldata.gd_inidata && globaldata.gd_inidata->filename)
+    printf(_("<strong>Installing <em>%s</em></strong><br />&nbsp;<br />"), globaldata.gd_inidata->filename);
 }
 
 void ChDirRoot(void) {

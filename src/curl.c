@@ -56,7 +56,7 @@ int CurlDownload(char *url, int mask, int tempname, STRING **list) {
 //  static char cwd[512];
   
   if ((!(url)) || (!(*url))) return 0;
-  urlfile = basename(url);
+  urlfile = globaldata.gd_inidata->filename;
 
   curl = curl_easy_init();
   if(curl) {
@@ -80,6 +80,7 @@ int CurlDownload(char *url, int mask, int tempname, STRING **list) {
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
 
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
 //    getcwd(cwd, 512);
 //    ChDirRoot();
     

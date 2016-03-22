@@ -299,9 +299,13 @@ int Untar(const char *filename, STRING **list) {
           work_name_free = work_name = mysprintf("%.155s/%.100s", tar.prefix, tar_name);
         }
         if (do_save) {
-          if (subdir && strstr(work_name, subdir) == work_name)
+          int do_create = 0;
+          if (subdir && strstr(work_name, subdir) == work_name) {
             work_name = &work_name[strlen(subdir) + 1];
-          CreateFolderIfNotExists(work_name, mode);
+            do_create = 1;
+          }
+          if (subdir == NULL) do_create = 1;
+          if (do_create) CreateFolderIfNotExists(work_name, mode);
         } else if (strcmp(basename(work_name), globaldata.gd_inidata->archive_dir) == 0) {
           subdir = strdup(work_name);
           do_save = 1;
