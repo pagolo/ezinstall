@@ -151,6 +151,25 @@ int freestringlist(STRING *list) {
   return 1;
 }
 
+char *replace_str(char *str, char *orig, char *rep)
+{
+  char *result = str;
+  char *work, *next;
+
+  for (;;) {
+    work = strstr(result, orig);
+    if (!work) break;
+    next = strdup(&work[strlen(orig)]);
+    work[0] = '\0';
+    if (rep && *rep)
+      result = append_cstring(result, rep);
+    result = append_cstring(result, next);
+    if (next) free(next);
+  }
+
+  return result;
+}
+
 //------------------------------------------
 
 void WriteLog(char *msg) {

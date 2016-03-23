@@ -88,6 +88,8 @@ typedef struct MySqlData {
    char *password;
    char *host;
    char *db_name;
+   char *db_prefix;
+   char *db_prefix_token;
    STRING *db_files;
 } MYSQLDATA;
 
@@ -119,7 +121,8 @@ enum {
    _SKIP_MYSQL = 2,
    _SKIP_CONFIGFILE = 4,
    _FORCE_ARCHIVE = 8,
-   _KEEP_SQL = 16
+   _KEEP_SQL = 16,
+   _USE_EXISTING = 32
 };
 
 enum {

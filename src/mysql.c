@@ -130,6 +130,11 @@ void ExecuteSqlFile(MYSQL *mysql, char *filename, STRING **list) {
     }
   }
 
+  if (globaldata.gd_mysql->db_prefix && globaldata.gd_mysql->db_prefix_token)
+    buf = replace_str(buf, globaldata.gd_mysql->db_prefix_token, globaldata.gd_mysql->db_prefix);
+    
+  //buf = replace_str(buf, "TYPE=MyISAM", "");
+  
   status = mysql_query(mysql, buf);
   if (status) {
     mysql_close(mysql);

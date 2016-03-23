@@ -58,7 +58,7 @@ void CreateFileSystemObject(STRING **list) {
 }
 
 enum {
-  __CREATE, __RENAME
+  __CREATE, __RENAME, __EXISTING
 };
 
 void CreateChangeDir(char *dirname, STRING **list, int dir_rename) {
@@ -79,7 +79,7 @@ void CreateChangeDir(char *dirname, STRING **list, int dir_rename) {
       rc = rename(globaldata.gd_inidata->directory, dirname);
       if (rc == -1) DaemonError(_("Can't rename project folder"), list);
     }
-  } else {
+  } else if (dir_rename == __CREATE) {
     char *s = mysprintf(_("Creating folder &quot;%s&quot;..."), dirname);
     HandleSemaphoreText(s, list, 1);
     if (s) free(s);
@@ -614,7 +614,7 @@ void Daemonize(void) {
         char *mainfolder = getfieldbyname("folder");
         if (globaldata.gd_action == CREATE_FOLDER) {
           if (strcmp("./", mainfolder) && strcmp(".", mainfolder))
-            CreateChangeDir(mainfolder, &list, __CREATE);
+            CreateChangeDir(mainfolder, &list, globaldata.gd_inidata->flags & _USE_EXISTING ? __EXISTING : __CREATE);
           else
             ChDirRoot();
           DownloadExtractArchiveFile(&list);

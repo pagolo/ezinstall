@@ -4,8 +4,12 @@
 #include <libxml/parser.h>
 #include <libxml/xmlwriter.h>
 
+#ifndef TRUE
 #define TRUE 1
+#endif
+#ifndef FALSE
 #define FALSE 0
+#endif
 
 void
 parseSection(xmlDocPtr doc, xmlNodePtr cur, STRING *string, const xmlChar *sectionName) {
@@ -238,6 +242,18 @@ int parseConfigNode(xmlDocPtr doc, xmlNodePtr cur) {
       xmlFree(key);
       continue;
     }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "myprefix"))) {
+      xmlChar *value = xmlGetProp(cur, (xmlChar *) "value");
+      xmlChar *token = xmlGetProp(cur, (xmlChar *) "token");
+      key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+      if (value && token) {
+        globaldata.gd_mysql->db_prefix = strdup((char *)value);
+        globaldata.gd_mysql->db_prefix_token = strdup((char *)token);
+        SetPhpVar((char *) key, (char *)value);
+      }
+      xmlFree(key);
+      continue;
+    }
     if ((!xmlStrcmp(cur->name, (xmlChar *) "generic"))) {
       xmlChar *value = xmlGetProp(cur, (xmlChar *) "value");
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
@@ -304,7 +320,7 @@ int parseFinishNode(xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
-  xmlChar *key, *attrib, *message, *subdir, *force;
+  xmlChar *key, *attrib, *message, *subdir, *force, *existing;
   cur = cur->xmlChildrenNode;
   INIDATA *inidata;
 
@@ -318,11 +334,16 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
       attrib = xmlGetProp(cur, (xmlChar *) "create");
       message = xmlGetProp(cur, (xmlChar *) "message");
       subdir = xmlGetProp(cur, (xmlChar *) "subdir");
+      existing = xmlGetProp(cur, (xmlChar *) "use_existing");
       inidata->directory = strdup((char *) key);
       inidata->dir_msg = message ? strdup((char *)message) : NULL;
       inidata->archive_dir = subdir ? strdup((char *)subdir) : NULL;
       if (xmlStrcmp(attrib, (xmlChar *) "yes") == 0) {
         inidata->flags |= _CREATEDIR;
+      }
+      if (xmlStrcmp(existing, (xmlChar *) "yes") == 0) {
+        inidata->flags |= _CREATEDIR;
+        inidata->flags |= _USE_EXISTING;
       }
       xmlFree(key);
       if (attrib) xmlFree(attrib);
@@ -337,10 +358,10 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
       key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
       attrib = xmlGetProp(cur, (xmlChar *) "unzip");
       force = xmlGetProp(cur, (xmlChar *) "force");
-      if (force && xmlStrcmp(force, (xmlChar *) "yes") == 0) {
+      if ((force && xmlStrcmp(force, (xmlChar *) "yes") == 0)) {
         inidata->flags |= _FORCE_ARCHIVE;
+      } 
       inidata->filename = strdup((char *)key);
-      }
       if (globaldata.gd_iniaddress != NULL) {
         if (inidata->web_archive == NULL)
           inidata->web_archive = cloneaddress(globaldata.gd_iniaddress, (char *) key);

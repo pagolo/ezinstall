@@ -140,7 +140,7 @@ STRING **list;
     
     sql = FileIsSQL(filename_inzip);
 
-    if (sql == 0 && strncasecmp(filename_inzip, globaldata.gd_inidata->archive_dir, strlen(globaldata.gd_inidata->archive_dir)) == 0) {
+    if (sql == 0 && !do_save && globaldata.gd_inidata->archive_dir && strncasecmp(filename_inzip, globaldata.gd_inidata->archive_dir, strlen(globaldata.gd_inidata->archive_dir)) == 0) {
       subdir = strdup(globaldata.gd_inidata->archive_dir);
       do_save = 1;
     }

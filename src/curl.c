@@ -50,13 +50,15 @@ int CurlDownload(char *url, int mask, int tempname, STRING **list) {
   CURL *curl;
   CURLcode res = CURLE_GOT_NOTHING;
   struct myprogress prog;
-  char *urlfile;
+  char *urlfile = NULL;
   FILE *pagefile;
   int fd = NO_FILE;
 //  static char cwd[512];
   
   if ((!(url)) || (!(*url))) return 0;
-  urlfile = globaldata.gd_inidata->filename;
+  
+  if (globaldata.gd_inidata && globaldata.gd_inidata->filename)
+    urlfile = globaldata.gd_inidata->filename;
 
   curl = curl_easy_init();
   if(curl) {

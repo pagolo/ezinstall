@@ -11,6 +11,7 @@ typedef struct String {
 STRING *newstring(char *s);
 int appendstring(STRING **head, char *s);
 int freestringlist(STRING *list);
+char *replace_str(char *str, char *orig, char *rep);
 
 //------------------ VARIOUS UTILITIES
 char * append_cstring (char *rc, const char *appendable);
