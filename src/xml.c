@@ -32,10 +32,11 @@ parseSection(xmlDocPtr doc, xmlNodePtr cur, STRING *string, const xmlChar *secti
 
 void
 parseMainConfig(void) {
-
   xmlDocPtr doc;
   xmlNodePtr cur, nodeptr;
   STRING *stringlist = NULL;
+
+  globaldata.gd_php_is_cgi = 1; //default value
 
   doc = xmlParseFile(CONFIG_NAME_ROOT);
   if (doc == NULL)
@@ -66,6 +67,7 @@ parseMainConfig(void) {
       appendstring(&stringlist, "locale_path");
       appendstring(&stringlist, "static_path");
       appendstring(&stringlist, "loglevel");
+      appendstring(&stringlist, "php_sapi");
       parseSection(doc, cur, stringlist, cur->name);
       freestringlist(stringlist);
       stringlist = NULL;
@@ -90,6 +92,20 @@ parseMainConfig(void) {
   }
 
   xmlFreeDoc(doc);
+
+  if (!globaldata.gd_php_sapi) { // php handler not checked yet
+    char *php_file = write_php_file();
+    if (php_file) {
+      char *tmp = execute_php_file(php_file);
+      char *cr = tmp ? strchr(tmp, '\r') : NULL;
+      if (cr && *cr) *cr = '\0';
+      globaldata.gd_php_sapi = tmp && *tmp ? strdup(tmp) : "";
+      unlink(php_file);
+      free(php_file);
+      globaldata.gd_php_is_cgi = strstr(globaldata.gd_php_sapi, "cgi") ? 1 : 0;
+    }
+  }
+
   return;
 }
 
@@ -390,6 +406,7 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
 int read_xml_file(int action) {
   xmlDocPtr doc;
   xmlNodePtr cur, nodeptr;
+  int suexec = globaldata.gd_php_is_cgi;
 
   doc = xmlParseFile(globaldata.gd_inifile);
 
@@ -414,7 +431,10 @@ int read_xml_file(int action) {
     if ((!xmlStrcmp(cur->name, (const xmlChar *) "main"))) {
       parseMainNode(doc, cur, action);
     }
-    if ((!xmlStrcmp(cur->name, (const xmlChar *) "permissions"))) {
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "permissions")) && suexec) {
+      parsePermissionsNode(doc, cur);
+    }
+    if ((!xmlStrcmp(cur->name, (const xmlChar *) "permissions-a2handler")) && !suexec) {
       parsePermissionsNode(doc, cur);
     }
     if ((!xmlStrcmp(cur->name, (const xmlChar *) "config"))) {
@@ -487,6 +507,13 @@ int WriteGlobalConfig(void) {
   // the locale path
   if (globaldata.gd_locale_path && *(globaldata.gd_locale_path)) {
     rc = xmlTextWriterWriteElement(writer, BAD_CAST "locale_path", BAD_CAST globaldata.gd_locale_path);
+    if (rc < 0) goto finish;
+    // newline
+    rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");
+    if (rc < 0) goto finish;
+  }
+  if (globaldata.gd_php_sapi && *(globaldata.gd_php_sapi)) {
+    rc = xmlTextWriterWriteElement(writer, BAD_CAST "php_sapi", BAD_CAST globaldata.gd_php_sapi);
     if (rc < 0) goto finish;
     // newline
     rc = xmlTextWriterWriteString(writer, BAD_CAST "\n    ");

@@ -28,6 +28,8 @@ char *get_zip_upload(int);
 char *get_ini_name(int argc, char **argv);
 int graburl(char *url,int permissions, int expand, int tempname);
 int graburl_list(char *url,int permissions, int expand, int tempname, STRING **list);
+char *write_php_file(void);
+char *execute_php_file(char *filename);
 
 //------------------ PERMISSIONS
 void ChangePermissionsRecurse(STRING **);

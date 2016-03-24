@@ -73,6 +73,8 @@ void DoTest(void) {
     printf("%s%s%s", dot1, _("MySQL connection is OK"), dot2);
   else
     printf("%s<span style='color:red'>%s</span>%s", dot1, _("Error with MySQL connection"), dot2);
+  if (globaldata.gd_php_sapi)  // php handler
+    printf("%s%s: %s%s", dot1, _("PHP Handler"), globaldata.gd_php_sapi, dot2);
   tno = TempCount();
   printf("%s%s: %d%s", dot1, _("Temporary files found"), tno, dot2);
   if (tno > 0) {

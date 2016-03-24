@@ -5,7 +5,7 @@
 void setMainConfig(char *section, char *name, char *value) {
   static USER *user = NULL;
   static MYSQLDATA *mysql = NULL;
-  
+    
   if (strcasecmp(section, "main") == 0) {
     if (strcasecmp(name, "language") == 0 && value && *value) {
       globaldata.gd_locale_code = strdup(value);
@@ -15,6 +15,12 @@ void setMainConfig(char *section, char *name, char *value) {
       globaldata.gd_static_path = strdup(value);
     } else if (strcasecmp(name, "loglevel") == 0 && value && *value) {
       globaldata.gd_loglevel = atoi(value);
+    } else if (strcasecmp(name, "php_sapi") == 0 && value && *value) {
+      globaldata.gd_php_sapi = strdup(value);
+      if (strstr(value, "cgi") == NULL)
+        globaldata.gd_php_is_cgi = 0;
+      else
+        globaldata.gd_php_is_cgi = 1;
     }
   } else if (strcasecmp(section, "user") == 0) {
     if (user == NULL) user = globaldata.gd_userdata = calloc(sizeof (USER), 1);

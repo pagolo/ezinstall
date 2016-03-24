@@ -12,6 +12,7 @@ struct myprogress {
 };
 
 int CurlDownload(char *url, int permissions, int tempname, STRING **list);
+char *CurlPhp(char *url);
 
 #endif
 

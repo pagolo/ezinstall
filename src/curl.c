@@ -116,3 +116,28 @@ int CurlDownload(char *url, int mask, int tempname, STRING **list) {
 
   return (res == CURLE_OK);
 }
+
+#define MYBUFFER_SIZE 512
+
+static size_t writefunc(void *ptr, size_t size, size_t nmemb, char *buffer)
+{
+  if (strlen(ptr) + strlen(buffer) < MYBUFFER_SIZE)
+    strcat(buffer, ptr);
+  return size*nmemb;
+}
+
+char *CurlPhp(char *url) {
+  CURL *curl;
+  CURLcode res = CURLE_GOT_NOTHING;
+  static char return_buffer[MYBUFFER_SIZE];
+  
+  curl = curl_easy_init();
+  if (curl) {
+    curl_easy_setopt(curl, CURLOPT_URL, url);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, return_buffer);
+    res = curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+  }
+  return return_buffer;
+}

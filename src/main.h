@@ -196,7 +196,9 @@ typedef struct GlobalData {
    char *gd_locale_path;//codice tipo it_IT.UTF8
    char *gd_start_path; //cartella iniziale di lavoro
    char *gd_static_path;// cartella dove sono salvati i file statici
-   int  gd_action;      //azione da eseguire
+   char *gd_php_sapi;   // php sapi: cgi/api handler for php
+   int  gd_php_is_cgi;  // se 1 php è in modalità CGI
+   int  gd_action;      // azione da eseguire
    int  gd_header_sent;// intestazione inviata?
    int  gd_config_root;// configurazione nella cartella superiore della superiore (../../)
    int  gd_loglevel;   // livello di log da utilizzare

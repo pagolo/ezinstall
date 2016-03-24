@@ -280,6 +280,29 @@ char *get_zip_upload(int ajax) {
   return "ok";
 }
 
+char *write_php_file(void) {
+  const char script[] = "<?php\necho PHP_SAPI;\n?>\n";
+  char *filename;
+  FILE *fh;
+  //@TODO: add some more control
+  filename = mysprintf("%s%s/php_sapi.php", getenv("DOCUMENT_ROOT"), globaldata.gd_static_path);
+  if (!filename) return NULL;
+  fh = fopen(filename, "w");
+  if (!fh) {free(filename); return NULL;}
+  fchmod(fileno(fh), 0755);
+  fwrite(script, strlen(script), sizeof(char), fh);
+  fclose(fh);
+  return filename;
+}
+
+char *execute_php_file(char *filename) {
+  //@TODO: add some more control
+  char *url = mysprintf("http://%s%s/%s", getenv("HTTP_HOST"), globaldata.gd_static_path, basename(filename));
+  char *retstr = CurlPhp(url);
+  free(url);
+  return retstr;
+}
+
 int graburl(char *url, int permissions, int expand, int tempname) {
   return graburl_list(url, permissions, expand, tempname, NULL);
 }
