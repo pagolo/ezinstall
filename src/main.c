@@ -83,7 +83,8 @@ void CreateChangeDir(char *dirname, STRING **list, int dir_rename) {
     char *s = mysprintf(_("Creating folder &quot;%s&quot;..."), dirname);
     HandleSemaphoreText(s, list, 1);
     if (s) free(s);
-    rc = mkdir(dirname, 0755);
+    if (!strcmp(dirname, ".") || !strcmp(dirname, "./")) rc = 0;
+    else rc = mkdir(dirname, 0755);
     if (rc == -1) DaemonError(_("Can't create project folder"), list);
   }
 

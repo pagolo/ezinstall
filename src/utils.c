@@ -282,10 +282,9 @@ char *get_zip_upload(int ajax) {
 
 char *write_php_file(void) {
   const char script[] = "<?php\necho PHP_SAPI;\n?>\n";
-  char *filename;
+  char *filename, *sp = globaldata.gd_static_path;
   FILE *fh;
-  //@TODO: add some more control
-  filename = mysprintf("%s%s/php_sapi.php", getenv("DOCUMENT_ROOT"), globaldata.gd_static_path);
+  filename = mysprintf("%s%s%s/php_sapi.php", getenv("DOCUMENT_ROOT"), *sp == '/' ? "" : "/", sp);
   if (!filename) return NULL;
   fh = fopen(filename, "w");
   if (!fh) {free(filename); return NULL;}
@@ -296,8 +295,8 @@ char *write_php_file(void) {
 }
 
 char *execute_php_file(char *filename) {
-  //@TODO: add some more control
-  char *url = mysprintf("http://%s%s/%s", getenv("HTTP_HOST"), globaldata.gd_static_path, basename(filename));
+  char *sp = globaldata.gd_static_path;
+  char *url = mysprintf("http://%s%s%s/%s", getenv("HTTP_HOST"), *sp == '/' ? "" : "/", sp, basename(filename));
   char *retstr = CurlPhp(url);
   free(url);
   return retstr;
