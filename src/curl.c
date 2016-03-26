@@ -139,5 +139,5 @@ char *CurlPhp(char *url) {
     res = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
   }
-  return return_buffer;
+  return res == CURLE_OK ? return_buffer : "";
 }
