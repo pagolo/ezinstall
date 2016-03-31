@@ -103,6 +103,7 @@ typedef struct ChMod {
    char *file;
    int  permissions;
    int  createfolder;
+   int  recourse_do_folders;   
    STRING *extensions;
    struct ChMod *next;
 } CHMOD;

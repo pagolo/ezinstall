@@ -342,6 +342,7 @@ char *download_string =
         "<td class='submit_row_onecol'><br /><input type='submit' value=\"%s\" name='B1'><input type='reset' value=\"%s\" name='B2'></td>\n"
         "</tr>\n"
         "</table>\n"
+        "<script>function onpage_toggle() {toggle_upload(document.getElementById('toggle'))};setTimeout(onpage_toggle, 100);</script>\n"
         "</form>";
 
 void DownloadForm(void) {

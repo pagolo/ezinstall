@@ -358,7 +358,7 @@ int do_chmod(char *name, STRING *extensions) {
   return 0;
 }
 
-void chmod_recurse(char *dir, int bits, STRING *extensions) {
+void chmod_recurse(char *dir, int bits, int do_folders, STRING *extensions) {
   char *current_dir;
   struct dirent *de;
   struct stat mystat;
@@ -373,12 +373,12 @@ void chmod_recurse(char *dir, int bits, STRING *extensions) {
   if (mydir) {
     while ((de = readdir(mydir)) && lstat(de->d_name, &mystat) == 0) {
       // if ((strcmp(de->d_name, "..") != 0)) { //sostituito con
-      if (!(mystat.st_mode & S_IFDIR)) {  // chmod files only
+      if (!(mystat.st_mode & S_IFDIR) || do_folders) {  // chmod files only
         if (do_chmod(de->d_name, extensions))
           chmod(de->d_name, bits);
       }
       if ((mystat.st_mode & S_IFDIR) && (strcmp(de->d_name, ".") != 0) && (strcmp(de->d_name, "..") != 0))
-        chmod_recurse(de->d_name, bits, extensions);
+        chmod_recurse(de->d_name, bits, do_folders, extensions);
     }
   }
   chdir(current_dir);
@@ -391,7 +391,7 @@ void ChangePermissionsRecurse(STRING **list) {
     char *s = mysprintf("chmod -R 0%o \"%s\"...<br />", chm->permissions, chm->file);
     HandleSemaphoreText(s, list, 1);
     if (s) free(s);
-    chmod_recurse(chm->file, chm->permissions, chm->extensions);
+    chmod_recurse(chm->file, chm->permissions, chm->recourse_do_folders, chm->extensions);
     chm = chm->next;
   }
   if (globaldata.gd_inidata->perm_list_rec && globaldata.gd_loglevel > LOG_NONE)
