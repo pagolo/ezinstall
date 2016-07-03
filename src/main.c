@@ -40,7 +40,7 @@ void CreateFileSystemObject(STRING **list) {
   int rc;
   FSOBJ *object;
   for (object = globaldata.gd_inidata->filesys_list; object != NULL; object = object->next) {
-    if (object->isfolder) {
+    if (object->flag.isfolder) {
       char *s = mysprintf(_("Creating folder &quot;%s&quot;..."), object->file);
       HandleSemaphoreText(s, list, 1);
       if (s) free(s);

@@ -95,7 +95,10 @@ typedef struct MySqlData {
 
 typedef struct FileSysObject {
    char *file;
-   int   isfolder;
+   union {
+     int isfolder;
+     int basename;
+   } flag;
    struct FileSysObject *next;
 } FSOBJ;
 
@@ -151,6 +154,7 @@ typedef struct IniData {
    char *filename;      // nome del file scaricato
    int  zip_format;     // formato archivio
    FSOBJ *filesys_list; // lista di cartelle o file da creare
+   FSOBJ *skipfile_list;// lista di file da saltare (non installare)
    CHMOD *perm_list;    // lista delle cartelle su cui cambiare i permessi
    CHMOD *perm_list_rec;// lista delle cartelle su cui cambiare i permessi ricorsivamente
    char *php_conf_name; // nome del file di conf. php ORIGINE

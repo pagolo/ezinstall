@@ -152,6 +152,11 @@ STRING **list;
 
     if (sql) write_filename = basename(filename_inzip);   
     else write_filename = subdir? &filename_inzip[strlen(subdir) + 1] : filename_inzip;
+    
+    if (skip_this_file((char *)write_filename)) { // don't save this file only...
+      free(buf);
+      return err;
+    }
 
     err = unzOpenCurrentFilePassword(uf, password);
     if (err != UNZ_OK) {

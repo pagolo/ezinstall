@@ -244,6 +244,11 @@ static WRes OutFile_OpenUtf16(CSzFile *p, const UInt16 *name, char **subdir, Boo
       work_name = basename(work_name);
     }
   }
+  // @TODO: test this!
+  if (skip_this_file(work_name)) {
+    Buf_Free(&buf, &g_Alloc);
+    return -1;
+  }
 
   res = OutFile_Open(p, (const char *)work_name);
   Buf_Free(&buf, &g_Alloc);
@@ -343,12 +348,12 @@ int Unseven(const char *filename, STRING **list)
         }
 
         SzArEx_GetFileNameUtf16(&db, i, temp);
-
+/*
     { // progression output
       static char s[256];
       snprintf(s, 255, _("Extracting (%d%%)"), ((i + 1) * 100) / db.NumFiles);
       HandleSemaphoreText(s, list, !i ? 1 : 0);
-    }
+    }*/
         if (isDir)
           ;//printf("/");
         else
@@ -368,6 +373,7 @@ int Unseven(const char *filename, STRING **list)
           size_t j;
           UInt16 *name = (UInt16 *)temp;
           const UInt16 *destPath = (const UInt16 *)name;
+          WRes wres;
  
           for (j = 0; name[j] != 0; j++)
             if (name[j] == '/')
@@ -384,7 +390,9 @@ int Unseven(const char *filename, STRING **list)
             continue;
           }
           if (do_save == False) continue;
-          if (OutFile_OpenUtf16(&outFile, destPath, &subdir, &do_save))
+          wres = OutFile_OpenUtf16(&outFile, destPath, &subdir, &do_save);
+          if (wres == -1) continue;
+          if (wres)
           {
             PrintError("can not open output file");
             res = SZ_ERROR_FAIL;

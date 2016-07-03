@@ -342,6 +342,20 @@ int graburl_list(char *url, int permissions, int expand, int tempname, STRING **
 
 //------------------------------------------
 
+int skip_this_file(char *filename) {
+  FSOBJ *list;
+  int check;
+  for (list = globaldata.gd_inidata->skipfile_list; list; list = list->next) {
+    if (!list->file) continue;
+    if (list->flag.basename) check = strcmp(list->file, basename(filename));
+    else check = strcmp(list->file, filename);
+    if (!check) return 1;
+  }
+  return 0;
+}
+
+//------------------------------------------
+
 char *get_current_dir(void) {
   char *buffer = calloc(MAXPATHLEN, 1);
   if (buffer) getcwd(buffer, MAXPATHLEN);

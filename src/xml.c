@@ -400,6 +400,22 @@ int parseMainNode(xmlDocPtr doc, xmlNodePtr cur, int action) {
       if (attrib) xmlFree(attrib);
       if (force) xmlFree(force);
     }
+    if ((!xmlStrcmp(cur->name, (xmlChar *) "skipfile"))) {
+      FSOBJ *file2skip = calloc(sizeof(FSOBJ), 1);
+      if (file2skip) {
+        FSOBJ *ptr = inidata->skipfile_list;
+        key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+        attrib = xmlGetProp(cur, (xmlChar *) "relpath");
+        file2skip->file = strdup((char *)key);
+        file2skip->flag.basename = !xmlStrcmp(attrib, (xmlChar *) "yes") ? 0 : 1;
+        if (!ptr) {
+          inidata->skipfile_list = file2skip;
+        } else {
+          while (ptr->next) ptr = ptr->next;
+          ptr->next = file2skip;
+        }
+      }
+    }
     cur = cur->next;
   }
   return 1;

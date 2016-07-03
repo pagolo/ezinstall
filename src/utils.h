@@ -31,6 +31,9 @@ int graburl_list(char *url,int permissions, int expand, int tempname, STRING **l
 char *write_php_file(void);
 char *execute_php_file(char *filename);
 
+//------------------ skip files
+int skip_this_file(char *filename);
+
 //------------------ PERMISSIONS
 void ChangePermissionsRecurse(STRING **);
 void ChangePermissions(STRING **);

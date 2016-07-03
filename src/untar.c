@@ -381,13 +381,15 @@ int Untar(const char *filename, STRING **list) {
           } else {
             work_name = basename(work_name);
           }
-          FILE *fh = fopen(work_name, "w");
-          if (fh) {
-            fchmod(fileno(fh), mode);
-            if (buf) {
-              fwrite(buf, len, 1, fh);
+          if (!skip_this_file(work_name)) {
+            FILE *fh = fopen(work_name, "wb");
+            if (fh) {
+              fchmod(fileno(fh), mode);
+              if (buf) {
+                fwrite(buf, len, 1, fh);
+              }
+              fclose(fh);
             }
-            fclose(fh);
           }
         }
         if (buf) {
